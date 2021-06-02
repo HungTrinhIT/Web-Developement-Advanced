@@ -4,9 +4,7 @@ const categoryModel = require("../models/category.model");
 // Get all categories
 router.get("/", async function (req, res) {
   const categories = await categoryModel.all();
-  res.json({
-    categories,
-  });
+  res.json(categories);
 });
 
 // Get single categories
@@ -30,7 +28,6 @@ router.post("/", async function (req, res) {
     if (isExist === null) {
       category.Log_CreatedDate = new Date();
       const ids = await categoryModel.add(category);
-      console.log(ids);
       category.id == ids[0];
       res.status(201).json(category);
     }

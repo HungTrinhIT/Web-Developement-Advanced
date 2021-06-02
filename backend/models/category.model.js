@@ -2,7 +2,7 @@ const db = require("../utils/db");
 const TB_NAME = "category";
 module.exports = {
   all() {
-    return db(TB_NAME);
+    return db(TB_NAME).where("isdeleted",false);
   },
 
   async singleById(id) {
@@ -10,6 +10,8 @@ module.exports = {
     if (cat.length === 0) return null;
     return cat[0];
   },
+  
+  
 
   async singleByName(name) {
     const cat = await db(TB_NAME)
@@ -44,3 +46,24 @@ module.exports = {
     return db(TB_NAME).where("id", id).update(categoryUpdated);
   },
 };
+
+
+// Flow
+// API Course => API User => Frontend Category + Course => Login (API User + Fe admin User)
+// Front end client
+/*
+  - Homepage:
+    + 10 khoa hoc yeu thich nhat
+    + 10 khoa hoc rating cao nhat
+    + ....
+    + .....
+  -  Ở mỗi cái course nút Xem chi tiết => Sang trang Khóa học chi tiết 
+  -  Danh sách khóa học: Search, Filter , Sort , Phân trang 
+  -  Enroll khóa học sau khi user đã đăng nhập:
+    + Có thể học
+    + API lesson
+  
+  -------------------------------------------------------------------------
+  - Chatbot
+  - 
+*/
