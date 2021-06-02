@@ -1,23 +1,27 @@
 import "./App.css";
 import React, { useState } from "react";
 import { categoryService } from "./Services";
+import { CourseItem } from "./Components/CourseItem";
+import { FETCH_ALL_CATEGORIES } from "./Redux/action/type";
+import { connect } from "react-redux";
+import createAction from "./Redux/action";
+import CategoryList from "./Components/CategoryList";
 function App(props) {
-  const [categories, setCategories] = useState([]);
   const [userInfo, setUserInfo] = useState({});
 
   const fetchAllCagories = async () => {
     const categoryList = await categoryService.fetchAllCategories();
-    setCategories(categoryList.data);
+
+    props.dispatch(createAction(FETCH_ALL_CATEGORIES, categoryList.data));
   };
 
   return (
     <div className="App">
-      <h1>
-        {props.title} - {props.count}
-      </h1>
+      <CategoryList />
+      <h1>Hello</h1>
       <button onClick={fetchAllCagories}>Click me to fetch categories</button>
     </div>
   );
 }
 
-export default App;
+export default connect()(App);
