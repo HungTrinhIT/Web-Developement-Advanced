@@ -26,16 +26,42 @@ router.post("/", async function (req, res) {
   const course = req.body;
   const ids = await courseModel.add(course);
   course.id = ids[0];
-  res.json(course);
+  res.status(201).json(course);
 });
 
 // Delete course
-router.patch("/:id", function (req, res) {
-  res.send("Hello world");
+router.patch("/delete/:id",async function (req, res) {
+  const id = req.params.id;
+
+  const selectedCourse = await courseModel.singleById(id)
+  if (selectedCourse === null){
+    return res.json({
+      msg: "Nothing to delete",
+    });
+  }
+
+  await courseModel.delete(id);
+  res.json({
+    msg: "Delete successful",
+  }); 
 });
 
 // Update course
-router.put("/:id", function (req, res) {
-  res.send("Hello world");
+router.patch("/:id",async function (req, res) {
+  const course = req.body;
+  const id = req.params.id;
+
+  const selectedCourse = await courseModel.singleById(id)
+  if (selectedCourse === null){
+    return res.json({
+      msg: "Nothing to update",
+    })
+  }
+
+  const ids = await courseModel.update(id, course);
+  return res.json({
+    course,
+    msg: "Update successful",
+  })
 });
 module.exports = router;
