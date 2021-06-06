@@ -3,7 +3,7 @@ const TB_NAME = "course";
 
 module.exports = {
   all() {
-    return db(TB_NAME);
+    return db(TB_NAME).where("isdeleted",false);
   },
 
   async singleById(id) {
@@ -36,14 +36,14 @@ module.exports = {
     });
   },
 
-  async update(id, categoryUpdated) {
+  async update(id, courseUpdated) {
     const course = await this.singleById(id);
     if (!course) {
       return null;
     }
 
     courseUpdated.Log_UpdatedDate = new Date();
-    courseUpdated.id = cat.id;
+    courseUpdated.id = course.id;
     return db(TB_NAME).where("id", id).update(courseUpdated);
   },
 };

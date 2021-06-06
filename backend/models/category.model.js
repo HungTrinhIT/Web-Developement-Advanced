@@ -49,7 +49,7 @@ module.exports = {
 
 
 // Flow
-// API Course => API User => Frontend Category + Course => Login (API User + Fe admin User)
+// API Course => API User => Frontend Category + Course (admin )=> Login (API User + Fe admin User)
 // Front end client
 /*
   - Homepage:
