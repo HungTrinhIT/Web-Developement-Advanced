@@ -12,7 +12,7 @@ router.get("/:id", async function (req, res) {
   const id = req.params.id;
   const course = await courseModel.singleById(id);
 
-  if (course !== null) {
+  if (course === null) {
     res.json({
       msg: `Course with id=${id} is not found`,
     });
