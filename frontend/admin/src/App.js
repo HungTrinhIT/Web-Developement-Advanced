@@ -1,27 +1,47 @@
+import Sidebar from "./components/sidebar/Sidebar";
+import Topbar from "./components/topbar/Topbar";
 import "./App.css";
-import React, { useState } from "react";
-import { categoryService } from "./Services";
-import { CourseItem } from "./Components/CourseItem";
-import { FETCH_ALL_CATEGORIES } from "./Redux/action/type";
-import { connect } from "react-redux";
-import createAction from "./Redux/action";
-import CategoryList from "./Components/CategoryList";
-function App(props) {
-  const [userInfo, setUserInfo] = useState({});
+import Home from "./pages/home/Home";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import UserList from "./pages/userList/UserList";
+import User from "./pages/user/User";
+import NewUser from "./pages/newUser/NewUser";
+import ProductList from "./pages/productList/ProductList";
+import Product from "./pages/product/Product";
+import NewProduct from "./pages/newProduct/NewProduct";
 
-  const fetchAllCagories = async () => {
-    const categoryList = await categoryService.fetchAllCategories();
-
-    props.dispatch(createAction(FETCH_ALL_CATEGORIES, categoryList.data));
-  };
-
+function App() {
   return (
-    <div className="App">
-      <CategoryList />
-      <h1>Hello</h1>
-      <button onClick={fetchAllCagories}>Click me to fetch categories</button>
-    </div>
+    <Router>
+      <Topbar />
+      <div className="container">
+        <Sidebar />
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/users">
+            <UserList />
+          </Route>
+          <Route path="/user/:userId">
+            <User />
+          </Route>
+          <Route path="/newUser">
+            <NewUser />
+          </Route>
+          <Route path="/categories">
+            <ProductList />
+          </Route>
+          <Route path="/categories/:productId">
+            <Product />
+          </Route>
+          <Route path="/categories">
+            <NewProduct />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
-export default connect()(App);
+export default App;
