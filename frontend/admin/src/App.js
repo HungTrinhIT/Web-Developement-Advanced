@@ -10,7 +10,7 @@ import Users from "./pages/Users";
 import Categories from "./pages/Categories";
 import Courses from "./pages/Courses";
 import PageNotFound from "./pages/PageNotFound";
-
+import AddNewCategory from "./pages/Categories/AddCategory";
 const { Content } = Layout;
 
 const routes = [
@@ -28,6 +28,11 @@ const routes = [
     exact: false,
     path: "/categories",
     component: Categories,
+  },
+  {
+    exact: false,
+    path: "/add-category",
+    component: AddNewCategory,
   },
   {
     exact: false,

@@ -38,11 +38,11 @@ const Sidebar = (props) => {
           <Link to="/categories">Category</Link>
         </Menu.Item>
 
-        <SubMenu key="/courses" icon={<BookOutlined />} title="Course">
+        <SubMenu key="1" icon={<BookOutlined />} title="Course">
           <Menu.Item key="/courses">
             <Link to="/courses">All courses</Link>
           </Menu.Item>
-          <Menu.Item key="/add-courses">Add new course</Menu.Item>
+          <Menu.Item a>Add new course</Menu.Item>
         </SubMenu>
         <Menu.Item key="7" icon={<FileOutlined />}>
           Files

@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const categoryModel = require("../models/category.model");
+const { v4: uuidv4 } = require("uuid");
 // Get all categories
 router.get("/", async function (req, res) {
-  // 
   const categories = await categoryModel.all();
   res.json(categories);
 });
@@ -13,7 +13,7 @@ router.get("/:id", async function (req, res) {
   const id = req.params.id;
   const category = await categoryModel.singleById(id);
   if (!category) {
-    res.json({
+    return res.json({
       msg: `Category with id=${id} is not found`,
     });
   }
@@ -23,16 +23,23 @@ router.get("/:id", async function (req, res) {
 
 //Add new categories
 router.post("/", async function (req, res) {
-  const category = req.body;
-  if (category.hasOwnProperty("name")) {
-    const isExist = await categoryModel.singleByName(category.name);
-    if (isExist === null) {
-      category.Log_CreatedDate = new Date();
-      const ids = await categoryModel.add(category);
-      category.id == ids[0];
-      res.status(201).json(category);
+  const { catName, catParent } = req.body;
+
+  if (catName) {
+    const isExist = await categoryModel.singleByName(catName);
+    if (!isExist) {
+      let newCategory = {
+        logCreatedDate: new Date(),
+        id: uuidv4(),
+        catName,
+        cat_id: catParent,
+      };
+
+      const ids = await categoryModel.add(newCategory);
+      return res.status(201).json(newCategory);
     }
-    res.status(200).json({
+
+    return res.status(200).json({
       msg: "This category is existed",
     });
   }
@@ -62,17 +69,14 @@ router.patch("/delete/:id", async function (req, res) {
 
 //Update categories
 router.patch("/:id", async function (req, res) {
-  const catId = req.params.id;
+  const id = req.params.id;
   const updatedCategory = req.body;
-  const cat = await categoryModel.singleById(catId);
+  const cat = await categoryModel.singleById(id);
 
-  if (cat !== null) {
-    updatedCategory.Log_UpdatedDate = new Date();
-    await categoryModel.update(catId, updatedCategory);
-    res.json({
-      updatedCategory,
-      msg: "Update sucessfully",
-    });
+  if (cat) {
+    updatedCategory.logUpdatedDate = new Date();
+    await categoryModel.update(id, updatedCategory);
+    return res.json(updatedCategory);
   }
 
   res.json({
