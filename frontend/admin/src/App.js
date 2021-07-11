@@ -1,25 +1,78 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Layout } from "antd";
+import Sidebar from "./layouts/Sidebar";
+import CustomBreadcrumb from "./layouts/Breadcrumb";
+import Navbar from "./layouts/Navbar";
+import CustomFooter from "./layouts/Footer";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Home from "./pages/Home";
+import Users from "./pages/Users";
+import Categories from "./pages/Categories";
+import Courses from "./pages/Courses";
+import PageNotFound from "./pages/PageNotFound";
 
-function App() {
+const { Content } = Layout;
+
+const routes = [
+  {
+    exact: true,
+    path: "/",
+    component: Home,
+  },
+  {
+    exact: false,
+    path: "/users",
+    component: Users,
+  },
+  {
+    exact: false,
+    path: "/categories",
+    component: Categories,
+  },
+  {
+    exact: false,
+    path: "/courses",
+    component: Courses,
+  },
+  {
+    exact: false,
+    path: "**",
+    component: PageNotFound,
+  },
+];
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout style={{ minHeight: "100vh" }}>
+      <Router>
+        <Sidebar />
+        <Layout className="site-layout">
+          <Navbar />
+          <Content style={{ margin: "0 16px" }}>
+            <CustomBreadcrumb />
+            <div
+              className="site-layout-background"
+              style={{ padding: 24, minHeight: 360 }}
+            >
+              <Switch>
+                {routes.map(({ exact, path, component }, index) => {
+                  return (
+                    <Route
+                      exact={exact}
+                      path={path}
+                      component={component}
+                      key={index}
+                    />
+                  );
+                })}
+              </Switch>
+            </div>
+          </Content>
+          <CustomFooter />
+        </Layout>
+      </Router>
+    </Layout>
   );
-}
+};
 
 export default App;
