@@ -28,3 +28,13 @@ body {
 .ant-layout-header {
     background-color: #FFFFFF;
 }
+
+.icon {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+}
+
+a {
+    text-decoration: none !important;
+}

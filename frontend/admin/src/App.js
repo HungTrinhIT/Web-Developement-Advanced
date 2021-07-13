@@ -1,4 +1,5 @@
 import "./App.css";
+import React, { useEffect } from "react";
 import { Layout } from "antd";
 import Sidebar from "./layouts/Sidebar";
 import CustomBreadcrumb from "./layouts/Breadcrumb";
@@ -11,8 +12,8 @@ import Categories from "./pages/Categories";
 import Courses from "./pages/Courses";
 import PageNotFound from "./pages/PageNotFound";
 import AddNewCategory from "./pages/Categories/AddCategory";
+import { connect } from "react-redux";
 const { Content } = Layout;
-
 const routes = [
   {
     exact: true,
@@ -80,4 +81,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default connect()(App);

@@ -6,6 +6,8 @@ const CategoryService = {
     const listOfCategory = await categoryModel.all();
     console.log(listOfCategory);
   },
+
+  
 };
 
 module.exports = CategoryService;

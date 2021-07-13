@@ -36,7 +36,10 @@ router.post("/", async function (req, res) {
       };
 
       const ids = await categoryModel.add(newCategory);
-      return res.status(201).json(newCategory);
+      return res.status(201).json({
+        msg: "Add category successfully",
+        newCategory,
+      });
     }
 
     return res.status(200).json({
@@ -71,16 +74,28 @@ router.patch("/delete/:id", async function (req, res) {
 router.patch("/:id", async function (req, res) {
   const id = req.params.id;
   const updatedCategory = req.body;
+
   const cat = await categoryModel.singleById(id);
 
   if (cat) {
-    updatedCategory.logUpdatedDate = new Date();
-    await categoryModel.update(id, updatedCategory);
-    return res.json(updatedCategory);
+    // Kiểm tra name tồn tại hay chưa
+    let isExistName = await categoryModel.singleByName(updatedCategory.catName);
+    console.log("is:", isExistName);
+    if (!isExistName) {
+      updatedCategory.logUpdatedDate = new Date();
+      await categoryModel.update(id, updatedCategory);
+      return res.json({
+        msg: "Update category successfully",
+        code: 1,
+      });
+    }
+
+    return res.json({ msg: "Category name is exist!", code: -1 });
   }
 
   res.json({
     msg: "No category for updating",
+    code: -1,
   });
 });
 
