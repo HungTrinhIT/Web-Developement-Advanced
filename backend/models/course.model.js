@@ -3,21 +3,21 @@ const TB_NAME = "course";
 
 module.exports = {
   all() {
-    return db(TB_NAME).where("isdeleted",false);
+    return db(TB_NAME).where("isDeleted",false);
   },
 
   async singleById(id) {
     const course = await db(TB_NAME)
       .where("id", id)
-      .andWhere("isdeleted", false);
+      .andWhere("isDeleted", false);
     if (course.length === 0) return null;
     return course[0];
   },
 
   async singleByName(name) {
     const course = await db(TB_NAME)
-      .where("name", name)
-      .andWhere("isdeleted", false);
+      .where("courseName", name)
+      .andWhere("isDeleted", false);
     if (course.length === 0) return null;
     return course[0];
   },
@@ -31,8 +31,8 @@ module.exports = {
     if (course === null) return null;
 
     return db(TB_NAME).where("id", id).update({
-      isdeleted: true,
-      Log_UpdatedDate: new Date(),
+      isDeleted: true,
+      logUpdatedDate: new Date(),
     });
   },
 

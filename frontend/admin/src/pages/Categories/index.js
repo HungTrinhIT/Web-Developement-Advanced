@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import moment from "moment";
-import createAction from "../../redux/action/createAction";
-import { FETCH_ALL_CATEGORIES } from "../../redux/action/type";
 
 import categoryApi from "../../api/categoryApi";
 import {
@@ -35,16 +33,6 @@ const Categories = (props) => {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [categorySelected, setCategorySelected] = useState(initCat);
-
-  useEffect(() => {
-    const fetchAllCategories = async () => {
-      try {
-        const response = await categoryApi.getAll();
-        props.dispatch(createAction(FETCH_ALL_CATEGORIES, response.data));
-      } catch (error) {}
-    };
-    fetchAllCategories();
-  }, []);
 
   const columnRootCategoriesTable = [
     {
@@ -156,10 +144,8 @@ const Categories = (props) => {
               type="primary"
               icon={<PlusOutlined />}
               size="large"
-              style={{ marginBottom: "24px" }}
-            >
-              Add new category
-            </Button>
+              className="icon"
+            ></Button>
           </Tooltip>
         </Link>
       </PageTitle>

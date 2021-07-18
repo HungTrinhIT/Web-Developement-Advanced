@@ -12,7 +12,12 @@ import Categories from "./pages/Categories";
 import Courses from "./pages/Courses";
 import PageNotFound from "./pages/PageNotFound";
 import AddNewCategory from "./pages/Categories/AddCategory";
+
+import AddCourse from "./pages/Courses/AddNewCourse";
+import createAction from "./redux/action/createAction";
+import categoryApi from "./api/categoryApi";
 import { connect } from "react-redux";
+import { FETCH_ALL_CATEGORIES } from "./redux/action/type";
 const { Content } = Layout;
 const routes = [
   {
@@ -42,12 +47,29 @@ const routes = [
   },
   {
     exact: false,
+    path: "/add-course",
+    component: AddCourse,
+  },
+  {
+    exact: false,
     path: "**",
     component: PageNotFound,
   },
 ];
 
-const App = () => {
+function App(props) {
+  useEffect(() => {
+    const fetchAllCategories = async () => {
+      try {
+        const response = await categoryApi.getAll();
+        props.dispatch(createAction(FETCH_ALL_CATEGORIES, response.data));
+      } catch (error) {
+        throw error;
+      }
+    };
+    fetchAllCategories();
+  }, []);
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Router>
@@ -79,6 +101,6 @@ const App = () => {
       </Router>
     </Layout>
   );
-};
+}
 
 export default connect()(App);
