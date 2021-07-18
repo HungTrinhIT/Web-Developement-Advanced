@@ -28,7 +28,7 @@ const AddCourse = (props) => {
       if (response.status === 201) {
         form.resetFields();
         setFullDescription("");
-        message.success("Add new course sucessfully!");
+        message.success("Add new course successfully!");
       }
     } catch (error) {
       throw error;
