@@ -1,20 +1,17 @@
-import logo from "./logo.svg";
 import "./App.css";
-import { useState, useRef, useEffect } from "react";
-import { Homepage } from "./pages/Homepage";
-
+import { useEffect } from "react";
+import Homepage from "./pages/Homepage";
+import { appendScript } from "./utils/appendScript";
 function App() {
-  const [count, setCount] = useState(0);
-
   useEffect(() => {
-    console.log("Component did mount");
-    return () => console.log("Component will unmount");
-  }, []);
+    appendScript("assets/js/jquery-3.5.1.min.js");
+    appendScript("assets/js/common_scripts.js");
+    appendScript("assets/js/main.js");
+  });
 
   return (
     <div>
-      <p>{count}</p>
-      <button onClick={() => setCount(count + 1)}>Click me</button>
+      <Homepage />
     </div>
   );
 }
