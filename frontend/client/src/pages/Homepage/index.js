@@ -1,201 +1,47 @@
 import React from "react";
-
+import CourseItem from "../../components/CourseItem";
+import Slider from "react-slick";
+import Header from "../../layouts/Header";
+import CategoryList from "../../components/CategoryList";
 const Homepage = () => {
+  // Config for course carousel
+  const settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    initialSlide: 0,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 4,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
   return (
     <div id="page">
-      <header className="header menu_2">
-        {/* /Preload */}
-        <div id="logo">
-          <a href="index.html">
-            <img src="assets/img/logo.png" width={149} height={42} alt />
-          </a>
-        </div>
-        <ul id="top_menu">
-          <li>
-            <a href="login.html" className="login">
-              Login
-            </a>
-          </li>
-          <li>
-            <a href="#0" className="search-overlay-menu-btn">
-              Search
-            </a>
-          </li>
-          <li className="hidden_tablet">
-            <a href="admission.html" className="btn_1 rounded">
-              Admission
-            </a>
-          </li>
-        </ul>
-        {/* /top_menu */}
-        <a href="#menu" className="btn_mobile">
-          <div className="hamburger hamburger--spin" id="hamburger">
-            <div className="hamburger-box">
-              <div className="hamburger-inner" />
-            </div>
-          </div>
-        </a>
-        <nav id="menu" className="main-menu">
-          <ul>
-            <li>
-              <span>
-                <a href="#0">Home</a>
-              </span>
-              <ul>
-                <li>
-                  <a href="index.html">Home version 1</a>
-                </li>
-                <li>
-                  <a href="index-2.html">Home version 2</a>
-                </li>
-                <li>
-                  <a href="index-6.html">Home version 3</a>
-                </li>
-                <li>
-                  <a href="index-3.html">Home version 4</a>
-                </li>
-                <li>
-                  <a href="index-4.html">Home version 5</a>
-                </li>
-                <li>
-                  <a href="index-5.html">With Cookie bar (EU law)</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <span>
-                <a href="#0">Courses</a>
-              </span>
-              <ul>
-                <li>
-                  <a href="courses-grid.html">Courses grid</a>
-                </li>
-                <li>
-                  <a href="courses-grid-sidebar.html">Courses grid sidebar</a>
-                </li>
-                <li>
-                  <a href="courses-list.html">Courses list</a>
-                </li>
-                <li>
-                  <a href="courses-list-sidebar.html">Courses list sidebar</a>
-                </li>
-                <li>
-                  <a href="course-detail.html">Course detail</a>
-                </li>
-                <li>
-                  <a href="course-detail-2.html">Course detail working form</a>
-                </li>
-                <li>
-                  <a href="admission.html">Admission wizard</a>
-                </li>
-                <li>
-                  <a href="teacher-detail.html">Teacher detail</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <span>
-                <a href="#0">Pages</a>
-              </span>
-              <ul>
-                <li>
-                  <a href="#0">Menu 2</a>
-                </li>
-                <li>
-                  <a href="about.html">About</a>
-                </li>
-                <li>
-                  <a href="blog.html">Blog</a>
-                </li>
-                <li>
-                  <a href="login.html">Login</a>
-                </li>
-                <li>
-                  <a href="register.html">Register</a>
-                </li>
-                <li>
-                  <a href="contacts.html">Contacts</a>
-                </li>
-                <li>
-                  <a href="404.html">404 page</a>
-                </li>
-                <li>
-                  <a href="agenda-calendar.html">Agenda Calendar</a>
-                </li>
-                <li>
-                  <a href="faq.html">Faq</a>
-                </li>
-                <li>
-                  <a href="help.html">Help</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <span>
-                <a href="#0">Extra Pages</a>
-              </span>
-              <ul>
-                <li>
-                  <a href="media-gallery.html">Media gallery</a>
-                </li>
-                <li>
-                  <a href="cart-1.html">Cart page 1</a>
-                </li>
-                <li>
-                  <a href="cart-2.html">Cart page 2</a>
-                </li>
-                <li>
-                  <a href="cart-3.html">Cart page 3</a>
-                </li>
-                <li>
-                  <a href="pricing-tables.html">Responsive pricing tables</a>
-                </li>
-                <li>
-                  <a href="coming_soon/index.html">Coming soon</a>
-                </li>
-                <li>
-                  <a href="icon-pack-1.html">Icon pack 1</a>
-                </li>
-                <li>
-                  <a href="icon-pack-2.html">Icon pack 2</a>
-                </li>
-                <li>
-                  <a href="icon-pack-3.html">Icon pack 3</a>
-                </li>
-                <li>
-                  <a href="icon-pack-4.html">Icon pack 4</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <span>
-                <a href="#0">Buy template</a>
-              </span>
-            </li>
-          </ul>
-        </nav>
-        {/* Search Menu */}
-        <div className="search-overlay-menu">
-          <span className="search-overlay-close">
-            <span className="closebt">
-              <i className="ti-close" />
-            </span>
-          </span>
-          <form role="search" id="searchform" method="get">
-            <input
-              defaultValue
-              name="q"
-              type="search"
-              placeholder="Search..."
-            />
-            <button type="submit">
-              <i className="icon_search" />
-            </button>
-          </form>
-        </div>
-        {/* End Search Menu */}
-      </header>
-      {/* /header */}
+      <Header />
       <main>
         <section className="hero_single version_2">
           <div className="wrapper">
@@ -255,277 +101,19 @@ const Homepage = () => {
             <h2>Udema Popular Courses</h2>
             <p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
           </div>
-          <div id="reccomended" className="owl-carousel owl-theme">
-            <div className="item">
-              <div className="box_grid">
-                <figure>
-                  <a href="#0" className="wish_bt" />
-                  <a href="course-detail.html">
-                    <div className="preview">
-                      <span>Preview course</span>
-                    </div>
-                    <img
-                      src="http://via.placeholder.com/800x533/ccc/fff/course__list_1.jpg"
-                      className="img-fluid"
-                      alt
-                    />
-                  </a>
-                  <div className="price">$39</div>
-                </figure>
-                <div className="wrapper">
-                  <small>Category</small>
-                  <h3>Persius delenit has cu</h3>
-                  <p>
-                    Id placerat tacimates definitionem sea, prima quidam vim no.
-                    Duo nobis persecuti cu.
-                  </p>
-                  <div className="rating">
-                    <i className="icon_star voted" />
-                    <i className="icon_star voted" />
-                    <i className="icon_star voted" />
-                    <i className="icon_star" />
-                    <i className="icon_star" /> <small>(145)</small>
-                  </div>
-                </div>
-                <ul>
-                  <li>
-                    <i className="icon_clock_alt" /> 1h 30min
-                  </li>
-                  <li>
-                    <i className="icon_like" /> 890
-                  </li>
-                  <li>
-                    <a href="course-detail.html">Enroll now</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            {/* /item */}
-            <div className="item">
-              <div className="box_grid">
-                <figure>
-                  <a href="#0" className="wish_bt" />
-                  <a href="course-detail.html">
-                    <img
-                      src="http://via.placeholder.com/800x533/ccc/fff/course__list_2.jpg"
-                      className="img-fluid"
-                      alt
-                    />
-                  </a>
-                  <div className="price">$45</div>
-                  <div className="preview">
-                    <span>Preview course</span>
-                  </div>
-                </figure>
-                <div className="wrapper">
-                  <small>Category</small>
-                  <h3>Persius delenit has cu</h3>
-                  <p>
-                    Id placerat tacimates definitionem sea, prima quidam vim no.
-                    Duo nobis persecuti cu.
-                  </p>
-                  <div className="rating">
-                    <i className="icon_star voted" />
-                    <i className="icon_star voted" />
-                    <i className="icon_star voted" />
-                    <i className="icon_star" />
-                    <i className="icon_star" /> <small>(145)</small>
-                  </div>
-                </div>
-                <ul>
-                  <li>
-                    <i className="icon_clock_alt" /> 1h 30min
-                  </li>
-                  <li>
-                    <i className="icon_like" /> 890
-                  </li>
-                  <li>
-                    <a href="course-detail.html">Enroll now</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            {/* /item */}
-            <div className="item">
-              <div className="box_grid">
-                <figure>
-                  <a href="#0" className="wish_bt" />
-                  <a href="course-detail.html">
-                    <img
-                      src="http://via.placeholder.com/800x533/ccc/fff/course__list_3.jpg"
-                      className="img-fluid"
-                      alt
-                    />
-                  </a>
-                  <div className="price">$54</div>
-                  <div className="preview">
-                    <span>Preview course</span>
-                  </div>
-                </figure>
-                <div className="wrapper">
-                  <small>Category</small>
-                  <h3>Persius delenit has cu</h3>
-                  <p>
-                    Id placerat tacimates definitionem sea, prima quidam vim no.
-                    Duo nobis persecuti cu.
-                  </p>
-                  <div className="rating">
-                    <i className="icon_star voted" />
-                    <i className="icon_star voted" />
-                    <i className="icon_star voted" />
-                    <i className="icon_star" />
-                    <i className="icon_star" /> <small>(145)</small>
-                  </div>
-                </div>
-                <ul>
-                  <li>
-                    <i className="icon_clock_alt" /> 1h 30min
-                  </li>
-                  <li>
-                    <i className="icon_like" /> 890
-                  </li>
-                  <li>
-                    <a href="course-detail.html">Enroll now</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            {/* /item */}
-            <div className="item">
-              <div className="box_grid">
-                <figure>
-                  <a href="#0" className="wish_bt" />
-                  <a href="course-detail.html">
-                    <img
-                      src="http://via.placeholder.com/800x533/ccc/fff/course__list_4.jpg"
-                      className="img-fluid"
-                      alt
-                    />
-                  </a>
-                  <div className="price">$27</div>
-                  <div className="preview">
-                    <span>Preview course</span>
-                  </div>
-                </figure>
-                <div className="wrapper">
-                  <small>Category</small>
-                  <h3>Persius delenit has cu</h3>
-                  <p>
-                    Id placerat tacimates definitionem sea, prima quidam vim no.
-                    Duo nobis persecuti cu.
-                  </p>
-                  <div className="rating">
-                    <i className="icon_star voted" />
-                    <i className="icon_star voted" />
-                    <i className="icon_star voted" />
-                    <i className="icon_star" />
-                    <i className="icon_star" /> <small>(145)</small>
-                  </div>
-                </div>
-                <ul>
-                  <li>
-                    <i className="icon_clock_alt" /> 1h 30min
-                  </li>
-                  <li>
-                    <i className="icon_like" /> 890
-                  </li>
-                  <li>
-                    <a href="course-detail.html">Enroll now</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            {/* /item */}
-            <div className="item">
-              <div className="box_grid">
-                <figure>
-                  <a href="#0" className="wish_bt" />
-                  <a href="course-detail.html">
-                    <img
-                      src="http://via.placeholder.com/800x533/ccc/fff/course__list_5.jpg"
-                      className="img-fluid"
-                      alt
-                    />
-                  </a>
-                  <div className="price">$35</div>
-                  <div className="preview">
-                    <span>Preview course</span>
-                  </div>
-                </figure>
-                <div className="wrapper">
-                  <small>Category</small>
-                  <h3>Persius delenit has cu</h3>
-                  <p>
-                    Id placerat tacimates definitionem sea, prima quidam vim no.
-                    Duo nobis persecuti cu.
-                  </p>
-                  <div className="rating">
-                    <i className="icon_star voted" />
-                    <i className="icon_star voted" />
-                    <i className="icon_star voted" />
-                    <i className="icon_star" />
-                    <i className="icon_star" /> <small>(145)</small>
-                  </div>
-                </div>
-                <ul>
-                  <li>
-                    <i className="icon_clock_alt" /> 1h 30min
-                  </li>
-                  <li>
-                    <i className="icon_like" /> 890
-                  </li>
-                  <li>
-                    <a href="course-detail.html">Enroll now</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            {/* /item */}
-            <div className="item">
-              <div className="box_grid">
-                <figure>
-                  <a href="#0" className="wish_bt" />
-                  <a href="course-detail.html">
-                    <img
-                      src="http://via.placeholder.com/800x533/ccc/fff/course__list_6.jpg"
-                      className="img-fluid"
-                      alt
-                    />
-                  </a>
-                  <div className="price">$54</div>
-                  <div className="preview">
-                    <span>Preview course</span>
-                  </div>
-                </figure>
-                <div className="wrapper">
-                  <small>Category</small>
-                  <h3>Persius delenit has cu</h3>
-                  <p>
-                    Id placerat tacimates definitionem sea, prima quidam vim no.
-                    Duo nobis persecuti cu.
-                  </p>
-                  <div className="rating">
-                    <i className="icon_star voted" />
-                    <i className="icon_star voted" />
-                    <i className="icon_star voted" />
-                    <i className="icon_star" />
-                    <i className="icon_star" /> <small>(145)</small>
-                  </div>
-                </div>
-                <ul>
-                  <li>
-                    <i className="icon_clock_alt" /> 1h 30min
-                  </li>
-                  <li>
-                    <i className="icon_like" /> 890
-                  </li>
-                  <li>
-                    <a href="course-detail.html">Enroll now</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            {/* /item */}
+          <div id="reccomended">
+            <Slider {...settings}>
+              <CourseItem />
+              <CourseItem />
+              <CourseItem />
+              <CourseItem />
+              <CourseItem />
+              <CourseItem />
+              <CourseItem />
+              <CourseItem />
+              <CourseItem />
+              <CourseItem />
+            </Slider>
           </div>
           {/* /carousel */}
           <div className="container">
@@ -547,129 +135,8 @@ const Homepage = () => {
             <h2>Udema Categories Courses</h2>
             <p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
           </div>
-          <div className="row">
-            <div className="col-lg-4 col-md-6 wow" data-wow-offset={150}>
-              <a href="#0" className="grid_item">
-                <figure className="block-reveal">
-                  <div className="block-horizzontal" />
-                  <img
-                    src="http://via.placeholder.com/800x533/ccc/fff/course_1.jpg"
-                    className="img-fluid"
-                    alt
-                  />
-                  <div className="info">
-                    <small>
-                      <i className="ti-layers" />
-                      15 Programmes
-                    </small>
-                    <h3>Arts and Humanities</h3>
-                  </div>
-                </figure>
-              </a>
-            </div>
-            {/* /grid_item */}
-            <div className="col-lg-4 col-md-6 wow" data-wow-offset={150}>
-              <a href="#0" className="grid_item">
-                <figure className="block-reveal">
-                  <div className="block-horizzontal" />
-                  <img
-                    src="http://via.placeholder.com/800x533/ccc/fff/course_2.jpg"
-                    className="img-fluid"
-                    alt
-                  />
-                  <div className="info">
-                    <small>
-                      <i className="ti-layers" />
-                      23 Programmes
-                    </small>
-                    <h3>Engineering</h3>
-                  </div>
-                </figure>
-              </a>
-            </div>
-            {/* /grid_item */}
-            <div className="col-lg-4 col-md-6 wow" data-wow-offset={150}>
-              <a href="#0" className="grid_item">
-                <figure className="block-reveal">
-                  <div className="block-horizzontal" />
-                  <img
-                    src="http://via.placeholder.com/800x533/ccc/fff/course_3.jpg"
-                    className="img-fluid"
-                    alt
-                  />
-                  <div className="info">
-                    <small>
-                      <i className="ti-layers" />
-                      23 Programmes
-                    </small>
-                    <h3>Architecture</h3>
-                  </div>
-                </figure>
-              </a>
-            </div>
-            {/* /grid_item */}
-            <div className="col-lg-4 col-md-6 wow" data-wow-offset={150}>
-              <a href="#0" className="grid_item">
-                <figure className="block-reveal">
-                  <div className="block-horizzontal" />
-                  <img
-                    src="http://via.placeholder.com/800x533/ccc/fff/course_4.jpg"
-                    className="img-fluid"
-                    alt
-                  />
-                  <div className="info">
-                    <small>
-                      <i className="ti-layers" />
-                      23 Programmes
-                    </small>
-                    <h3>Science and Biology</h3>
-                  </div>
-                </figure>
-              </a>
-            </div>
-            {/* /grid_item */}
-            <div className="col-lg-4 col-md-6 wow" data-wow-offset={150}>
-              <a href="#0" className="grid_item">
-                <figure className="block-reveal">
-                  <div className="block-horizzontal" />
-                  <img
-                    src="http://via.placeholder.com/800x533/ccc/fff/course_5.jpg"
-                    className="img-fluid"
-                    alt
-                  />
-                  <div className="info">
-                    <small>
-                      <i className="ti-layers" />
-                      23 Programmes
-                    </small>
-                    <h3>Law and Criminology</h3>
-                  </div>
-                </figure>
-              </a>
-            </div>
-            {/* /grid_item */}
-            <div className="col-lg-4 col-md-6 wow" data-wow-offset={150}>
-              <a href="#0" className="grid_item">
-                <figure className="block-reveal">
-                  <div className="block-horizzontal" />
-                  <img
-                    src="http://via.placeholder.com/800x533/ccc/fff/course_6.jpg"
-                    className="img-fluid"
-                    alt
-                  />
-                  <div className="info">
-                    <small>
-                      <i className="ti-layers" />
-                      23 Programmes
-                    </small>
-                    <h3>Medical</h3>
-                  </div>
-                </figure>
-              </a>
-            </div>
-            {/* /grid_item */}
-          </div>
-          {/* /row */}
+
+          <CategoryList />
         </div>
         {/* /container */}
         <div className="bg_color_1">
@@ -811,7 +278,7 @@ const Homepage = () => {
         </div>
         {/*/call_section*/}
       </main>
-      {/* /main */}
+
       <footer>
         <div className="container margin_120_95">
           <div className="row">
@@ -939,7 +406,6 @@ const Homepage = () => {
           </div>
         </div>
       </footer>
-      {/*/footer*/}
     </div>
   );
 };
