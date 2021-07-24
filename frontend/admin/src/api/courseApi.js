@@ -20,6 +20,11 @@ const courseApi = {
     const url = `/courses/${id}`;
     return axiosClient.patch(url, course);
   },
+
+  delete: (id) => {
+    const url = `/courses/delete/${id}`;
+    return axiosClient.patch(url);
+  },
 };
 
 export default courseApi;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Form,
   Input,
@@ -20,6 +20,8 @@ const { Option } = Select;
 const AddCourse = (props) => {
   const [form] = Form.useForm();
   const [fullDescription, setFullDescription] = useState("");
+  const addCourseRef = useRef();
+  const executeScroll = () => addCourseRef.current.scrollIntoView();
 
   const onFinish = async (values) => {
     values = { ...values, fullDescription };
@@ -28,7 +30,8 @@ const AddCourse = (props) => {
       if (response.status === 201) {
         form.resetFields();
         setFullDescription("");
-        message.success("Add new course sucessfully!");
+        message.success("Add new course successfully!");
+        executeScroll();
       }
     } catch (error) {
       throw error;
@@ -47,7 +50,7 @@ const AddCourse = (props) => {
   const { categories } = props;
 
   return (
-    <div>
+    <div ref={addCourseRef}>
       <PageTitle title="Add new course">
         <Button
           type="primary"
@@ -67,7 +70,7 @@ const AddCourse = (props) => {
         scrollToFirstError
         {...formItemLayout}
       >
-        <Row>
+        <Row gutter={16}>
           <Col span={12}>
             <Form.Item
               name="courseName"
@@ -79,7 +82,7 @@ const AddCourse = (props) => {
                 },
               ]}
             >
-              <Input />
+              <Input placeholder="Java for web development" />
             </Form.Item>
 
             <Form.Item
@@ -95,6 +98,22 @@ const AddCourse = (props) => {
             >
               <InputNumber placeholder="100.00" className="w-100" />
             </Form.Item>
+
+            <Form.Item
+              name="shortDescription"
+              label="Short description"
+              tooltip="Here is a brief description to help students understand your course content"
+              rules={[
+                {
+                  required: true,
+                  message: "Please choose the categories of course!",
+                },
+              ]}
+            >
+              <Input.TextArea rows={4}></Input.TextArea>
+            </Form.Item>
+          </Col>
+          <Col span={12}>
             <Form.Item
               name="category_id"
               label="Categories"
@@ -119,20 +138,20 @@ const AddCourse = (props) => {
               </Select>
             </Form.Item>
             <Form.Item
-              name="shortDescription"
-              label="Short description"
-              tooltip="Here is a brief description to help students understand your course content"
-              rules={[
-                {
-                  required: true,
-                  message: "Please choose the categories of course!",
-                },
-              ]}
+              name="sale"
+              label="Sale (%)"
+              tooltip="Amount of course discount in %: ex: If you type 10, that's mean course will be discount 10% "
+            >
+              <InputNumber placeholder="15" className="w-100" />
+            </Form.Item>
+            <Form.Item
+              name="saleInfo"
+              label="Sale description"
+              tooltip="Here is a brief description to help students understand your course discount"
             >
               <Input.TextArea rows={4}></Input.TextArea>
             </Form.Item>
           </Col>
-          <Col span={12}></Col>
         </Row>
         <Row>
           <Col span={24}>

@@ -42,7 +42,7 @@ module.exports = {
       return null;
     }
 
-    courseUpdated.Log_UpdatedDate = new Date();
+    courseUpdated.logUpdatedDate = new Date();
     courseUpdated.id = course.id;
     return db(TB_NAME).where("id", id).update(courseUpdated);
   },
