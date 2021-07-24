@@ -1,20 +1,17 @@
-import logo from "./logo.svg";
 import "./App.css";
-import { useState, useRef, useEffect } from "react";
-import { Homepage } from "./pages/Homepage";
-
+import Homepage from "./pages/Homepage";
+import CourseDetail from "./pages/CourseDetail";
+import useScript from "./hooks/useScript";
 function App() {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    console.log("Component did mount");
-    return () => console.log("Component will unmount");
-  }, []);
+  useScript("assets/js/jquery-3.5.1.min.js");
+  useScript("assets/js/common_scripts.js");
+  useScript("assets/js/wow.min.js");
+  useScript("assets/js/owl.carousel.min.js");
+  useScript("assets/js/main.js");
 
   return (
     <div>
-      <p>{count}</p>
-      <button onClick={() => setCount(count + 1)}>Click me</button>
+      <CourseDetail />
     </div>
   );
 }
