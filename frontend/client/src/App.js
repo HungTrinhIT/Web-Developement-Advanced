@@ -1,5 +1,6 @@
 import "./App.css";
 import Homepage from "./pages/Homepage";
+import CourseDetail from "./pages/CourseDetail";
 import useScript from "./hooks/useScript";
 function App() {
   useScript("assets/js/jquery-3.5.1.min.js");
@@ -10,7 +11,7 @@ function App() {
 
   return (
     <div>
-      <Homepage />
+      <CourseDetail />
     </div>
   );
 }
