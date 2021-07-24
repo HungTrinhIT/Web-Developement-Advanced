@@ -100,4 +100,3 @@ router.patch("/:id", async function (req, res) {
 });
 
 module.exports = router;
-© 2021 GitHub, Inc.
