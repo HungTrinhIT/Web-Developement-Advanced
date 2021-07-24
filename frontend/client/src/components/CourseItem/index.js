@@ -1,5 +1,6 @@
 import React from "react";
 
+
 const CourseItem = () => {
   return (
     <div className="item">
@@ -52,3 +53,4 @@ const CourseItem = () => {
 };
 
 export default CourseItem;
+
