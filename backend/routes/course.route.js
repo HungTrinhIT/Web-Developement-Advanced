@@ -3,10 +3,20 @@ const router = express.Router();
 const { v4: uuidv4 } = require("uuid");
 
 const courseModel = require("../models/course.model");
+const categoryModel = require("../models/category.model");
 // Get all
 router.get("/", async function (req, res) {
   const courses = await courseModel.all();
-  res.json(courses);
+  const coursesIncludeCategoryName = [];
+  for (let course of courses) {
+    let category = await categoryModel.singleById(course.category_id);
+    if (category) {
+      course.categoryName = category.catName;
+      coursesIncludeCategoryName.push(course);
+    }
+  }
+
+  res.json(coursesIncludeCategoryName);
 });
 
 // Get single by ID
