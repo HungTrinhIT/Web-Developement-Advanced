@@ -1,12 +1,12 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 export const Header = () => {
   return (
     <header className="header menu_2">
       <div id="logo">
-        <a href="index.html">
+        <Link to="/">
           <img src="assets/img/logo.png" width={149} height={42} alt />
-        </a>
+        </Link>
       </div>
       <ul id="top_menu">
         <li>
