@@ -79,6 +79,7 @@ const AddNewCategory = (props) => {
           labelAlign="left"
           label="Category type"
           rules={[{ required: true }]}
+          
         >
           <Select placeholder="Select category type" allowClear>
             <Option value="root">Root category</Option>

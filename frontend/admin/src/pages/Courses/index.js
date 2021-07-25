@@ -14,7 +14,7 @@ const Courses = () => {
       setCourses(data.data);
     };
     fetchAllCourses();
-  }, [courses]);
+  }, []);
   const columns = [
     {
       title: "Course name",
@@ -112,11 +112,13 @@ const Courses = () => {
             />
           </Popconfirm>
 
-          <Button
-            type="primary"
-            shape="circle"
-            icon={<EditOutlined className="icon" />}
-          />
+          <Link to={`/courses/${record.id}`}>
+            <Button
+              type="primary"
+              shape="circle"
+              icon={<EditOutlined className="icon" />}
+            />
+          </Link>
         </Space>
       ),
     },
