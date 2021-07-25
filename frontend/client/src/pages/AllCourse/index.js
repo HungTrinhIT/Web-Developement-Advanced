@@ -1,7 +1,22 @@
 import React, { useEffect, useState } from "react";
+import courseApi from "../../api/courseApi";
 import CourseGrid from "../../components/CourseGrid";
 
 const AllCourse = () => {
+    const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    const fetchAllCourses = async () => {
+      try {
+        const courseData = await courseApi.getAll();
+        setCourses(courseData.data);
+      } catch (error) {
+        throw error;
+      }
+    };
+
+    fetchAllCourses();
+  }, []);
     return (
         <main>
             <section id="hero_in" className="courses">
@@ -125,7 +140,7 @@ const AllCourse = () => {
                         {/*/filters col*/}
                     </aside>
                     {/* /aside */}
-                    <CourseGrid />
+                    <CourseGrid courses= {courses}/>
                     {/* /col */}
                 </div>
                 {/* /row */}
