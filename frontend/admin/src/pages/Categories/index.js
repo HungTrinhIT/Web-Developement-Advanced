@@ -18,6 +18,8 @@ import {
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
+import createAction from "../../redux/action/createAction";
+import { FETCH_ALL_CATEGORIES } from "../../redux/action/type";
 const initCat = {
   id: "",
   catName: "",
@@ -33,6 +35,18 @@ const Categories = (props) => {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [categorySelected, setCategorySelected] = useState(initCat);
+
+  useEffect(() => {
+    const fetchAllCategories = async () => {
+      try {
+        const response = await categoryApi.getAll();
+        props.dispatch(createAction(FETCH_ALL_CATEGORIES, response.data));
+      } catch (error) {
+        throw error;
+      }
+    };
+    fetchAllCategories();
+  });
 
   const columnRootCategoriesTable = [
     {

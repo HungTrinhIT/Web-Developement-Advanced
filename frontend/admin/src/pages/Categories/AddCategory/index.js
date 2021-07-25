@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import categoryApi from "../../../api/categoryApi";
 import { RollbackOutlined } from "@ant-design/icons";
 import PageTitle from "../../../components/PageTitle";
 import { Form, Input, Button, Select, message } from "antd";
 import { connect } from "react-redux";
+import createAction from "../../../redux/action/createAction";
+import { FETCH_ALL_CATEGORIES } from "../../../redux/action/type";
 const { Option } = Select;
 
 const layout = {
@@ -32,6 +34,8 @@ const AddNewCategory = (props) => {
         case 201:
           message.success(data.data.msg);
           form.resetFields();
+          const response = await categoryApi.getAll();
+          props.dispatch(createAction(FETCH_ALL_CATEGORIES, response.data));
           break;
         case 200:
           message.warning(data.data.msg);
@@ -47,6 +51,7 @@ const AddNewCategory = (props) => {
   const goBack = () => {
     props.history.goBack();
   };
+
   return (
     <div>
       <PageTitle title="Add new category">

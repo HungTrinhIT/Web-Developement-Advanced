@@ -17,6 +17,7 @@ const Homepage = () => {
         throw error;
       }
     };
+
     fetchAllCourses();
   }, []);
   return (
@@ -33,7 +34,9 @@ const Homepage = () => {
           <h2>Udema Popular Courses</h2>
           <p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
         </div>
+
         <Carousel courses={courses} />
+
         {/* /carousel */}
         <div className="container">
           <p className="btn_home_align">
