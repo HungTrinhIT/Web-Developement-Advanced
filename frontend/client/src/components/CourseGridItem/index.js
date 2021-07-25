@@ -10,7 +10,7 @@ const CourseGridItem = (props) => {
                     <div className="block-horizzontal" />
                     <a href="#0" className="wish_bt" />
                     <Link to={`/course-detail/${course.id}`}><img src="http://via.placeholder.com/800x533/ccc/fff/course__list_1.jpg" className="img-fluid" alt /></Link>
-                    <div className="price">$54</div>
+                    <div className="price">${course.sale?(course.price*(100-course.sale)/100):course.price}</div>
                     <div className="preview"><span>Preview course</span></div>
                 </figure>
                 <div className="wrapper">

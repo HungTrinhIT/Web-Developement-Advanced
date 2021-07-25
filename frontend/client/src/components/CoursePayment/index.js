@@ -9,7 +9,10 @@ const CoursePayment = (props) => {
                     <a href="https://www.youtube.com/watch?v=LDgd_gUcqCw" className="video"><i className="arrow_triangle-right" /><img src="http://via.placeholder.com/800x533/ccc/fff/course_1.jpg" alt className="img-fluid" /><span>View course preview</span></a>
                 </figure>
                 <div className="price">
-                    ${(course.price*(100-course.sale)/100)}<span className="original_price"><em>${course.price}</em>{course.sale}% discount price</span>
+                    ${course.sale?(course.price*(100-course.sale)/100):course.price}<span className="original_price">
+                    <em>{course.sale?'$' + course.price:''}</em>
+                    {course.sale?course.sale:0}% discount price</span>
+                    
                 </div>
                 <a href="#0" className="btn_1 full-width">Purchase</a>
                 <a href="#0" className="btn_1 full-width outline"><i className="icon_heart" /> Add to wishlist</a>
