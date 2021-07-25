@@ -5,6 +5,7 @@ import Features from "../../components/Features";
 import Carousel from "../../components/Carousel";
 import NewsList from "../../components/NewsList";
 import courseApi from "../../api/courseApi";
+import {Link} from "react-router-dom"
 const Homepage = () => {
   const [courses, setCourses] = useState([]);
 
@@ -40,9 +41,9 @@ const Homepage = () => {
         {/* /carousel */}
         <div className="container">
           <p className="btn_home_align">
-            <a href="courses-grid.html" className="btn_1 rounded">
+            <Link to={`/courses`} className="btn_1 rounded">
               View all courses
-            </a>
+            </Link>
           </p>
         </div>
         {/* /container */}

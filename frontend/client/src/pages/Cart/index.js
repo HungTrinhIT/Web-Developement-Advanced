@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import CartItem from "../../components/CartItem";
 import HeroSingle from "../../components/HeroSingle";
 
 const Cart = () => {
@@ -28,74 +29,10 @@ const Cart = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                <div className="thumb_cart">
-                                                    <img src="http://via.placeholder.com/150x150/ccc/fff/thumb_cart_1.jpg" alt="Image" />
-                                                </div>
-                                                <span className="item_cart">Persius delenit has cu</span>
-                                            </td>
-                                            <td>
-                                                0%
-                                            </td>
-                                            <td>
-                                                <strong>24,71$</strong>
-                                            </td>
-                                            <td className="options" style={{ width: '5%', textAlign: 'center' }}>
-                                                <a href="#"><i className="icon-trash" /></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div className="thumb_cart">
-                                                    <img src="http://via.placeholder.com/150x150/ccc/fff/thumb_cart_2.jpg" alt="Image" />
-                                                </div>
-                                                <span className="item_cart">At deseruisse scriptorem</span>
-                                            </td>
-                                            <td>
-                                                0%
-                                            </td>
-                                            <td>
-                                                <strong>15,50$</strong>
-                                            </td>
-                                            <td className="options" style={{ width: '5%', textAlign: 'center' }}>
-                                                <a href="#"><i className="icon-trash" /></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div className="thumb_cart">
-                                                    <img src="http://via.placeholder.com/150x150/ccc/fff/thumb_cart_3.jpg" alt="Image" />
-                                                </div>
-                                                <span className="item_cart">Ea vel semper quaerendum</span>
-                                            </td>
-                                            <td>
-                                                0%
-                                            </td>
-                                            <td>
-                                                <strong>24,71$</strong>
-                                            </td>
-                                            <td className="options" style={{ width: '5%', textAlign: 'center' }}>
-                                                <a href="#"><i className="icon-trash" /></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div className="thumb_cart">
-                                                    <img src="http://via.placeholder.com/150x150/ccc/fff/thumb_cart_4.jpg" alt="Image" />
-                                                </div>
-                                                <span className="item_cart">Ei has exerci graecis</span>
-                                            </td>
-                                            <td>
-                                                0%
-                                            </td>
-                                            <td>
-                                                <strong>24,71$</strong>
-                                            </td>
-                                            <td className="options" style={{ width: '5%', textAlign: 'center' }}>
-                                                <a href="#"><i className="icon-trash" /></a>
-                                            </td>
-                                        </tr>
+                                        <CartItem />
+                                        <CartItem />
+                                        <CartItem />
+                                        <CartItem />
                                     </tbody>
                                 </table>
                                 <div className="cart-options clearfix">
