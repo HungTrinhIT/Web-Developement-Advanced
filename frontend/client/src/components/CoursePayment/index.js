@@ -1,6 +1,7 @@
 import React from 'react';
 
-const CoursePayment = () => {
+const CoursePayment = (props) => {
+    const {course} = props;
     return (
         <aside className="col-lg-4" id="sidebar">
             <div className="box_detail">
@@ -8,7 +9,10 @@ const CoursePayment = () => {
                     <a href="https://www.youtube.com/watch?v=LDgd_gUcqCw" className="video"><i className="arrow_triangle-right" /><img src="http://via.placeholder.com/800x533/ccc/fff/course_1.jpg" alt className="img-fluid" /><span>View course preview</span></a>
                 </figure>
                 <div className="price">
-                    $29<span className="original_price"><em>$49</em>60% discount price</span>
+                    ${course.sale?(course.price*(100-course.sale)/100):course.price}<span className="original_price">
+                    <em>{course.sale?'$' + course.price:''}</em>
+                    {course.sale?course.sale:0}% discount price</span>
+                    
                 </div>
                 <a href="#0" className="btn_1 full-width">Purchase</a>
                 <a href="#0" className="btn_1 full-width outline"><i className="icon_heart" /> Add to wishlist</a>

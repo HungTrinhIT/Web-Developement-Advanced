@@ -8,7 +8,7 @@ const CourseItem = (props) => {
       <div className="box_grid">
         <figure>
           <a href="#0" className="wish_bt" />
-          <Link to={`/course-detail/${course.id}`}>
+          <Link to={`/course-detail/${course.id}`} >
             <img
               src="http://via.placeholder.com/800x533/ccc/fff/course__list_2.jpg"
               className="img-fluid"
@@ -21,11 +21,10 @@ const CourseItem = (props) => {
           </div>
         </figure>
         <div className="wrapper">
-          <small>Category</small>
+          <small>Course</small>
           <h3>{course.courseName}</h3>
           <p>
-            Id placerat tacimates definitionem sea, prima quidam vim no. Duo
-            nobis persecuti cu.
+            {course.shortDescription}
           </p>
           <div className="rating">
             <i className="icon_star voted" />
@@ -43,7 +42,7 @@ const CourseItem = (props) => {
             <i className="icon_like" /> 890
           </li>
           <li>
-            <Link to={`/course-detail`} class="main-btn">
+            <Link to={`/course-detail/${course.id}`} class="main-btn" >
               Enroll now
             </Link>
           </li>
