@@ -46,7 +46,7 @@ const Categories = (props) => {
       }
     };
     fetchAllCategories();
-  });
+  }, []);
 
   const columnRootCategoriesTable = [
     {

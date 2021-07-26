@@ -81,7 +81,7 @@ router.patch("/:id", async function (req, res) {
   const ids = await courseModel.update(id, course);
   return res.json({
     course,
-    msg: "Update successful",
+    msg: "Course is update successfully!",
   });
 });
 module.exports = router;

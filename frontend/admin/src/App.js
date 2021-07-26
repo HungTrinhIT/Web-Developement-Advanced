@@ -18,6 +18,7 @@ import createAction from "./redux/action/createAction";
 import categoryApi from "./api/categoryApi";
 import { connect } from "react-redux";
 import { FETCH_ALL_CATEGORIES } from "./redux/action/type";
+import CourseInfo from "./pages/Courses/CourseInfo";
 const { Content } = Layout;
 const routes = [
   {
@@ -41,9 +42,14 @@ const routes = [
     component: AddNewCategory,
   },
   {
-    exact: false,
+    exact: true,
     path: "/courses",
     component: Courses,
+  },
+  {
+    exact: false,
+    path: "/courses/:id",
+    component: CourseInfo,
   },
   {
     exact: false,
