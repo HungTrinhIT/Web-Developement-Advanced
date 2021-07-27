@@ -7,6 +7,7 @@ require("express-async-errors");
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors("*"));
+app.use(express.urlencoded({extended: true}));
 
 // Routing
 app.use("/api/courses", require("./routes/course.route"));
