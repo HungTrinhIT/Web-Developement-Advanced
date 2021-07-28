@@ -45,4 +45,15 @@ module.exports = {
     courseUpdated.logUpdatedDate = new Date();
     return db(TB_NAME).where("id", id).update(courseUpdated);
   },
+
+  async getCountOfCourseByCategory(categoryId) {
+    const countOfCat = await db(TB_NAME)
+      .where("category_id", categoryId)
+      .andWhere("isDeleted", false);
+    if (!countOfCat) {
+      return null;
+    }
+    
+    return countOfCat;
+  },
 };
