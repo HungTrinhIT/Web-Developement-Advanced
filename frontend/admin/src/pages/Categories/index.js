@@ -14,28 +14,18 @@ import {
   Typography,
   Table,
   message,
+  Popconfirm,
 } from "antd";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import createAction from "../../redux/action/createAction";
 import { FETCH_ALL_CATEGORIES } from "../../redux/action/type";
-const initCat = {
-  id: "",
-  catName: "",
-  cat_id: null,
-  isDeleted: false,
-  logCreatedDate: "",
-  logCreatedBy: "",
-  parentCatName: "",
-  logUpdatedBy: "",
-  logUpdatedDate: "",
-};
+
 const Categories = (props) => {
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [categorySelected, setCategorySelected] = useState(initCat);
-
+  const [categorySelected, setCategorySelected] = useState({});
   useEffect(() => {
     const fetchAllCategories = async () => {
       try {
@@ -74,10 +64,15 @@ const Categories = (props) => {
       title: "Action",
       key: "action",
       dataIndex: "id",
-      render: (id) => {
+      render: (id, record) => {
         return (
           <>
-            <Tooltip title="Delete category">
+            <Popconfirm
+              title="Are you sure to delete this category?"
+              onConfirm={() => onDeleteCategory(record.id)}
+              okText="Delete"
+              cancelText="Cancel"
+            >
               <Button
                 type="danger"
                 shape="circle"
@@ -86,8 +81,7 @@ const Categories = (props) => {
                   marginRight: "8px",
                 }}
               />
-            </Tooltip>
-
+            </Popconfirm>
             <Tooltip title="Edit category">
               <Button
                 type="primary"
@@ -122,11 +116,14 @@ const Categories = (props) => {
       );
       setConfirmLoading(false);
       switch (response.data.code) {
-        case 1:
+        case 1: {
           message.success(response.data.msg);
+          const allCat = await categoryApi.getAll();
+          props.dispatch(createAction(FETCH_ALL_CATEGORIES, allCat.data));
           setCategorySelected({});
           setVisible(false);
           break;
+        }
         case -1:
           message.warning(response.data.msg);
           break;
@@ -143,6 +140,23 @@ const Categories = (props) => {
     setVisible(false);
   };
 
+  const onDeleteCategory = async (id) => {
+    try {
+      const data = await categoryApi.delete(id);
+      switch (data.status) {
+        case 202:
+          message.warning(data.data.msg);
+          break;
+        case 200:
+          const allCat = await categoryApi.getAll();
+          props.dispatch(createAction(FETCH_ALL_CATEGORIES, allCat.data));
+          message.success(data.data.msg);
+          break;
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
   const handleCatEditChange = (e) => {
     setCategorySelected({
       ...categorySelected,

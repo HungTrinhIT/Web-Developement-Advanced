@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const categoryModel = require("../models/category.model");
 const { v4: uuidv4 } = require("uuid");
+const courseModel = require("../models/course.model");
+
 // Get all categories
 router.get("/", async function (req, res) {
   const categories = await categoryModel.all();
@@ -55,17 +57,28 @@ router.post("/", async function (req, res) {
 //Delete categories
 router.patch("/delete/:id", async function (req, res) {
   const catId = req.params.id;
-
   const cat = await categoryModel.singleById(catId);
-  if (cat !== null) {
-    const ids = await categoryModel.delete(catId);
 
-    res.json({
-      msg: "Delete succesfully",
+  if (cat !== null) {
+    if (cat.cat_id !== null) {
+      const coursesByID = await courseModel.getCountOfCourseByCategory(catId);
+      if (coursesByID.length > 0) {
+        return res.status(202).json({
+          msg: "Can not delete category that already have courses",
+        });
+      }
+      await categoryModel.delete(catId);
+
+      return res.json({
+        msg: "Deleted category successfully!",
+      });
+    }
+    return res.status(202).json({
+      msg: "Cannot delete root category",
     });
   }
 
-  res.json({
+  return res.status(204).json({
     msg: "No category for deleting",
   });
 });
@@ -76,7 +89,6 @@ router.patch("/:id", async function (req, res) {
   const updatedCategory = req.body;
 
   const cat = await categoryModel.singleById(id);
-
   if (cat) {
     // Kiểm tra name tồn tại hay chưa
     let isExistName = await categoryModel.singleByName(updatedCategory.catName);

@@ -20,6 +20,10 @@ const categoryApi = {
     const url = `/categories/${id}`;
     return axiosClient.patch(url, category);
   },
+  delete: (id) => {
+    const url = `/categories/delete/${id}`;
+    return axiosClient.patch(url);
+  },
 };
 
 export default categoryApi;

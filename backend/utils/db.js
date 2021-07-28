@@ -3,7 +3,7 @@ const knex = require("knex")({
   connection: {
     host: "localhost",
     user: "root",
-    password: "root",
+    password: "password",
     database: "elearning",
     port: 3306,
   },
