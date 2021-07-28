@@ -6,6 +6,16 @@ const categoryApi = {
     return axiosClient.get(url);
   },
 
+  getAllParents: (params) => {
+    const url = "/categories/parents";
+    return axiosClient.get(url);
+  },
+
+  getAllChildrens: (params) => {
+    const url = "/categories/childrens";
+    return axiosClient.get(url);
+  },
+
   getById: (id) => {
     const url = `/categories/${id}`;
     return axiosClient.get(url);

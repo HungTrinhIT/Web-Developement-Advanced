@@ -5,6 +5,17 @@ module.exports = {
     return db(TB_NAME).where("isDeleted",false);
   },
 
+  allParents() {
+    return db(TB_NAME).where({
+      "isDeleted": false,
+      "cat_id": null
+    });
+  },
+
+  allChildrens() {
+    return db(TB_NAME).where("isDeleted", false).andWhereNot("cat_id", null);
+  },
+
   async singleById(id) {
     const cat = await db(TB_NAME).where("id", id).andWhere("isDeleted", false);
     if (cat.length === 0) return null;

@@ -14,6 +14,14 @@ module.exports = {
     return course[0];
   },
 
+  async newestCourse(limit){
+    return db(TB_NAME).orderBy('logCreatedDate', 'desc').limit(limit);
+  },
+
+  async mostViewCourse(limit){
+    return db(TB_NAME).orderBy('view', 'desc').limit(limit);
+  },
+
   async singleByName(name) {
     const course = await db(TB_NAME)
       .where("courseName", name)
@@ -44,5 +52,15 @@ module.exports = {
 
     courseUpdated.logUpdatedDate = new Date();
     return db(TB_NAME).where("id", id).update(courseUpdated);
+  },
+
+  async updateView(id) {
+    const course = await this.singleById(id);
+    if (!course) {
+      return null;
+    }
+    const view = course.view;
+
+    return db(TB_NAME).where("id", id).update("view", view + 1);
   },
 };

@@ -84,4 +84,52 @@ router.patch("/:id", async function (req, res) {
     msg: "Course is update successfully!",
   });
 });
+
+// Fetch Newest Course
+router.get("/new/:limit", async function (req, res) {
+  const limit = req.params.limit;
+  const courses = await courseModel.newestCourse(limit);
+  const coursesIncludeCategoryName = [];
+  for (let course of courses) {
+    let category = await categoryModel.singleById(course.category_id);
+    if (category) {
+      course.categoryName = category.catName;
+      coursesIncludeCategoryName.push(course);
+    }
+  }
+
+  res.json(coursesIncludeCategoryName);
+});
+
+// Fetch Most View Course
+router.get("/mostview/:limit", async function (req, res) {
+  const limit = req.params.limit;
+  const courses = await courseModel.mostViewCourse(limit);
+  const coursesIncludeCategoryName = [];
+  for (let course of courses) {
+    let category = await categoryModel.singleById(course.category_id);
+    if (category) {
+      course.categoryName = category.catName;
+      coursesIncludeCategoryName.push(course);
+    }
+  }
+
+  res.json(coursesIncludeCategoryName);
+});
+
+router.patch("/view/:id", async function (req, res) {
+  const id = req.params.id;
+
+  const selectedCourse = await courseModel.singleById(id);
+  if (selectedCourse === null) {
+    return res.json({
+      msg: "Nothing to update",
+    });
+  }
+
+  const ids = await courseModel.updateView(id);
+  return res.json({
+    msg: "Course is update successfully!",
+  });
+});
 module.exports = router;
