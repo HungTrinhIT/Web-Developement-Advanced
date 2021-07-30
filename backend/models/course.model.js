@@ -14,11 +14,11 @@ module.exports = {
     return course[0];
   },
 
-  async newestCourse(limit){
+  newestCourse(limit){
     return db(TB_NAME).orderBy('logCreatedDate', 'desc').limit(limit);
   },
 
-  async mostViewCourse(limit){
+  mostViewCourse(limit){
     return db(TB_NAME).orderBy('view', 'desc').limit(limit);
   },
 
