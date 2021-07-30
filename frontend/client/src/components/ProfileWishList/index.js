@@ -15,7 +15,7 @@ const ProfileWishList = (props) => {
         {
             title: "Action",
             key: "action",
-            width: 50,
+            width: 30,
             fixed: "right",
             render: () => (
               <Space size="middle">
@@ -30,20 +30,12 @@ const ProfileWishList = (props) => {
                     icon={<DeleteOutlined className="icon" />}
                   />
                 </Popconfirm>
-      
-                <Link>
-                  <Button
-                    type="primary"
-                    shape="circle"
-                    icon={<EditOutlined className="icon" />}
-                  />
-                </Link>
               </Space>
             ),
           },
     ];
     return (
-        <Table columns={columns} dataSource={wishlist} scroll={{ x: 1500, y: 300 }} />
+        <Table columns={columns} dataSource={wishlist} pagination={{ pageSize: "2" }}/>
     );
 };
 export default ProfileWishList;

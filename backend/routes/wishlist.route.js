@@ -21,22 +21,23 @@ router.get("/", async function (req, res) {
 router.get("/user/:id", async function (req, res) {
   const user_id = req.params.id;
   const wishlist = await wishListModel.allByUserId(user_id);
-  const wishListIncludeCategoryName = [];
+  const wishListIncludeCourseName = [];
   for (let wish of wishlist) {
     let course = await courseModel.singleById(wish.course_id);
     if (course) {
       wish.courseName = course.courseName;
-      wishListIncludeCategoryName.push(wish);
+      wishListIncludeCourseName.push(wish);
     }
   }
 
-  res.json(wishListIncludeCategoryName);
+  res.json(wishListIncludeCourseName);
 });
 
 // Get single by userID and courseID
-router.get("/:id", async function (req, res) {
-    const course_id = req.params.id;
-    const wish = await wishListModel.singleByBothId(course_id, 1);
+router.get("/:course_id/:user_id", async function (req, res) {
+    const course_id = req.params.course_id;
+    const user_id = req.params.user_id;
+    const wish = await wishListModel.singleByBothId(course_id, user_id);
   
     if (wish === null) {
       res.json({
