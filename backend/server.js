@@ -7,14 +7,14 @@ require("express-async-errors");
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors("*"));
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 // Routing
 app.use("/api/courses", require("./routes/course.route"));
 app.use("/api/categories", require("./routes/category.route"));
 app.use("/api/users", require("./routes/user.route"));
 app.use("/api/lessons", require("./routes/lesson.route"));
-
+app.use("/api/auth", require("./routes/auth.route"));
 // Error Handling
 app.use(function (req, res, next) {
   res.status(404).json({
