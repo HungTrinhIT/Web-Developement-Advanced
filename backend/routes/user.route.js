@@ -9,7 +9,7 @@ const { v4: uuidv4 } = require("uuid");
 // Get all
 router.get("/", async function (req, res) {
   const users = await userModel.all();
-  res.json(users);
+  return res.json(users);
 });
 
 // Get single by ID
@@ -48,18 +48,17 @@ router.post("/", validate(userSchema), async (req, res, next) => {
       id: uuidv4(),
       logCreatedDate: new Date(),
       logUpdatedDate: new Date(),
-      role: 2,
+      role: +user.role,
       password: bcrypt.hashSync(user.password, 10),
     };
     await userModel.add(newUser);
     delete newUser.password;
-    delete newUser.role;
 
     return res.status(201).json(newUser);
   }
 
   return res.status(202).json({
-    msg: "end",
+    msg: "Error",
   });
 });
 

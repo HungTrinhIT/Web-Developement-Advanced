@@ -24,47 +24,53 @@ import categoryApi from "./api/categoryApi";
 import { connect } from "react-redux";
 import { FETCH_ALL_CATEGORIES } from "./redux/action/type";
 import CourseInfo from "./pages/Courses/CourseInfo";
+import AddUser from "./pages/Users/AddNewUser";
 const { Content } = Layout;
 const routes = [
   {
     exact: true,
     path: "/",
-    component: <Home />,
+    component: Home,
+  },
+  {
+    exact: true,
+    path: "/users",
+    component: Users,
   },
   {
     exact: false,
-    path: "/users",
-    component: <Users />,
+    path: "/users/add",
+    component: AddUser,
   },
   {
     exact: false,
     path: "/categories",
-    component: <Categories />,
+    component: Categories,
   },
   {
     exact: false,
     path: "/add-category",
-    component: <AddNewCategory />,
+    component: AddNewCategory,
   },
   {
     exact: true,
     path: "/courses",
-    component: <Courses />,
+    component: Courses,
   },
   {
     exact: false,
     path: "/courses/:id",
-    component: <CourseInfo />,
+    component: CourseInfo,
   },
   {
     exact: false,
     path: "/add-course",
-    component: <AddCourse />,
+    component: AddCourse,
   },
   {
     eaxct: false,
     path: "**",
-    component: <PageNotFound />,
+    component: PageNotFound,
   },
 ];
 
@@ -94,14 +100,15 @@ function App(props) {
               style={{ padding: 24, minHeight: 360 }}
             >
               <Switch>
-                <Route path="/login" exact={true}>
-                  <Login />
-                </Route>
+                <Route path="/login" component={Login} />
                 {routes.map(({ component, exact, path }, index) => {
                   return (
-                    <PrivateRoute exact={exact} path={path} key={index}>
-                      {component}
-                    </PrivateRoute>
+                    <PrivateRoute
+                      exact={exact}
+                      path={path}
+                      key={index}
+                      component={component}
+                    />
                   );
                 })}
               </Switch>
@@ -113,13 +120,13 @@ function App(props) {
     </Layout>
   );
 }
-function PrivateRoute({ children, ...rest }) {
+function PrivateRoute({ component: Component, ...rest }) {
   return (
     <Route
       {...rest}
-      render={() =>
+      render={(props) =>
         localStorage.getItem("elearning_accessToken") ? (
-          children
+          <Component {...props} />
         ) : (
           <Redirect
             to={{
