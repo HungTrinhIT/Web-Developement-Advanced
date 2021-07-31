@@ -25,6 +25,7 @@ import { connect } from "react-redux";
 import { FETCH_ALL_CATEGORIES } from "./redux/action/type";
 import CourseInfo from "./pages/Courses/CourseInfo";
 import AddUser from "./pages/Users/AddNewUser";
+import UserInfo from "./pages/Users/UserInfo";
 const { Content } = Layout;
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     exact: true,
     path: "/users",
     component: Users,
+  },
+  {
+    exact: true,
+    path: "/users/:id",
+    component: UserInfo,
   },
   {
     exact: false,

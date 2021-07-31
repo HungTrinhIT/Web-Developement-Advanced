@@ -9,7 +9,13 @@ const { v4: uuidv4 } = require("uuid");
 // Get all
 router.get("/", async function (req, res) {
   const users = await userModel.all();
-  return res.json(users);
+  let responseUsers = users.map((user) => {
+    delete user.password;
+    delete isDeleted
+    delete rfToken
+    return user;
+  });
+  return res.json(responseUsers);
 });
 
 // Get single by ID
@@ -67,15 +73,20 @@ router.patch("/delete/:id", async function (req, res) {
   const id = req.params.id;
 
   const selectedUser = await userModel.singleById(id);
+  if (selectedUser.role === 0) {
+    return res.status(202).json({
+      msg: "Can not delete admin",
+    });
+  }
   if (selectedUser === null) {
-    return res.json({
+    return res.status(202).json({
       msg: "Nothing to delete",
     });
   }
 
   await userModel.delete(id);
   res.json({
-    msg: "Delete successful",
+    msg: "User is deleted successfully!",
   });
 });
 
@@ -91,10 +102,9 @@ router.patch("/:id", async function (req, res) {
     });
   }
 
-  const ids = await userModel.update(id, user);
+  await userModel.update(id, user);
   return res.json({
-    user,
-    msg: "Update successful",
+    msg: "Update successfully",
   });
 });
 module.exports = router;

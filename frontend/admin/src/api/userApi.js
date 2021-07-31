@@ -16,9 +16,15 @@ const userApi = {
     return axiosClient.post(url, user);
   },
 
-  update: (course, id) => {
+  /**
+   *
+   * @param {*} course - object course
+   * @param {*} id - cousrse id
+   * @returns promise
+   */
+  update: (user, id) => {
     const url = `/users/${id}`;
-    return axiosClient.patch(url, course);
+    return axiosClient.patch(url, user);
   },
 
   delete: (id) => {

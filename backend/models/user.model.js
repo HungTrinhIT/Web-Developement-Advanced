@@ -35,8 +35,8 @@ module.exports = {
     if (user === null) return null;
 
     return db(TB_NAME).where("id", id).update({
-      isdeleted: true,
-      Log_UpdatedDate: new Date(),
+      isDeleted: true,
+      logUpdatedDate: new Date(),
     });
   },
 
@@ -46,8 +46,7 @@ module.exports = {
       return null;
     }
 
-    userUpdated.Log_UpdatedDate = new Date();
-    userUpdated.id = user.id;
+    userUpdated.logUpdatedDate = new Date();
     return db(TB_NAME).where("id", id).update(userUpdated);
   },
 

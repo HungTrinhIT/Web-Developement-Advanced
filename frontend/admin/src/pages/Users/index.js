@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Button, Table, Tooltip, Avatar, Tag, Space, Popconfirm } from "antd";
+import {
+  Button,
+  Table,
+  Tooltip,
+  Avatar,
+  Tag,
+  Space,
+  Popconfirm,
+  message,
+} from "antd";
 import { Link } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import {
@@ -23,7 +32,25 @@ const Users = () => {
     };
     fetchAllUser();
   }, []);
-  const onDeleteUserConfirm = (id) => {};
+  const onDeleteUserConfirm = async (id) => {
+    try {
+      const data = await userApi.delete(id);
+      switch (data.status) {
+        case 200:
+          message.success(data.data.msg);
+          const newUsers = await userApi.getAll();
+          setUsers(newUsers.data);
+          break;
+        case 202:
+          message.warning(data.data.msg);
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
   const columns = [
     {
       title: "Fullname",
@@ -31,7 +58,7 @@ const Users = () => {
       key: "fullname",
       render: (fullname, record) => {
         return (
-          <Link to={`/${record.id}`}>
+          <Link to={`/users/${record.id}`}>
             <div className="d-flex align-items-center">
               <Avatar size="large" icon={<UserOutlined />} className="icon" />
               <span className="mx-3">{record.fullname}</span>
