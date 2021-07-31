@@ -1,5 +1,5 @@
 import axiosClient from "./axiosClient";
-
+import axios from "axios";
 const courseApi = {
   getAll: (params) => {
     const url = "/courses";
@@ -24,6 +24,17 @@ const courseApi = {
   delete: (id) => {
     const url = `/courses/delete/${id}`;
     return axiosClient.patch(url);
+  },
+
+  updateImg: (id, image) => {
+    const url = "http://localhost:5000/api/courses/image/1";
+    console.log(image);
+
+    return axios.patch(url, image, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   },
 };
 

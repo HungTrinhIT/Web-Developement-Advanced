@@ -4,6 +4,36 @@ const { v4: uuidv4 } = require("uuid");
 
 const courseModel = require("../models/course.model");
 const categoryModel = require("../models/category.model");
+const multer = require("multer");
+const { json } = require("express");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, new Date().toISOString() + file.originalname);
+    cb(null, file.fieldname + "-" + req.params.id + file.originalname);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  // reject a file
+  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 10,
+  },
+  fileFilter: fileFilter,
+});
+
 // Get all
 router.get("/", async function (req, res) {
   const courses = await courseModel.all();
@@ -85,6 +115,7 @@ router.patch("/:id", async function (req, res) {
   });
 });
 
+
 // Fetch Newest Course
 router.get("/new/:limit", async function (req, res) {
   const limit = req.params.limit;
@@ -132,4 +163,17 @@ router.patch("/view/:id", async function (req, res) {
     msg: "Course is update successfully!",
   });
 });
+
+//Update course image
+router.patch("/image/:id", upload.single("image"), async (req, res) => {
+  const id = req.params.id;
+  //const courseImg = req.file;
+  // console.log(id, req.file.filename);
+  console.log("body:", req.body);
+  return res.json({
+    msg: "cc",
+  });
+});
+
+
 module.exports = router;

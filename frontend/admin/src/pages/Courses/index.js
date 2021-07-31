@@ -8,6 +8,16 @@ import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
 const Courses = () => {
   const [courses, setCourses] = useState([]);
+  const onDeleteCourseConfirm = async (id) => {
+    try {
+      await courseApi.delete(id);
+      const data = await courseApi.getAll();
+      setCourses(data.data);
+      message.success("Course is deleted successfully!");
+    } catch (error) {
+      throw error;
+    }
+  };
   useEffect(() => {
     const fetchAllCourses = async () => {
       const data = await courseApi.getAll();
@@ -123,14 +133,7 @@ const Courses = () => {
       ),
     },
   ];
-  const onDeleteCourseConfirm = async (id) => {
-    try {
-      await courseApi.delete(id);
-      message.success("Course is deleted successfully!");
-    } catch (error) {
-      throw error;
-    }
-  };
+
   return (
     <div>
       <PageTitle title="Courses Management">

@@ -53,7 +53,7 @@ const CourseInfoDetail = ({ categories, ...props }) => {
     values = { ...values, fullDescription };
     try {
       const response = await courseApi.update(values, id);
-      message.success(response.data.msg);
+      message.success("Course is updated successfully");
       executeScroll();
     } catch (error) {
       throw error;

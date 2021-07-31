@@ -2,7 +2,7 @@ const db = require("../utils/db");
 const TB_NAME = "category";
 module.exports = {
   all() {
-    return db(TB_NAME).where("isDeleted",false);
+    return db(TB_NAME).where("isDeleted", false);
   },
 
   allParents() {
@@ -21,8 +21,6 @@ module.exports = {
     if (cat.length === 0) return null;
     return cat[0];
   },
-  
-  
 
   async singleByName(name) {
     const cat = await db(TB_NAME)
