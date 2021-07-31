@@ -31,6 +31,13 @@ const userApi = {
     const url = `/users/delete/${id}`;
     return axiosClient.patch(url);
   },
+  updatePassword(credential, id) {
+    const url = `/users/change-password`;
+    if (credential) {
+      credential.id = id;
+      return axiosClient.patch(url, credential);
+    }
+  },
 
   updateImg: (id, image) => {
     const url = "http://localhost:5000/api/users/image/1";

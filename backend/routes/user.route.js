@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 const userSchema = require("../schemas/user.json");
 const router = express.Router();
 const { v4: uuidv4 } = require("uuid");
+const { json } = require("express");
 // Get all
 router.get("/", async function (req, res) {
   const users = await userModel.all();
@@ -107,4 +108,34 @@ router.patch("/:id", async function (req, res) {
     msg: "Update successfully",
   });
 });
+
+
+//Change password
+router.patch("/change-password",async function(req, res){
+  const {oldPassword, newPassword, id}= req.body;
+  console.log("newPassword:",newPassword)
+
+  const user= await userModel.singleById(id)
+  if(!user){
+    res.status(202).json({
+      msg:"User is not exist!"
+    })
+  }
+  else{
+    if(oldPassword===user.password){
+      await userModel.update(id,{
+        password: newPassword
+      })
+
+      return res.json({
+        msg:"Password changed successfully"
+      })
+    }
+
+    return res.status(202).json({
+      msg: "Old password is not correct"
+    })
+  }
+  
+})
 module.exports = router;

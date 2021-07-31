@@ -40,14 +40,15 @@ const routes = [
   },
   {
     exact: true,
-    path: "/users/:id",
-    component: UserInfo,
-  },
-  {
-    exact: false,
     path: "/users/add",
     component: AddUser,
   },
+  {
+    exact: true,
+    path: "/users/:id",
+    component: UserInfo,
+  },
+
   {
     exact: false,
     path: "/categories",
