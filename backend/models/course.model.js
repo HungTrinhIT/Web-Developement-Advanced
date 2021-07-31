@@ -14,12 +14,12 @@ module.exports = {
     return course[0];
   },
 
-  newestCourse(limit){
-    return db(TB_NAME).orderBy('logCreatedDate', 'desc').limit(limit);
+  newestCourse(limit) {
+    return db(TB_NAME).orderBy("logCreatedDate", "desc").limit(limit);
   },
 
-  mostViewCourse(limit){
-    return db(TB_NAME).orderBy('view', 'desc').limit(limit);
+  mostViewCourse(limit) {
+    return db(TB_NAME).orderBy("view", "desc").limit(limit);
   },
 
   async singleByName(name) {
@@ -54,7 +54,6 @@ module.exports = {
     return db(TB_NAME).where("id", id).update(courseUpdated);
   },
 
-
   async updateView(id) {
     const course = await this.singleById(id);
     if (!course) {
@@ -62,8 +61,10 @@ module.exports = {
     }
     const view = course.view;
 
-    return db(TB_NAME).where("id", id).update("view", view + 1);
-
+    return db(TB_NAME)
+      .where("id", id)
+      .update("view", view + 1);
+  },
   async getCountOfCourseByCategory(categoryId) {
     const countOfCat = await db(TB_NAME)
       .where("category_id", categoryId)
@@ -71,8 +72,7 @@ module.exports = {
     if (!countOfCat) {
       return null;
     }
-    
-    return countOfCat;
 
+    return countOfCat;
   },
 };
