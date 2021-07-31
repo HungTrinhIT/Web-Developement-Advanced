@@ -9,6 +9,18 @@ const courseApi = {
     const url = `/courses/${id}`;
     return axiosClient.get(url);
   },
+  getNewest: (limit) => {
+    const url = `/courses/new/${limit}`;
+    return axiosClient.get(url);
+  },
+  getMostView: (limit) => {
+    const url = `/courses/mostview/${limit}`;
+    return axiosClient.get(url);
+  },
+  updateView: (id) => {
+    const url = `/courses/view/${id}`;
+    return axiosClient.patch(url);
+  }
 };
 
 export default courseApi;

@@ -10,11 +10,9 @@ import courseApi from "../../api/courseApi";
 
 const CourseDetail = () => {
   const [course, setCourse] = useState({});
-  const {id} = useParams();
+  const { id } = useParams();
   useEffect(() => {
     const fetchCourseDetail = async () => {
-      
-      
       try {
         const courseData = await courseApi.getById(id);
         setCourse(courseData.data);
@@ -23,14 +21,23 @@ const CourseDetail = () => {
       }
     };
 
+    const updateCourseView = async () => {
+      try {
+        const courseData = await courseApi.updateView(id);
+      } catch (error) {
+        throw error;
+      }
+    };
+
     fetchCourseDetail();
+    updateCourseView();
   }, []);
   return (
     <div id="page" className="theia-exception">
       <main>
         <HeroIn />
         {/*/hero_in*/}
-        <CourseInformation course = {course}/>
+        <CourseInformation course={course} />
       </main>
       {/*/main*/}
     </div>

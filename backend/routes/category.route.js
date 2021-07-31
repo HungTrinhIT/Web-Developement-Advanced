@@ -10,6 +10,16 @@ router.get("/", async function (req, res) {
   res.json(categories);
 });
 
+router.get("/parents", async function (req, res) {
+  const categories = await categoryModel.allParents();
+  res.json(categories);
+});
+
+router.get("/childrens", async function (req, res) {
+  const categories = await categoryModel.allChildrens();
+  res.json(categories);
+});
+
 // Get single categories
 router.get("/:id", async function (req, res) {
   const id = req.params.id;
