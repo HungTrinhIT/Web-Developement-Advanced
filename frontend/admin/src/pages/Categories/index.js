@@ -165,7 +165,7 @@ const Categories = (props) => {
   };
   return (
     <div>
-      <PageTitle title="Category list">
+      <PageTitle title="Categories">
         <Link to="/add-category">
           <Tooltip title="Add new category">
             <Button

@@ -1,10 +1,22 @@
 const express = require("express");
-const router = express.Router();
+const validate = require("../middlewares/validate");
 const userModel = require("../models/user.model");
+const bcrypt = require("bcryptjs");
+
+const userSchema = require("../schemas/user.json");
+const router = express.Router();
+const { v4: uuidv4 } = require("uuid");
+const { json } = require("express");
 // Get all
 router.get("/", async function (req, res) {
   const users = await userModel.all();
-  res.json(users);
+  let responseUsers = users.map((user) => {
+    delete user.password;
+    delete isDeleted
+    delete rfToken
+    return user;
+  });
+  return res.json(responseUsers);
 });
 
 // Get single by ID
@@ -21,47 +33,109 @@ router.get("/:id", async function (req, res) {
   res.json(user);
 });
 
-// Add new user
-router.post("/", async function (req, res) {
+router.post("/", validate(userSchema), async (req, res, next) => {
   const user = req.body;
-  const ids = await userModel.add(user);
-  user.id = ids[0];
-  res.status(201).json(user);
+  const isUsernameExist = await userModel.singleByName(user.username);
+  const isEmailExist = await userModel.singleByEmail(user.email);
+  if (isUsernameExist && isEmailExist) {
+    return res.status(202).json({
+      msg: "Username and email have already existed!",
+    });
+  } else if (isUsernameExist) {
+    return res.status(202).json({
+      msg: "Username have already existed!",
+    });
+  } else if (isEmailExist) {
+    return res.status(202).json({
+      msg: "Email have already existed!",
+    });
+  } else {
+    const newUser = {
+      ...user,
+      id: uuidv4(),
+      logCreatedDate: new Date(),
+      logUpdatedDate: new Date(),
+      role: +user.role,
+      password: bcrypt.hashSync(user.password, 10),
+    };
+    await userModel.add(newUser);
+    delete newUser.password;
+
+    return res.status(201).json(newUser);
+  }
+
+  return res.status(202).json({
+    msg: "Error",
+  });
 });
 
 // Delete user
-router.patch("/delete/:id",async function (req, res) {
+router.patch("/delete/:id", async function (req, res) {
   const id = req.params.id;
 
-  const selectedUser = await userModel.singleById(id)
-  if (selectedUser === null){
-    return res.json({
+  const selectedUser = await userModel.singleById(id);
+  if (selectedUser.role === 0) {
+    return res.status(202).json({
+      msg: "Can not delete admin",
+    });
+  }
+  if (selectedUser === null) {
+    return res.status(202).json({
       msg: "Nothing to delete",
     });
   }
 
   await userModel.delete(id);
   res.json({
-    msg: "Delete successful",
-  }); 
+    msg: "User is deleted successfully!",
+  });
 });
 
 // Update user
-router.patch("/:id",async function (req, res) {
+router.patch("/:id", async function (req, res) {
   const user = req.body;
   const id = req.params.id;
 
-  const selectedUser = await userModel.singleById(id)
-  if (selectedUser === null){
+  const selectedUser = await userModel.singleById(id);
+  if (selectedUser === null) {
     return res.json({
       msg: "Nothing to update",
-    })
+    });
   }
 
-  const ids = await userModel.update(id, user);
+  await userModel.update(id, user);
   return res.json({
-    user,
-    msg: "Update successful",
-  })
+    msg: "Update successfully",
+  });
 });
+
+
+//Change password
+router.patch("/change-password",async function(req, res){
+  const {oldPassword, newPassword, id}= req.body;
+  console.log("newPassword:",newPassword)
+
+  const user= await userModel.singleById(id)
+  if(!user){
+    res.status(202).json({
+      msg:"User is not exist!"
+    })
+  }
+  else{
+    if(oldPassword===user.password){
+      await userModel.update(id,{
+        password: newPassword
+      })
+
+      return res.json({
+        msg:"Password changed successfully"
+      })
+    }
+
+    return res.status(202).json({
+      msg: "Old password is not correct"
+    })
+  }
+  
+})
 module.exports = router;

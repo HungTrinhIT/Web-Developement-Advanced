@@ -31,9 +31,15 @@ const Sidebar = (props) => {
         <Menu.Item key="/" icon={<HomeOutlined />}>
           <Link to="/">Home</Link>
         </Menu.Item>
-        <Menu.Item key="/users" icon={<UserOutlined />}>
-          <Link to="/users">User</Link>
-        </Menu.Item>
+        <SubMenu key="/users-parent" icon={<UserOutlined />} title="Users">
+          <Menu.Item key="/users">
+            <Link to="/users">Users</Link>
+          </Menu.Item>
+          <Menu.Item key="/users/add">
+            <Link to="/users/add">Add new user</Link>
+          </Menu.Item>
+        </SubMenu>
+
         <Menu.Item key="/categories" icon={<AppstoreAddOutlined />}>
           <Link to="/categories">Category</Link>
         </Menu.Item>

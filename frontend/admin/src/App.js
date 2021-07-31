@@ -5,20 +5,27 @@ import Sidebar from "./layouts/Sidebar";
 import CustomBreadcrumb from "./layouts/Breadcrumb";
 import Navbar from "./layouts/Navbar";
 import CustomFooter from "./layouts/Footer";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 import Home from "./pages/Home";
 import Users from "./pages/Users";
 import Categories from "./pages/Categories";
 import Courses from "./pages/Courses";
 import PageNotFound from "./pages/PageNotFound";
 import AddNewCategory from "./pages/Categories/AddCategory";
-
+import Login from "./pages/Login";
 import AddCourse from "./pages/Courses/AddNewCourse";
 import createAction from "./redux/action/createAction";
 import categoryApi from "./api/categoryApi";
 import { connect } from "react-redux";
 import { FETCH_ALL_CATEGORIES } from "./redux/action/type";
 import CourseInfo from "./pages/Courses/CourseInfo";
+import AddUser from "./pages/Users/AddNewUser";
+import UserInfo from "./pages/Users/UserInfo";
 const { Content } = Layout;
 const routes = [
   {
@@ -27,10 +34,21 @@ const routes = [
     component: Home,
   },
   {
-    exact: false,
+    exact: true,
     path: "/users",
     component: Users,
   },
+  {
+    exact: true,
+    path: "/users/add",
+    component: AddUser,
+  },
+  {
+    exact: true,
+    path: "/users/:id",
+    component: UserInfo,
+  },
+
   {
     exact: false,
     path: "/categories",
@@ -57,7 +75,7 @@ const routes = [
     component: AddCourse,
   },
   {
-    exact: false,
+    eaxct: false,
     path: "**",
     component: PageNotFound,
   },
@@ -89,13 +107,14 @@ function App(props) {
               style={{ padding: 24, minHeight: 360 }}
             >
               <Switch>
-                {routes.map(({ exact, path, component }, index) => {
+                <Route path="/login" component={Login} />
+                {routes.map(({ component, exact, path }, index) => {
                   return (
-                    <Route
+                    <PrivateRoute
                       exact={exact}
                       path={path}
-                      component={component}
                       key={index}
+                      component={component}
                     />
                   );
                 })}
@@ -106,6 +125,24 @@ function App(props) {
         </Layout>
       </Router>
     </Layout>
+  );
+}
+function PrivateRoute({ component: Component, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        localStorage.getItem("elearning_accessToken") ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+            }}
+          />
+        )
+      }
+    />
   );
 }
 

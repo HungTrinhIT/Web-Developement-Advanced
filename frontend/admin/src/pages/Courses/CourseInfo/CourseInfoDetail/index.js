@@ -9,11 +9,11 @@ import {
   Row,
   Select,
 } from "antd";
-import courseApi from "../../../../api/courseApi";
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import courseApi from "../../../../api/courseApi";
 const { Option } = Select;
 
 const CourseInfoDetail = ({ categories, ...props }) => {
