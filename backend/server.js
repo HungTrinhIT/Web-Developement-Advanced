@@ -15,6 +15,8 @@ app.use("/api/categories", require("./routes/category.route"));
 app.use("/api/users", require("./routes/user.route"));
 app.use("/api/lessons", require("./routes/lesson.route"));
 app.use("/api/auth", require("./routes/auth.route"));
+app.use("/api/wishlist", require("./routes/wishlist.route"));
+
 // Error Handling
 app.use(function (req, res, next) {
   res.status(404).json({

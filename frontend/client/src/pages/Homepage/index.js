@@ -6,9 +6,13 @@ import Carousel from "../../components/Carousel";
 import NewsList from "../../components/NewsList";
 import courseApi from "../../api/courseApi";
 import {Link} from "react-router-dom"
+import categoryApi from "../../api/categoryApi";
 const Homepage = () => {
   const [courses, setCourses] = useState([]);
-
+  const [categories, setCategories] = useState([]);
+  const [newCourses, setNewCourses] = useState([]);
+  const [mostViewCourse, setMostViewCourse] = useState([]);
+  const limit = 10;
   useEffect(() => {
     const fetchAllCourses = async () => {
       try {
@@ -19,7 +23,37 @@ const Homepage = () => {
       }
     };
 
+    const fetchAllCategories = async () => {
+      try {
+        const categoryData = await categoryApi.getAllParents();
+        setCategories(categoryData.data);
+      } catch (error) {
+        throw error;
+      }
+    };
+
+    const fetchNewCourses = async () => {
+      try {
+        const courseData = await courseApi.getNewest(limit);
+        setNewCourses(courseData.data);
+      } catch (error) {
+        throw error;
+      }
+    };
+
+    const fetchMostViewCourses = async () => {
+      try {
+        const courseData = await courseApi.getMostView(limit);
+        setMostViewCourse(courseData.data);
+      } catch (error) {
+        throw error;
+      }
+    };
+
     fetchAllCourses();
+    fetchAllCategories();
+    fetchNewCourses();
+    fetchMostViewCourses();
   }, []);
   return (
     <main>
@@ -32,11 +66,31 @@ const Homepage = () => {
           <span>
             <em />
           </span>
-          <h2>Udema Popular Courses</h2>
-          <p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
+          <h2>Udema All Courses</h2>
+          <p>Fetch All Course From API.</p>
         </div>
 
         <Carousel courses={courses} />
+
+        <div className="main_title_2">
+          <span>
+            <em />
+          </span>
+          <h2>Udema Newest Courses</h2>
+          <p>Fetch 10 Newest Course From API.</p>
+        </div>
+
+        <Carousel courses={newCourses} />
+
+        <div className="main_title_2">
+          <span>
+            <em />
+          </span>
+          <h2>Udema Most View Courses</h2>
+          <p>Fetch 10 Most View Course From API.</p>
+        </div>
+
+        <Carousel courses={mostViewCourse} />
 
         {/* /carousel */}
         <div className="container">
@@ -59,7 +113,7 @@ const Homepage = () => {
           <p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
         </div>
 
-        <CategoryList />
+        <CategoryList categories = {categories}/>
       </div>
       {/* /container */}
       <div className="bg_color_1">

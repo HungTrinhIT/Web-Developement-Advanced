@@ -1,0 +1,11 @@
+.login-wrp {
+    background-color: #605193;
+    height: 100vh;
+    margin-top: 80px;
+}
+
+.login-container {
+    width: 300px;
+    border-radius: 4px;
+    padding: 40px 16px;
+}
