@@ -111,20 +111,25 @@ router.patch("/:id", async function (req, res) {
 
 
 //Change password
-router.patch("/change-password",async function(req, res){
-  const {oldPassword, newPassword, id}= req.body;
-  console.log("newPassword:",newPassword)
+router.patch("/change-password/:id",async function(req, res){
+  const {oldPassword, newPassword}= req.body;
+  const id=req.params.id;
 
   const user= await userModel.singleById(id)
+ 
+
   if(!user){
     res.status(202).json({
       msg:"User is not exist!"
     })
   }
+ 
+
   else{
-    if(oldPassword===user.password){
+    let isMatch= bcrypt.compareSync(oldPassword,user.password);
+    if(isMatch){
       await userModel.update(id,{
-        password: newPassword
+        password: bcrypt.hashSync(newPassword,10)
       })
 
       return res.json({

@@ -32,11 +32,8 @@ const userApi = {
     return axiosClient.patch(url);
   },
   updatePassword(credential, id) {
-    const url = `/users/change-password`;
-    if (credential) {
-      credential.id = id;
-      return axiosClient.patch(url, credential);
-    }
+    const url = `/users/change-password/${id}`;
+    return axiosClient.patch(url, credential);
   },
 
   updateImg: (id, image) => {
