@@ -75,7 +75,7 @@ const CourseInfoLesson = () => {
   return (
     <div>
       <PageTitle title="Lesson Management">
-        <Link>
+        <Link to = {`/courses/${id}/add-lesson`}>
           <Tooltip title="Add new lesson">
             <Button
               type="primary"
