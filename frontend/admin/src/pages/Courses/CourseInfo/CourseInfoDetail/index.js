@@ -16,29 +16,14 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import courseApi from "../../../../api/courseApi";
 const { Option } = Select;
 
-const CourseInfoDetail = ({ categories, ...props }) => {
+const CourseInfoDetail = ({ course, categories, ...props }) => {
   const [form] = Form.useForm();
   const courseRef = useRef();
   const { id } = useParams();
   const [fullDescription, setFullDescription] = useState({});
   const executeScroll = () => courseRef.current.scrollIntoView();
-
-  const [course, setCourse] = useState({});
-
   useEffect(() => {
-    const fetchCourseDetail = async () => {
-      try {
-        const courseData = await courseApi.getById(id);
-        setCourse(courseData.data);
-        setFullDescription(courseData.data.fullDescription);
-      } catch (error) {
-        throw error;
-      }
-    };
-    fetchCourseDetail();
-  }, []);
-
-  useEffect(() => {
+    setFullDescription(course.fullDescription);
     form.setFieldsValue({
       ...course,
     });

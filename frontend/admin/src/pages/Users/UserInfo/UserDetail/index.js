@@ -11,28 +11,15 @@ import {
   Radio,
 } from "antd";
 
-import { RollbackOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import userApi from "../../../../api/userApi";
 
-const UserDetail = (props) => {
+const UserDetail = ({ user, ...props }) => {
   const [form] = Form.useForm();
   const userRef = useRef();
   const executeScroll = () => userRef.current.scrollIntoView();
-  const { id } = useParams();
+  const [loading, setLoading] = useState(false);
 
-  const [user, setUser] = useState({});
-  useEffect(() => {
-    const fetchUserDetail = async () => {
-      try {
-        const userData = await userApi.getById(id);
-        setUser(userData.data);
-      } catch (error) {
-        throw error;
-      }
-    };
-    fetchUserDetail();
-  }, []);
   useEffect(() => {
     form.setFieldsValue({
       ...user,
@@ -41,12 +28,15 @@ const UserDetail = (props) => {
   }, [user]);
   const onFinish = async (values) => {
     const userID = user.id;
-
+    setLoading(true);
     try {
       const data = await userApi.update(values, userID);
       message.success(data.data.msg);
+      executeScroll();
+      setLoading(false);
     } catch (error) {
       throw error;
+      setLoading(false);
     }
   };
 
@@ -145,7 +135,7 @@ const UserDetail = (props) => {
         </Row>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={loading}>
             Update user
           </Button>
         </Form.Item>

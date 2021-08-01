@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const wishListModel = require("../models/wishlist.model");
-const courseModel = require("../models/course.model")
+const courseModel = require("../models/course.model");
 // Get all
 router.get("/", async function (req, res) {
   const wishlist = await wishListModel.all();
@@ -35,18 +35,18 @@ router.get("/user/:id", async function (req, res) {
 
 // Get single by userID and courseID
 router.get("/:course_id/:user_id", async function (req, res) {
-    const course_id = req.params.course_id;
-    const user_id = req.params.user_id;
-    const wish = await wishListModel.singleByBothId(course_id, user_id);
-  
-    if (wish === null) {
-      res.json({
-        msg: `Wish with id=${course_id} is not found`,
-      });
-    }
-  
-    res.json(wish);
-  });
+  const course_id = req.params.course_id;
+  const user_id = req.params.user_id;
+  const wish = await wishListModel.singleByBothId(course_id, user_id);
+
+  if (wish === null) {
+    res.json({
+      msg: `Wish with id=${course_id} is not found`,
+    });
+  }
+
+  res.json(wish);
+});
 
 // Get single by ID
 router.get("/wish/:id", async function (req, res) {
@@ -79,11 +79,11 @@ router.post("/", async function (req, res) {
 });
 
 // Delete wish
-router.patch("/delete/:id",async function (req, res) {
+router.patch("/delete/:id", async function (req, res) {
   const id = req.params.id;
 
-  const selectedWish = await wishListModel.singleById(id)
-  if (selectedWish === null){
+  const selectedWish = await wishListModel.singleById(id);
+  if (selectedWish === null) {
     return res.json({
       msg: "Nothing to delete",
     });
@@ -92,25 +92,25 @@ router.patch("/delete/:id",async function (req, res) {
   await wishListModel.delete(id);
   res.json({
     msg: "Delete successful",
-  }); 
+  });
 });
 
 // Update wish
-router.patch("/:id",async function (req, res) {
+router.patch("/:id", async function (req, res) {
   const wish = req.body;
   const id = req.params.id;
 
-  const selectedWish = await wishListModel.singleById(id)
-  if (selectedWish === null){
+  const selectedWish = await wishListModel.singleById(id);
+  if (selectedWish === null) {
     return res.json({
       msg: "Nothing to update",
-    })
+    });
   }
 
   const ids = await wishListModel.update(id, wish);
   return res.json({
     wish,
     msg: "Update successful",
-  })
+  });
 });
 module.exports = router;

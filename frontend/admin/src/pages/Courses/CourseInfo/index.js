@@ -8,15 +8,29 @@ import CourseInfoLesson from "./CourseInfoLesson";
 
 const { TabPane } = Tabs;
 const CourseInfo = (props) => {
-  
+
+  const [course, setCourse] = useState({});
+  const { id } = useParams();
+  useEffect(() => {
+    const fetchCourseDetail = async () => {
+      try {
+        const courseData = await courseApi.getById(id);
+        setCourse(courseData.data);
+      } catch (error) {
+        throw error;
+      }
+    };
+    fetchCourseDetail();
+  }, []);
+
   return (
     <div>
       <Tabs defaultActiveKey="1" centered>
         <TabPane tab="Course Infomation" key="1">
-          <CourseInfoDetail />
+          <CourseInfoDetail course={course} />
         </TabPane>
         <TabPane tab="Course Image" key="2">
-          <CourseInfoImage />
+          <CourseInfoImage course={course} />
         </TabPane>
         <TabPane tab="Lessons" key="3">
           <CourseInfoLesson />
