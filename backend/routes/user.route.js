@@ -2,11 +2,10 @@ const express = require("express");
 const validate = require("../middlewares/validate");
 const userModel = require("../models/user.model");
 const bcrypt = require("bcryptjs");
-
+const {cloudinary} = require('../utils/cloudinary')
 const userSchema = require("../schemas/user.json");
 const router = express.Router();
 const { v4: uuidv4 } = require("uuid");
-const { json } = require("express");
 // Get all
 router.get("/", async function (req, res) {
   const users = await userModel.all();
@@ -109,22 +108,58 @@ router.patch("/:id", async function (req, res) {
   });
 });
 
+// Upload avatar
+router.patch("/upload-avatar/:id", async function(req,res){
+  const id=req.params.id;
+  const user=await userModel.singleById(id);
+  if(user){
+    const fileStr= req.body.data;
+    try{
+      const uploadedResponse= await cloudinary.uploader.upload(fileStr,{
+        upload_preset: 'elearning'
+      });
+      if(uploadedResponse){
+        await userModel.update(id, {
+          avatar: uploadedResponse.secure_url
+        })
+        return res.json({
+          msg:"Update avatar successfully!",
+          avatar: uploadedResponse.secure_url
+        })
+      }
+     return res.status(202).json({
+       msg: "Upload error!"
+     })
+    }catch(error){
+      throw(error)
+    }
+  }
+
+  return res.status(202).json({
+    msg: "User is not exist"
+  })
+})
 
 //Change password
-router.patch("/change-password",async function(req, res){
-  const {oldPassword, newPassword, id}= req.body;
-  console.log("newPassword:",newPassword)
+router.patch("/change-password/:id",async function(req, res){
+  const {oldPassword, newPassword}= req.body;
+  const id=req.params.id;
 
   const user= await userModel.singleById(id)
+ 
+
   if(!user){
     res.status(202).json({
       msg:"User is not exist!"
     })
   }
+ 
+
   else{
-    if(oldPassword===user.password){
+    let isMatch= bcrypt.compareSync(oldPassword,user.password);
+    if(isMatch){
       await userModel.update(id,{
-        password: newPassword
+        password: bcrypt.hashSync(newPassword,10)
       })
 
       return res.json({

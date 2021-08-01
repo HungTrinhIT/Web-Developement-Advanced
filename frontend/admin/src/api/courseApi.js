@@ -26,15 +26,9 @@ const courseApi = {
     return axiosClient.patch(url);
   },
 
-  updateImg: (id, image) => {
-    const url = "http://localhost:5000/api/courses/image/1";
-    console.log(image);
-
-    return axios.patch(url, image, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+  uploadImage: (id, image) => {
+    const url = `/courses/upload-image/${id}`;
+    return axiosClient.patch(url, image);
   },
 };
 

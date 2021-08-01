@@ -1,11 +1,12 @@
 import React from "react";
 import { Form, Input, Button, Checkbox, Row, Col, message } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import bcrypt from "bcryptjs";
 import { useParams } from "react-router-dom";
 import userApi from "../../../../api/userApi";
 const ChangePassword = () => {
   const { id } = useParams();
+  const [form] = Form.useForm();
+
   const onFinish = async (values) => {
     const { oldPassword, newPassword, confirmPassword } = values;
     try {
@@ -14,8 +15,8 @@ const ChangePassword = () => {
         return;
       }
       const userCredential = {
-        oldPassword: bcrypt.hashSync(oldPassword, 10),
-        newPassword: bcrypt.hashSync(newPassword, 10),
+        oldPassword,
+        newPassword,
       };
       const data = await userApi.updatePassword(userCredential, id);
       switch (data.status) {
@@ -23,6 +24,7 @@ const ChangePassword = () => {
           message.error(data.data.msg);
           break;
         case 200:
+          form.resetFields();
           message.success(data.data.msg);
           break;
         default:
@@ -42,6 +44,7 @@ const ChangePassword = () => {
       <Row>
         <Col span={12}>
           <Form
+            form={form}
             name="change-password"
             className="login-form"
             onFinish={onFinish}
@@ -57,7 +60,13 @@ const ChangePassword = () => {
             <Form.Item
               name="newPassword"
               label="New password"
-              rules={[{ required: true, message: "Please input new password" }]}
+              rules={[
+                { required: true, message: "Please input new password" },
+                {
+                  min: 6,
+                  message: "New password cannot be shorter than 6 characters",
+                },
+              ]}
             >
               <Input.Password type="password" />
             </Form.Item>
@@ -66,6 +75,11 @@ const ChangePassword = () => {
               label="Confirm password"
               rules={[
                 { required: true, message: "Please input confirm password" },
+                {
+                  min: 6,
+                  message:
+                    "Confirm password cannot be shorter than 6 characters",
+                },
               ]}
             >
               <Input.Password type="password" />

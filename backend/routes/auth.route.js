@@ -24,6 +24,7 @@ router.post("/", validate(authSchema), async (req, res, next) => {
     id,
     avatar,
     fullname,
+    email,
   };
 
   const accessToken = jwt.sign(
