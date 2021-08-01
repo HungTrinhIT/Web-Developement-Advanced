@@ -121,3 +121,14 @@ a {
     border-radius: 4px;
 
 }
+
+.img-small {
+    width: 48px;
+    height: 48px;
+    line-height: 48px;
+    position: relative;
+    border-radius: 50%;
+    border: 2px solid #f8f8f8;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+    object-fit: cover;
+}

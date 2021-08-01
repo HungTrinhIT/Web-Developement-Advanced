@@ -60,7 +60,11 @@ const Users = () => {
         return (
           <Link to={`/users/${record.id}`}>
             <div className="d-flex align-items-center">
-              <Avatar size="large" icon={<UserOutlined />} className="icon" />
+              {record.avatar ? (
+                <img src={`${record.avatar}`} className="img-small" />
+              ) : (
+                <Avatar size="large" icon={<UserOutlined />} className="icon" />
+              )}
               <span className="mx-3">{record.fullname}</span>
             </div>
           </Link>

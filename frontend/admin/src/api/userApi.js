@@ -36,15 +36,9 @@ const userApi = {
     return axiosClient.patch(url, credential);
   },
 
-  updateImg: (id, image) => {
-    const url = "http://localhost:5000/api/users/image/1";
-    console.log(image);
-
-    return axios.patch(url, image, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+  uploadAvatar: (id, image) => {
+    const url = `/users/upload-avatar/${id}`;
+    return axiosClient.patch(url, image);
   },
 };
 
