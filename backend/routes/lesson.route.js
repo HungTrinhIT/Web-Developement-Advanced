@@ -1,8 +1,86 @@
 const express = require("express");
 const router = express.Router();
+const { v4: uuidv4 } = require("uuid");
+const lessonModel = require("../models/lesson.model");
 
-router.get("/", function (req, res) {
-  res.send("Hello lesson");
+router.get("/", async function (req, res) {
+  const lessons = await lessonModel.all();
+  res.json(lessons);
 });
 
+router.get("/teacher/:id", async function (req, res) {
+  const id = req.params.id;
+  const lessons = await lessonModel.allForTeacher(id);
+  res.json(lessons);
+});
+
+router.get("/user/:id", async function (req, res) {
+  const id = req.params.id;
+  const lessons = await lessonModel.allForUser(id);
+  res.json(lessons);
+});
+
+router.get("/:id", async function (req, res) {
+  const id = req.params.id;
+  const lesson = await lessonModel.singleById(id);
+  if (!lesson) {
+    return res.json({
+      msg: `lesson with id=${id} is not found`,
+    });
+  }
+
+  res.json(lesson);
+});
+
+// Add new lesson
+router.post("/", async function (req, res) {
+  let lesson = req.body;
+  const lessonId = uuidv4();
+
+  lesson = {
+    ...lesson,
+    id: lessonId,
+    logCreatedDate: new Date(),
+    logUpdatedDate: new Date(),
+  };
+  const ids = await lessonModel.add(lesson);
+
+  res.status(201).json(lesson);
+});
+
+// Delete lesson
+router.patch("/delete/:id", async function (req, res) {
+  const id = req.params.id;
+
+  const selectedLesson = await lessonModel.singleById(id);
+  if (selectedLesson === null) {
+    return res.json({
+      msg: "Nothing to delete",
+    });
+  }
+
+  await lessonModel.delete(id);
+  res.json({
+    msg: "Delete successful",
+  });
+});
+
+// Update lesson
+router.patch("/:id", async function (req, res) {
+  const lesson = req.body;
+  const id = req.params.id;
+
+  const selectedLesson = await lessonModel.singleById(id);
+  if (selectedLesson === null) {
+    return res.json({
+      msg: "Nothing to update",
+    });
+  }
+
+  const ids = await lessonModel.update(id, lesson);
+  return res.json({
+    lesson,
+    msg: "Lesson is update successfully!",
+  });
+});
 module.exports = router;

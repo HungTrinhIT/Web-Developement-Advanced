@@ -26,6 +26,7 @@ import { FETCH_ALL_CATEGORIES } from "./redux/action/type";
 import CourseInfo from "./pages/Courses/CourseInfo";
 import AddUser from "./pages/Users/AddNewUser";
 import UserInfo from "./pages/Users/UserInfo";
+import AddNewLesson from "./pages/Courses/CourseInfo/CourseInfoLesson/AddNewLesson";
 const { Content } = Layout;
 const routes = [
   {
@@ -65,9 +66,14 @@ const routes = [
     component: Courses,
   },
   {
-    exact: false,
+    exact: true,
     path: "/courses/:id",
     component: CourseInfo,
+  },
+  {
+    exact: true,
+    path: "/courses/:id/add-lesson",
+    component: AddNewLesson,
   },
   {
     exact: false,

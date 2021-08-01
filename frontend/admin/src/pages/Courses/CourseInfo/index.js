@@ -8,6 +8,7 @@ import CourseInfoLesson from "./CourseInfoLesson";
 
 const { TabPane } = Tabs;
 const CourseInfo = (props) => {
+
   const [course, setCourse] = useState({});
   const { id } = useParams();
   useEffect(() => {
@@ -21,6 +22,7 @@ const CourseInfo = (props) => {
     };
     fetchCourseDetail();
   }, []);
+
   return (
     <div>
       <Tabs defaultActiveKey="1" centered>

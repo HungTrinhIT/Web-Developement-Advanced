@@ -64,9 +64,17 @@ router.get("/wish/:id", async function (req, res) {
 
 // Add new wish
 router.post("/", async function (req, res) {
-  const wish = req.body;
+  let wish = req.body;
+  const wishId = uuidv4();
+
+  wish = {
+    ...wish,
+    id: wishId,
+    logCreatedDate: new Date(),
+    logUpdatedDate: new Date(),
+  };
   const ids = await wishListModel.add(wish);
-  wish.id = ids[0];
+
   res.status(201).json(wish);
 });
 
