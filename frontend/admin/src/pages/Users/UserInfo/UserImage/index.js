@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Button, message } from "antd";
-import "./upload.css";
 import { useParams } from "react-router-dom";
 import userApi from "../../../../api/userApi";
 const UserImage = (props) => {

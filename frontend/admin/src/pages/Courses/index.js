@@ -6,6 +6,7 @@ import { Button, Tooltip, Table, Tag, Space, Popconfirm, message } from "antd";
 import { Link } from "react-router-dom";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
+import "./course.css";
 const Courses = () => {
   const [courses, setCourses] = useState([]);
   const onDeleteCourseConfirm = async (id) => {

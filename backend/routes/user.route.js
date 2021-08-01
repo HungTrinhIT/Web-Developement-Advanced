@@ -6,7 +6,6 @@ const {cloudinary} = require('../utils/cloudinary')
 const userSchema = require("../schemas/user.json");
 const router = express.Router();
 const { v4: uuidv4 } = require("uuid");
-const { json } = require("express");
 // Get all
 router.get("/", async function (req, res) {
   const users = await userModel.all();
@@ -113,7 +112,6 @@ router.patch("/:id", async function (req, res) {
 router.patch("/upload-avatar/:id", async function(req,res){
   const id=req.params.id;
   const user=await userModel.singleById(id);
-  console.log("Dzo")
   if(user){
     const fileStr= req.body.data;
     try{
