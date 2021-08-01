@@ -18,7 +18,7 @@ router.post("/", validate(authSchema), async (req, res, next) => {
       authenticated: false,
     });
   }
-  const { username, id, avatar, fullname } = user;
+  const { username, id, avatar, fullname, email } = user;
   const responseUser = {
     username,
     id,
