@@ -7,21 +7,7 @@ import ProfileWishList from '../../components/ProfileWishList';
 const { TabPane } = Tabs;
 
 const Profile = () => {
-    const [wishlist, setWishList] = useState([]);
-    const user_id = 1;
-    useEffect(() => {
-        const fetchWishListByID = async () => {
-            try {
-                const wishListData = await wishListApi.getAllByUserID(user_id);
-                console.log(wishListData.data);
-                setWishList(wishListData.data);
-              } catch (error) {
-                throw error;
-              }
-        };
-
-        fetchWishListByID();
-    }, []);
+    
     return (
         <main>
             <section id="hero_in" className="general">
@@ -57,7 +43,7 @@ const Profile = () => {
                             <ProfileDescription />
                         </TabPane>
                         <TabPane tab="Wishlist" key="2">
-                            <ProfileWishList wishlist = {wishlist}/>
+                            <ProfileWishList/>
                         </TabPane>
                         <TabPane tab="Unknow" key="3">
                             Content of Tab Pane 3

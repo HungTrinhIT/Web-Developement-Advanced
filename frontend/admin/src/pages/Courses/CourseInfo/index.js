@@ -8,6 +8,7 @@ import CourseInfoLesson from "./CourseInfoLesson";
 
 const { TabPane } = Tabs;
 const CourseInfo = (props) => {
+  
   return (
     <div>
       <Tabs defaultActiveKey="1" centered>
