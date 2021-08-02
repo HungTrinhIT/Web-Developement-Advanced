@@ -17,17 +17,17 @@ const lessonApi = {
     const url = `/lessons/${id}`;
     return axiosClient.get(url);
   },
-  add: (id) => {
+  add: (lesson) => {
     const url = `/lessons`;
-    return axiosClient.post(url);
+    return axiosClient.post(url, lesson);
   },
   delete: (id) => {
     const url = `/lessons/delete/${id}`;
     return axiosClient.patch(url);
   },
-  update: (id) => {
+  update: (id, lesson) => {
     const url = `/lessons/${id}`;
-    return axiosClient.patch(url);
+    return axiosClient.patch(url, lesson);
   },
 };
 

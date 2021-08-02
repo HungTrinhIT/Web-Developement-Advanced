@@ -14,23 +14,37 @@ import {
 import { useParams } from "react-router-dom";
 import lessonApi from "../../../../../api/lessonApi";
 
-const AddNewLesson = (props) => {
+const LessonDetail = (props) => {
     const [form] = Form.useForm();
-    const { id } = useParams();
+    const { lesson_id } = useParams();
     const [lesson, setLesson] = useState([]);
     const lessonRef = useRef();
     const executeScroll = () => lessonRef.current.scrollIntoView();
     const [loading, setLoading] = useState(false);
+    useEffect(() => {
+        const fetchLessonDetail = async () => {
+            try {
+                const lessonData = await lessonApi.getbyID(lesson_id);
+                setLesson(lessonData.data);
+            } catch (error) {
+                throw error;
+            }
+        };
+        fetchLessonDetail();
 
+    }, []);
+
+    useEffect(() => {
+        form.setFieldsValue({
+            ...lesson,
+        });
+    }, [lesson]);
 
     const onFinish = async (values) => {
-        const newValues = {
-            ...values,
-            "course_id": id,
-        }
+        const lessonID = lesson_id;
         setLoading(true);
         try {
-            const data = await lessonApi.add(newValues);
+            const data = await lessonApi.update(lessonID, values);
             message.success(data.data.msg);
             executeScroll();
             setLoading(false);
@@ -67,11 +81,11 @@ const AddNewLesson = (props) => {
                             rules={[
                                 {
                                     required: true,
-                                    message: "Please input the Lesson Name!",
+                                    message: "Please input the course ID!",
                                 },
                             ]}
                         >
-                            <Input placeholder="Lesson Name" />
+                            <Input placeholder="Lesson" />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -106,7 +120,7 @@ const AddNewLesson = (props) => {
 
                 <Form.Item>
                     <Button type="primary" htmlType="submit" loading={loading}>
-                        Add lesson
+                        Update lesson
                     </Button>
                 </Form.Item>
             </Form>
@@ -114,4 +128,4 @@ const AddNewLesson = (props) => {
     );
 };
 
-export default AddNewLesson;
+export default LessonDetail;

@@ -38,7 +38,7 @@ const CourseInfoLesson = () => {
       dataIndex: 'lessonName',
       key: 'lessonName',
       render: (text, record) => (
-        <a>{text}</a>
+        <Link to={`/courses/${id}/lessons/${record.id}`}>{text}</Link>
       ),
     },
     {
@@ -61,13 +61,13 @@ const CourseInfoLesson = () => {
             />
           </Popconfirm>
 
-          {/*<Link to={`/lessons/${record.id}`}>
+          <Link to={`/courses/${id}/lessons/${record.id}`}>
             <Button
               type="primary"
               shape="circle"
               icon={<EditOutlined className="icon" />}
             />
-          </Link>*/}
+          </Link>
         </Space>
       ),
     },

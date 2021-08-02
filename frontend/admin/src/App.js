@@ -27,6 +27,7 @@ import CourseInfo from "./pages/Courses/CourseInfo";
 import AddUser from "./pages/Users/AddNewUser";
 import UserInfo from "./pages/Users/UserInfo";
 import AddNewLesson from "./pages/Courses/CourseInfo/CourseInfoLesson/AddNewLesson";
+import LessonDetail from "./pages/Courses/CourseInfo/CourseInfoLesson/LessonDetail";
 const { Content } = Layout;
 const routes = [
   {
@@ -69,6 +70,11 @@ const routes = [
     exact: true,
     path: "/courses/:id",
     component: CourseInfo,
+  },
+  {
+    exact: true,
+    path: "/courses/:id/lessons/:lesson_id",
+    component: LessonDetail,
   },
   {
     exact: true,
