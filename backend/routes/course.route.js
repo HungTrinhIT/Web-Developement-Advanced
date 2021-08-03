@@ -39,7 +39,7 @@ router.get("/:id", async function (req, res) {
 router.post("/", async function (req, res) {
   let course = req.body;
   const courseId = uuidv4();
-
+  console.log("course", course);
   course = {
     ...course,
     id: courseId,

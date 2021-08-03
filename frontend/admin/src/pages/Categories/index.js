@@ -166,8 +166,8 @@ const Categories = (props) => {
   return (
     <div>
       <PageTitle title="Categories">
-        <Link to="/add-category">
-          <Tooltip title="Add new category">
+        <Link to="/categories/add">
+          <Tooltip title="Add category">
             <Button
               type="primary"
               icon={<PlusOutlined />}

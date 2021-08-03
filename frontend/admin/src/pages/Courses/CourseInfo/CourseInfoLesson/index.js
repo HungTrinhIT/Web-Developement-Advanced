@@ -12,7 +12,6 @@ const CourseInfoLesson = () => {
     const fetchLessons = async () => {
       try {
         const lessonData = await lessonApi.getAllForTeacher(id);
-        console.log(lessonData.data);
         setLessons(lessonData.data);
       } catch (error) {
         throw error;
@@ -33,10 +32,10 @@ const CourseInfoLesson = () => {
   };
   const columns = [
     {
-      title: 'Lesson Name',
+      title: "Lesson Name",
       width: 500,
-      dataIndex: 'lessonName',
-      key: 'lessonName',
+      dataIndex: "lessonName",
+      key: "lessonName",
       render: (text, record) => (
         <Link to={`/courses/${id}/lessons/${record.id}`}>{text}</Link>
       ),
@@ -75,7 +74,7 @@ const CourseInfoLesson = () => {
   return (
     <div>
       <PageTitle title="Lesson Management">
-        <Link to = {`/courses/${id}/add-lesson`}>
+        <Link to={`/courses/${id}/lessons/add`}>
           <Tooltip title="Add new lesson">
             <Button
               type="primary"
@@ -86,9 +85,12 @@ const CourseInfoLesson = () => {
           </Tooltip>
         </Link>
       </PageTitle>
-      <Table columns={columns} dataSource={lessons} pagination={{ pageSize: "10" }} />
+      <Table
+        columns={columns}
+        dataSource={lessons}
+        pagination={{ pageSize: "10" }}
+      />
     </div>
-
   );
 };
 
