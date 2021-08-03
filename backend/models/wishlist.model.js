@@ -18,7 +18,6 @@ module.exports = {
       .where({
         "course_id": course_id,
         "user_id": user_id,
-        "isDeleted": false
       })
     if (wish.length === 0) return null;
     return wish[0];
@@ -47,11 +46,11 @@ module.exports = {
   },
 
   async update(id, wishUpdated) {
-    const wish = await this.singleById(id);
+    const wish = await db(TB_NAME)
+      .where("id", id);
     if (!wish) {
       return null;
     }
-
     wishUpdated.logUpdatedDate = new Date();
     return db(TB_NAME).where("id", id).update(wishUpdated);
   },

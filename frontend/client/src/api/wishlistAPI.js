@@ -9,10 +9,24 @@ const wishListApi = {
     const url = `/wishlist/user/${id}`;
     return axiosClient.get(url);
   },
+  singleByBothID: (course_id, user_id) => {
+    const url = `/wishlist/${course_id}/${user_id}`;
+    return axiosClient.get(url);
+  },
+  add: (wishlist) => {
+    console.log(wishlist);
+    const url = `/wishlist`;
+    return axiosClient.post(url, wishlist);
+  },
+  update: (id) => {
+    const url = `/wishlist/${id}`;
+    return axiosClient.patch(url);
+  },
   delete: (id) => {
     const url = `/wishlist/delete/${id}`;
     return axiosClient.patch(url);
   },
+  
 };
 
 export default wishListApi;

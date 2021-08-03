@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const wishListModel = require("../models/wishlist.model");
 const courseModel = require("../models/course.model");
+const { v4: uuidv4 } = require("uuid");
+const wishlistModel = require("../models/wishlist.model");
 // Get all
 router.get("/", async function (req, res) {
   const wishlist = await wishListModel.all();
@@ -38,14 +40,17 @@ router.get("/:course_id/:user_id", async function (req, res) {
   const course_id = req.params.course_id;
   const user_id = req.params.user_id;
   const wish = await wishListModel.singleByBothId(course_id, user_id);
-
+  console.log(wish);
   if (wish === null) {
-    res.json({
-      msg: `Wish with id=${course_id} is not found`,
+    return res.json({
+      isExist: false
     });
   }
 
-  res.json(wish);
+  return res.json({
+    isExist: true,
+    wish: wish
+  });
 });
 
 // Get single by ID
@@ -65,17 +70,29 @@ router.get("/wish/:id", async function (req, res) {
 // Add new wish
 router.post("/", async function (req, res) {
   let wish = req.body;
-  const wishId = uuidv4();
+  const isExist = await wishListModel.singleByBothId(wish.course_id, wish.user_id);
+  if (isExist) {
+    const ids = await wishListModel.update(isExist.id, {
+      isDeleted: false
+    });
+    return res.status(201).json({
+      wish: ids
+    });
+  }
+  else {
+    const wishId = uuidv4();
+    wish = {
+      ...wish,
+      id: wishId,
+      logCreatedDate: new Date(),
+      logUpdatedDate: new Date(),
+    };
+    const ids = await wishListModel.add(wish);
+    return res.status(201).json({
+      wish: ids
+    })
+  }
 
-  wish = {
-    ...wish,
-    id: wishId,
-    logCreatedDate: new Date(),
-    logUpdatedDate: new Date(),
-  };
-  const ids = await wishListModel.add(wish);
-
-  res.status(201).json(wish);
 });
 
 // Delete wish
