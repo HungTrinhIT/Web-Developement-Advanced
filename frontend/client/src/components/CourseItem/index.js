@@ -9,8 +9,8 @@ const CourseItem = (props) => {
         <figure>
           <a href="#0" className="wish_bt" />
           <Link to={`/course-detail/${course.id}`} >
-            <img
-              src="http://via.placeholder.com/800x533/ccc/fff/course__list_2.jpg"
+            <img style = {{height : "300px", objectFit : "cover"}}
+              src={course.image??"http://via.placeholder.com/800x533/ccc/fff/course__list_2.jpg"}
               className="img-fluid"
               alt
             />
@@ -20,8 +20,7 @@ const CourseItem = (props) => {
             <span>Preview course</span>
           </div>
         </figure>
-        <div className="wrapper">
-          <small>Course</small>
+        <div className="wrapper" style= {{minHeight: "250px"}}> 
           <h3>{course.courseName}</h3>
           <p>
             {course.shortDescription}

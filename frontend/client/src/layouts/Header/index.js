@@ -62,34 +62,8 @@ export const Header = () => {
           </li>
           <li>
             <span>
-              <a href="#0">Courses</a>
+              <Link to="/courses">Courses</Link>
             </span>
-            <ul>
-              <li>
-                <a href="courses-grid.html">Courses grid</a>
-              </li>
-              <li>
-                <a href="courses-grid-sidebar.html">Courses grid sidebar</a>
-              </li>
-              <li>
-                <a href="courses-list.html">Courses list</a>
-              </li>
-              <li>
-                <a href="courses-list-sidebar.html">Courses list sidebar</a>
-              </li>
-              <li>
-                <a href="course-detail.html">Course detail</a>
-              </li>
-              <li>
-                <a href="course-detail-2.html">Course detail working form</a>
-              </li>
-              <li>
-                <a href="admission.html">Admission wizard</a>
-              </li>
-              <li>
-                <a href="teacher-detail.html">Teacher detail</a>
-              </li>
-            </ul>
           </li>
           <li>
             <span>

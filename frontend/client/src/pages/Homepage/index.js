@@ -61,23 +61,29 @@ const Homepage = () => {
       {/* /hero_single */}
       <Features />
       {/* /features */}
+      
       <div className="container-fluid margin_120_0">
         <div className="main_title_2">
           <span>
             <em />
           </span>
           <h2>Udema All Courses</h2>
-          <p>Fetch All Course From API.</p>
         </div>
 
         <Carousel courses={courses} />
+        <div className="container">
+          <p className="btn_home_align">
+            <Link to={`/courses`} className="btn_1 rounded">
+              View all courses
+            </Link>
+          </p>
+        </div>
 
         <div className="main_title_2">
           <span>
             <em />
           </span>
           <h2>Udema Newest Courses</h2>
-          <p>Fetch 10 Newest Course From API.</p>
         </div>
 
         <Carousel courses={newCourses} />
@@ -87,19 +93,12 @@ const Homepage = () => {
             <em />
           </span>
           <h2>Udema Most View Courses</h2>
-          <p>Fetch 10 Most View Course From API.</p>
         </div>
 
         <Carousel courses={mostViewCourse} />
 
         {/* /carousel */}
-        <div className="container">
-          <p className="btn_home_align">
-            <Link to={`/courses`} className="btn_1 rounded">
-              View all courses
-            </Link>
-          </p>
-        </div>
+        
         {/* /container */}
         <hr />
       </div>
