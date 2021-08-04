@@ -14,6 +14,8 @@ import PageTitle from "../../components/PageTitle";
 import {
   DeleteOutlined,
   EditOutlined,
+  MailOutlined,
+  PhoneOutlined,
   PlusOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -82,12 +84,18 @@ const Users = () => {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      width: 200,
+      width: 250,
       render: (email) => (
         <Tooltip title={email}>
-          <span>
-            {email && email.length > 24 ? email.slice(0, 24) + "..." : email}
-          </span>
+          <div
+            className="d-flex align-items-center "
+            style={{ color: "#1890ff", cursor: "pointer" }}
+          >
+            <MailOutlined />
+            <span className="mx-1">
+              {email && email.length > 24 ? email.slice(0, 24) + "..." : email}
+            </span>
+          </div>
         </Tooltip>
       ),
     },
@@ -95,6 +103,15 @@ const Users = () => {
       title: "Phone",
       dataIndex: "phone",
       key: "phone",
+      width: 200,
+      render: (phone) => {
+        return (
+          <div className="d-flex align-items-center">
+            <PhoneOutlined />
+            <span className="mx-2">{phone}</span>
+          </div>
+        );
+      },
     },
     {
       title: "Address",
