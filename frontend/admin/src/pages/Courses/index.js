@@ -13,7 +13,7 @@ const Courses = () => {
     try {
       await courseApi.delete(id);
       const data = await courseApi.getAll();
-      setCourses(data.data);
+      setCourses(data.data.courses);
       message.success("Course is deleted successfully!");
     } catch (error) {
       throw error;
@@ -22,7 +22,7 @@ const Courses = () => {
   useEffect(() => {
     const fetchAllCourses = async () => {
       const data = await courseApi.getAll();
-      setCourses(data.data);
+      setCourses(data.data.courses);
     };
     fetchAllCourses();
   }, []);
