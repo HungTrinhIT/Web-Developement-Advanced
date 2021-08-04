@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { connect } from "redux-react";
+
 export const Header = ({ categories, ...props }) => {
   return (
     <header className="header menu_2">
@@ -127,9 +127,10 @@ export const Header = ({ categories, ...props }) => {
     </header>
   );
 };
-const mapStateToProps = (state) => {
-  return {
-    categories: state.categories.categories,
-  };
-};
-export default connect(mapStateToProps)(Header);
+// const mapStateToProps = (state) => {
+//   return {
+//     categories: state.categories.categories,
+//   };
+// };
+// export default connect(mapStateToProps)(Header);
+export default Header;

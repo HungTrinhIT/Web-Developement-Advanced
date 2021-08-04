@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import courseApi from "../../api/courseApi";
 import CourseGrid from "../../components/CourseGrid";
-import useScript from "../../hooks/useScript";
-
+import "./AllCourse.css";
 const AllCourse = () => {
   const [courses, setCourses] = useState([]);
 
@@ -248,7 +247,7 @@ const AllCourse = () => {
           {/* /row */}
         </div>
         {/* /container */}
-      </div>
+      </div>  
       {/* /bg_color_1 */}
     </main>
   );

@@ -11,6 +11,7 @@ import Cart from "./pages/Cart";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
+import PageNotFound from "./pages/PageNotFound";
 
 function App() {
   useScript("assets/js/jquery-3.5.1.min.js");
@@ -31,6 +32,7 @@ function App() {
           <Route path="/cart" component={Cart} />
           <Route path="/register" component={Register} />
           <Route path="/profile" component={Profile} />
+          <Route path="**" component={PageNotFound} />
         </Switch>
         <Footer />
       </Router>

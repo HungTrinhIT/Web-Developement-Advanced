@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./Homepage.css";
 import CategoryList from "../../components/CategoryList";
 import HeroSingle from "../../components/HeroSingle";
 import Features from "../../components/Features";
@@ -67,7 +68,7 @@ const Homepage = () => {
           <span>
             <em />
           </span>
-          <h2>Udema All Courses</h2>
+          <h2>All Courses</h2>
         </div>
 
         <Carousel courses={courses} />
@@ -83,7 +84,7 @@ const Homepage = () => {
           <span>
             <em />
           </span>
-          <h2>Udema Newest Courses</h2>
+          <h2>Newest Courses</h2>
         </div>
 
         <Carousel courses={newCourses} />
@@ -92,7 +93,7 @@ const Homepage = () => {
           <span>
             <em />
           </span>
-          <h2>Udema Most View Courses</h2>
+          <h2>Most View Courses</h2>
         </div>
 
         <Carousel courses={mostViewCourse} />
@@ -108,7 +109,7 @@ const Homepage = () => {
           <span>
             <em />
           </span>
-          <h2>Udema Categories Courses</h2>
+          <h2>Categories</h2>
           <p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
         </div>
 
