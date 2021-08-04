@@ -35,7 +35,7 @@ const CourseDetail = () => {
   return (
     <div id="page" className="theia-exception">
       <main>
-        <HeroIn />
+        <HeroIn course = {course}/>
         {/*/hero_in*/}
         <CourseInformation course={course} />
       </main>

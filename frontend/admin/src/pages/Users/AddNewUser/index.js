@@ -74,9 +74,7 @@ const AddUser = (props) => {
         scrollToFirstError
         {...formItemLayout}
         initialValues={{
-          password: "password",
           role: "0",
-          rate: 3.5,
         }}
       >
         <Row gutter={16}>
@@ -101,6 +99,10 @@ const AddUser = (props) => {
                 {
                   required: true,
                   message: "Please input your password!",
+                },
+                {
+                  min: 6,
+                  message: "Password must be at least 6 characters",
                 },
               ]}
             >
@@ -149,10 +151,10 @@ const AddUser = (props) => {
               name="email"
               label="Email"
               rules={[
-                { type: "email" },
+                { type: "email", message: "Email is not valid" },
                 {
                   required: true,
-                  message: "Please enter email!",
+                  message: "Please enter email",
                 },
               ]}
             >

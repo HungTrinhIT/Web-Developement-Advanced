@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-export const Header = () => {
+
+export const Header = ({ categories, ...props }) => {
   return (
     <header className="header menu_2">
       <div id="logo">
@@ -37,95 +38,31 @@ export const Header = () => {
         <ul>
           <li>
             <span>
-              <a href="#0">Home</a>
+              <Link to="/">Home</Link>
             </span>
-            <ul>
-              <li>
-                <a href="index.html">Home version 1</a>
-              </li>
-              <li>
-                <a href="index-2.html">Home version 2</a>
-              </li>
-              <li>
-                <a href="index-6.html">Home version 3</a>
-              </li>
-              <li>
-                <a href="index-3.html">Home version 4</a>
-              </li>
-              <li>
-                <a href="index-4.html">Home version 5</a>
-              </li>
-              <li>
-                <a href="index-5.html">With Cookie bar (EU law)</a>
-              </li>
-            </ul>
           </li>
           <li>
             <span>
-              <a href="#0">Courses</a>
+              <Link to="/courses">Courses</Link>
             </span>
-            <ul>
-              <li>
-                <a href="courses-grid.html">Courses grid</a>
-              </li>
-              <li>
-                <a href="courses-grid-sidebar.html">Courses grid sidebar</a>
-              </li>
-              <li>
-                <a href="courses-list.html">Courses list</a>
-              </li>
-              <li>
-                <a href="courses-list-sidebar.html">Courses list sidebar</a>
-              </li>
-              <li>
-                <a href="course-detail.html">Course detail</a>
-              </li>
-              <li>
-                <a href="course-detail-2.html">Course detail working form</a>
-              </li>
-              <li>
-                <a href="admission.html">Admission wizard</a>
-              </li>
-              <li>
-                <a href="teacher-detail.html">Teacher detail</a>
-              </li>
-            </ul>
           </li>
           <li>
             <span>
-              <a href="#0">Pages</a>
+              <a href="#0">Categories</a>
             </span>
             <ul>
-              <li>
-                <a href="#0">Menu 2</a>
-              </li>
-              <li>
-                <a href="about.html">About</a>
-              </li>
-              <li>
-                <a href="blog.html">Blog</a>
-              </li>
-              <li>
-                <a href="login.html">Login</a>
-              </li>
-              <li>
-                <a href="register.html">Register</a>
-              </li>
-              <li>
-                <a href="contacts.html">Contacts</a>
-              </li>
-              <li>
-                <a href="404.html">404 page</a>
-              </li>
-              <li>
-                <a href="agenda-calendar.html">Agenda Calendar</a>
-              </li>
-              <li>
-                <a href="faq.html">Faq</a>
-              </li>
-              <li>
-                <a href="help.html">Help</a>
-              </li>
+              {categories &&
+                categories
+                  .filter((cat, index) => {
+                    return cat.cat_id !== null;
+                  })
+                  .map((item, index) => {
+                    return (
+                      <li>
+                        <a>{item.catName}</a>
+                      </li>
+                    );
+                  })}
             </ul>
           </li>
           <li>
@@ -190,5 +127,10 @@ export const Header = () => {
     </header>
   );
 };
-
+// const mapStateToProps = (state) => {
+//   return {
+//     categories: state.categories.categories,
+//   };
+// };
+// export default connect(mapStateToProps)(Header);
 export default Header;

@@ -8,9 +8,13 @@ const CourseItem = (props) => {
       <div className="box_grid">
         <figure>
           <a href="#0" className="wish_bt" />
-          <Link to={`/course-detail/${course.id}`} >
+          <Link to={`/course-detail/${course.id}`}>
             <img
-              src="http://via.placeholder.com/800x533/ccc/fff/course__list_2.jpg"
+              style={{ height: "200px", width: "100%", objectFit: "cover" }}
+              src={
+                course.image ??
+                "http://via.placeholder.com/800x533/ccc/fff/course__list_2.jpg"
+              }
               className="img-fluid"
               alt
             />
@@ -20,11 +24,12 @@ const CourseItem = (props) => {
             <span>Preview course</span>
           </div>
         </figure>
-        <div className="wrapper">
-          <small>Course</small>
+        <div className="wrapper" style={{ height: "220px" }}>
           <h3>{course.courseName}</h3>
           <p>
-            {course.shortDescription}
+            {course.shortDescription.length > 110
+              ? course.shortDescription.slice(0, 110) + "..."
+              : course.shortDescription}
           </p>
           <div className="rating">
             <i className="icon_star voted" />
@@ -42,7 +47,7 @@ const CourseItem = (props) => {
             <i className="icon_like" /> 890
           </li>
           <li>
-            <Link to={`/course-detail/${course.id}`} class="main-btn" >
+            <Link to={`/course-detail/${course.id}`} class="main-btn">
               Enroll now
             </Link>
           </li>
