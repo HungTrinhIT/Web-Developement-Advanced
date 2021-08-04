@@ -1,93 +1,73 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Form, Input, sRow, Col, Button, Upload, Row, message } from "antd";
-
+import { Form, Input, Row, Col, Button, message } from "antd";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { useParams } from "react-router-dom";
 import lessonApi from "../../../../../api/lessonApi";
 import PageTitle from "../../../../../components/PageTitle";
-import { RollbackOutlined, UploadOutlined } from "@ant-design/icons";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { RollbackOutlined } from "@ant-design/icons";
+import { useHistory } from "react-router-dom";
+import ReactPlayer from "react-player";
 
-const AddNewLesson = (props) => {
+const LessonDetail = (props) => {
   const [form] = Form.useForm();
-  const { id } = useParams();
+  const { lesson_id } = useParams();
+  const [lesson, setLesson] = useState({});
   const lessonRef = useRef();
   const executeScroll = () => lessonRef.current.scrollIntoView();
   const [loading, setLoading] = useState(false);
+  const history = useHistory();
   const [lessonContent, setLessonContent] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);
+  useEffect(() => {
+    const fetchLessonDetail = async () => {
+      try {
+        const lessonData = await lessonApi.getByID(lesson_id);
+        setLesson(lessonData.data);
+        setLessonContent(lessonData.data.lessonContent);
+      } catch (error) {
+        throw error;
+      }
+    };
+    fetchLessonDetail();
+  }, []);
+
+  useEffect(() => {
+    form.setFieldsValue({
+      ...lesson,
+    });
+  }, [lesson]);
+
   const onFinish = async (values) => {
-    // Convert video to base 64
-
-    const reader = new FileReader();
-    reader.readAsDataURL(selectedFile);
-
-    reader.onloadend = async () => {
-      const videoBase64 = await reader.result;
-      const newValues = {
-        ...values,
-        course_id: id,
-        video: videoBase64,
-        lessonContent: lessonContent,
-      };
-      uploadLesson(newValues);
-    };
-    reader.onerror = () => {
-      message.error("Something went wrong");
-    };
-  };
-
-  const uploadLesson = async (lesson) => {
+    const lessonID = lesson_id;
     setLoading(true);
     try {
-      const response = await lessonApi.add(lesson);
-      console.log(response.data);
-      message.success("Upload lesson successfully!");
-      form.resetFields();
+      const data = await lessonApi.update(lessonID, values);
+      message.success(data.data.msg);
+      executeScroll();
       setLoading(false);
     } catch (error) {
+      throw error;
       setLoading(false);
-      message.error("Upload failed!");
     }
   };
+
   const formItemLayout = {
     labelCol: {
       span: 24,
     },
   };
 
-  const goBack = () => {
-    props.history.push(`/courses/${id}`);
-  };
-
-  const videoProps = {
-    onRemove: (file) => {
-      setSelectedFile(null);
-    },
-    beforeUpload: (file) => {
-      if (file.type !== "video/mp4") {
-        message.error(`${file.name} is not a video file`);
-        return Upload.LIST_IGNORE;
-      }
-      return false;
-    },
-    onChange: (info) => {
-      setSelectedFile(info.file);
-    },
-  };
-
   return (
     <div ref={lessonRef}>
-      <PageTitle title="Add new lesson">
+      <PageTitle title="Lesson Management">
         <Button
           type="primary"
           icon={<RollbackOutlined />}
-          style={{ marginRight: "8px" }}
-          onClick={goBack}
           size="large"
           className="icon"
+          onClick={() => history.goBack()}
         >
-          Back to lessons
+          Back
         </Button>
       </PageTitle>
       <Form
@@ -109,7 +89,7 @@ const AddNewLesson = (props) => {
                 },
               ]}
             >
-              <Input placeholder="Lesson Name" />
+              <Input placeholder="Lesson" />
             </Form.Item>
           </Col>
           <Col span={24}>
@@ -126,6 +106,7 @@ const AddNewLesson = (props) => {
               <CKEditor
                 editor={ClassicEditor}
                 onChange={(e, editor) => setLessonContent(editor.getData())}
+                data={lessonContent}
               />
             </Form.Item>
           </Col>
@@ -136,22 +117,21 @@ const AddNewLesson = (props) => {
               rules={[
                 {
                   required: true,
-                  message: "Please input th lesson content",
+                  message: "Please import lesson video",
                 },
               ]}
             >
-              <Upload {...videoProps}>
-                <Button icon={<UploadOutlined />} className="icon">
-                  Upload lesson video
-                </Button>
-              </Upload>
+              <Input />
             </Form.Item>
+          </Col>
+          <Col span={24}>
+            <ReactPlayer url={`${lesson.video}`} controls={true} volume={0.8} />
           </Col>
         </Row>
 
-        <Form.Item>
+        <Form.Item style={{ marginTop: "24px" }}>
           <Button type="primary" htmlType="submit" loading={loading}>
-            Add lesson
+            Update lesson
           </Button>
         </Form.Item>
       </Form>
@@ -159,4 +139,4 @@ const AddNewLesson = (props) => {
   );
 };
 
-export default AddNewLesson;
+export default LessonDetail;

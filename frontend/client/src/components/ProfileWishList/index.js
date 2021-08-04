@@ -20,7 +20,7 @@ const ProfileWishList = () => {
 
         fetchWishListByID();
     }, []);
-  const onDeleteCourseConfirm = async (id) => {
+  const onDeleteWishlistConfirm = async (id) => {
     try {
       await wishListApi.delete(id);
       const data = await wishListApi.getAllByUserID(user_id);
@@ -49,7 +49,7 @@ const ProfileWishList = () => {
               <Space size="middle">
                 <Popconfirm
                   title="Are you sure to delete this course?"
-                  onConfirm={() => onDeleteCourseConfirm(record.id)}
+                  onConfirm={() => onDeleteWishlistConfirm(record.id)}
                   okText="Delete"
                   cancelText="Cancle"
                 >

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
+import "./Homepage.css";
 import CategoryList from "../../components/CategoryList";
 import HeroSingle from "../../components/HeroSingle";
 import Features from "../../components/Features";
 import Carousel from "../../components/Carousel";
 import NewsList from "../../components/NewsList";
 import courseApi from "../../api/courseApi";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 import categoryApi from "../../api/categoryApi";
 const Homepage = () => {
   const [courses, setCourses] = useState([]);
@@ -61,23 +62,29 @@ const Homepage = () => {
       {/* /hero_single */}
       <Features />
       {/* /features */}
+
       <div className="container-fluid margin_120_0">
         <div className="main_title_2">
           <span>
             <em />
           </span>
-          <h2>Udema All Courses</h2>
-          <p>Fetch All Course From API.</p>
+          <h2>All Courses</h2>
         </div>
 
         <Carousel courses={courses} />
+        <div className="container">
+          <p className="btn_home_align">
+            <Link to={`/courses`} className="btn_1 rounded">
+              View all courses
+            </Link>
+          </p>
+        </div>
 
         <div className="main_title_2">
           <span>
             <em />
           </span>
-          <h2>Udema Newest Courses</h2>
-          <p>Fetch 10 Newest Course From API.</p>
+          <h2>Newest Courses</h2>
         </div>
 
         <Carousel courses={newCourses} />
@@ -86,20 +93,13 @@ const Homepage = () => {
           <span>
             <em />
           </span>
-          <h2>Udema Most View Courses</h2>
-          <p>Fetch 10 Most View Course From API.</p>
+          <h2>Most View Courses</h2>
         </div>
 
         <Carousel courses={mostViewCourse} />
 
         {/* /carousel */}
-        <div className="container">
-          <p className="btn_home_align">
-            <Link to={`/courses`} className="btn_1 rounded">
-              View all courses
-            </Link>
-          </p>
-        </div>
+
         {/* /container */}
         <hr />
       </div>
@@ -109,11 +109,11 @@ const Homepage = () => {
           <span>
             <em />
           </span>
-          <h2>Udema Categories Courses</h2>
+          <h2>Categories</h2>
           <p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
         </div>
 
-        <CategoryList categories = {categories}/>
+        <CategoryList categories={categories} />
       </div>
       {/* /container */}
       <div className="bg_color_1">
@@ -136,7 +136,16 @@ const Homepage = () => {
         {/* /container */}
       </div>
       {/* /bg_color_1 */}
-      <div className="call_section">
+      <div
+        className="call_section"
+        style={{
+          background:
+            "url(assets/img/bg_call_section.jpg) center center no-repeat fixed",
+          minHeight: "400px",
+          padding: "10% 0",
+          backgroundSize: "cover",
+        }}
+      >
         <div className="container clearfix">
           <div
             className="col-lg-5 col-md-6 float-right wow"

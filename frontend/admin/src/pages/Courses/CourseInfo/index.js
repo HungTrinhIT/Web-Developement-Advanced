@@ -7,8 +7,7 @@ import CourseInfoImage from "./CourseInfoImage";
 import CourseInfoLesson from "./CourseInfoLesson";
 
 const { TabPane } = Tabs;
-const CourseInfo = (props) => {
-
+const CourseInfo = ({ activeTab, ...props }) => {
   const [course, setCourse] = useState({});
   const { id } = useParams();
   useEffect(() => {
@@ -26,7 +25,7 @@ const CourseInfo = (props) => {
   return (
     <div>
       <Tabs defaultActiveKey="1" centered>
-        <TabPane tab="Course Infomation" key="1">
+        <TabPane tab="Course Information" key="1">
           <CourseInfoDetail course={course} />
         </TabPane>
         <TabPane tab="Course Image" key="2">

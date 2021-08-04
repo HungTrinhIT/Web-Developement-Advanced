@@ -138,8 +138,8 @@ const Courses = () => {
   return (
     <div>
       <PageTitle title="Courses Management">
-        <Link to="/add-course">
-          <Tooltip title="Add new courses">
+        <Link to="/courses/add">
+          <Tooltip title="Add course">
             <Button
               type="primary"
               icon={<PlusOutlined />}
@@ -153,7 +153,7 @@ const Courses = () => {
       <Table
         columns={columns}
         dataSource={courses}
-        scroll={{ x: 1500, y: 300 }}
+        scroll={{ x: 1500 }}
         pagination={{ pageSize: "15" }}
       />
     </div>

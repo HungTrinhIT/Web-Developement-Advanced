@@ -48,13 +48,10 @@ const Sidebar = (props) => {
           <Menu.Item key="/courses">
             <Link to="/courses">All courses</Link>
           </Menu.Item>
-          <Menu.Item key="/add-course">
-            <Link to="/add-course">Add new course</Link>
+          <Menu.Item key="/courses/add">
+            <Link to="/courses/add">Add course</Link>
           </Menu.Item>
         </SubMenu>
-        <Menu.Item key="7" icon={<FileOutlined />}>
-          Files
-        </Menu.Item>
       </Menu>
     </Sider>
   );
