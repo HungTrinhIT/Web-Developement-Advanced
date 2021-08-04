@@ -1,9 +1,24 @@
+const { default: knex } = require("knex");
 const db = require("../utils/db");
 const TB_NAME = "course";
 
 module.exports = {
-  all() {
-    return db(TB_NAME).where("isDeleted", false);
+  all(search, priceOrder) {
+    if(search !== undefined && priceOrder !== undefined)
+    {
+      return db(TB_NAME).whereRaw(`MATCH(courseName) AGAINST('${search}')`).andWhere("isDeleted", false).orderBy('price', `${priceOrder}`);
+    }
+    else if(search !== undefined && priceOrder === undefined)
+    {
+      return db(TB_NAME).whereRaw(`MATCH(courseName) AGAINST('${search}')`).andWhere("isDeleted", false);
+    }
+    else if(search === undefined && priceOrder !== undefined)
+    {
+      return db(TB_NAME).andWhere("isDeleted", false).orderBy('price', `${priceOrder}`);
+    }
+    else{
+      return db(TB_NAME).where("isDeleted", false);
+    }
   },
 
   async singleById(id) {
@@ -13,6 +28,11 @@ module.exports = {
     if (course.length === 0) return null;
     return course[0];
   },
+
+  allFullTextSearch(search) {
+    return db(TB_NAME).whereRaw(`MATCH(courseName) AGAINST('${search}')`);
+  },
+
 
   newestCourse(limit) {
     return db(TB_NAME).orderBy("logCreatedDate", "desc").limit(limit);

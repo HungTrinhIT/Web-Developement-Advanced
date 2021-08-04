@@ -8,8 +8,11 @@ const categoryModel = require("../models/category.model");
 
 // Get all
 router.get("/", async function (req, res) {
-  const courses = await courseModel.all();
+  const search = req.query.search;
+  const priceOrder = req.query.price;
   const coursesIncludeCategoryName = [];
+  
+  const courses = await courseModel.all(search, priceOrder);
   for (let course of courses) {
     let category = await categoryModel.singleById(course.category_id);
     if (category) {
