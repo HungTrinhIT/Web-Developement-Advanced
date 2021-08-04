@@ -1,35 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Form,
-  Input,
-  Select,
-  Row,
-  Col,
-  Button,
-  InputNumber,
-  message,
-  Radio,
-  Tooltip,
-} from "antd";
-
-import { Link, useParams } from "react-router-dom";
+import { Form, Input, Row, Col, Button, message } from "antd";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { useParams } from "react-router-dom";
 import lessonApi from "../../../../../api/lessonApi";
 import PageTitle from "../../../../../components/PageTitle";
 import { RollbackOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
+import ReactPlayer from "react-player";
+
 const LessonDetail = (props) => {
   const [form] = Form.useForm();
   const { lesson_id } = useParams();
-  const [lesson, setLesson] = useState([]);
+  const [lesson, setLesson] = useState({});
   const lessonRef = useRef();
   const executeScroll = () => lessonRef.current.scrollIntoView();
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+  const [lessonContent, setLessonContent] = useState("");
   useEffect(() => {
     const fetchLessonDetail = async () => {
       try {
-        const lessonData = await lessonApi.getbyID(lesson_id);
+        const lessonData = await lessonApi.getByID(lesson_id);
         setLesson(lessonData.data);
+        setLessonContent(lessonData.data.lessonContent);
       } catch (error) {
         throw error;
       }
@@ -98,32 +92,44 @@ const LessonDetail = (props) => {
               <Input placeholder="Lesson" />
             </Form.Item>
           </Col>
-        </Row>
-        <Row>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item
-              label="Lesson Content"
               name="lessonContent"
+              label="Lesson content"
               rules={[
                 {
                   required: true,
-                  message: "Please input the lesson Content!",
+                  message: "Please input th lesson content",
                 },
               ]}
             >
-              <Input placeholder="Lesson Content" />
+              <CKEditor
+                editor={ClassicEditor}
+                onChange={(e, editor) => setLessonContent(editor.getData())}
+                data={lessonContent}
+              />
             </Form.Item>
           </Col>
-        </Row>
-        <Row>
           <Col span={12}>
-            <Form.Item label="Lesson Video" name="video">
-              <Input placeholder="https://youtu.be/CCOLMsvZ5dQ" />
+            <Form.Item
+              label="Lesson Video"
+              name="video"
+              rules={[
+                {
+                  required: true,
+                  message: "Please import lesson video",
+                },
+              ]}
+            >
+              <Input />
             </Form.Item>
+          </Col>
+          <Col span={24}>
+            <ReactPlayer url={`${lesson.video}`} controls={true} volume={0.8} />
           </Col>
         </Row>
 
-        <Form.Item>
+        <Form.Item style={{ marginTop: "24px" }}>
           <Button type="primary" htmlType="submit" loading={loading}>
             Update lesson
           </Button>

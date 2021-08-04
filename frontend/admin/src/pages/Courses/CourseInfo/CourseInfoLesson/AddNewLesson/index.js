@@ -43,6 +43,7 @@ const AddNewLesson = (props) => {
       const response = await lessonApi.add(lesson);
       console.log(response.data);
       message.success("Upload lesson successfully!");
+      form.resetFields();
       setLoading(false);
     } catch (error) {
       setLoading(false);

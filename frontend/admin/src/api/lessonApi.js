@@ -13,7 +13,7 @@ const lessonApi = {
     const url = `/lessons/user/${id}`;
     return axiosClient.get(url);
   },
-  getbyID: (id) => {
+  getByID: (id) => {
     const url = `/lessons/${id}`;
     return axiosClient.get(url);
   },

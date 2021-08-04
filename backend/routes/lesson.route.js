@@ -7,13 +7,21 @@ const { cloudinary } = require("../utils/cloudinary");
 
 router.get("/", async function (req, res) {
   const lessons = await lessonModel.all();
-  res.json(lessons);
+  filterLessons = lessons.map((lesson) => {
+    delete lesson.isDeleted;
+    return lesson;
+  });
+  return res.json(filterLessons);
 });
 
 router.get("/teacher/:id", async function (req, res) {
   const id = req.params.id;
   const lessons = await lessonModel.allForTeacher(id);
-  res.json(lessons);
+  filterLessons = lessons.map((lesson) => {
+    delete lesson.isDeleted;
+    return lesson;
+  });
+  res.json(filterLessons);
 });
 
 router.get("/user/:id", async function (req, res) {
