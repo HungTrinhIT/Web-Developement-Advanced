@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import "./App.css";
 import Homepage from "./pages/Homepage";
 import CourseDetail from "./pages/CourseDetail";
@@ -32,7 +33,7 @@ function App() {
           <Route path="/profile" component={Profile} />
         </Switch>
         <Footer />
-      </Router> 
+      </Router>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import Features from "../../components/Features";
 import Carousel from "../../components/Carousel";
 import NewsList from "../../components/NewsList";
 import courseApi from "../../api/courseApi";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 import categoryApi from "../../api/categoryApi";
 const Homepage = () => {
   const [courses, setCourses] = useState([]);
@@ -61,7 +61,7 @@ const Homepage = () => {
       {/* /hero_single */}
       <Features />
       {/* /features */}
-      
+
       <div className="container-fluid margin_120_0">
         <div className="main_title_2">
           <span>
@@ -98,7 +98,7 @@ const Homepage = () => {
         <Carousel courses={mostViewCourse} />
 
         {/* /carousel */}
-        
+
         {/* /container */}
         <hr />
       </div>
@@ -112,7 +112,7 @@ const Homepage = () => {
           <p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
         </div>
 
-        <CategoryList categories = {categories}/>
+        <CategoryList categories={categories} />
       </div>
       {/* /container */}
       <div className="bg_color_1">
@@ -135,7 +135,16 @@ const Homepage = () => {
         {/* /container */}
       </div>
       {/* /bg_color_1 */}
-      <div className="call_section">
+      <div
+        className="call_section"
+        style={{
+          background:
+            "url(assets/img/bg_call_section.jpg) center center no-repeat fixed",
+          minHeight: "400px",
+          padding: "10% 0",
+          backgroundSize: "cover",
+        }}
+      >
         <div className="container clearfix">
           <div
             className="col-lg-5 col-md-6 float-right wow"

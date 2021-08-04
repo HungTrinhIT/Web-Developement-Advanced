@@ -1493,13 +1493,6 @@ video {
   }
 }
 
-.hero_single.version_2:before {
-  background: url(http://via.placeholder.com/1600x1067/ccc/fff/home_section_1.jpg) center center no-repeat fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
 
 .hero_single.version_2 .wrapper {
   background-color: #372675;
@@ -5561,15 +5554,7 @@ ul.list_3 li:before {
   backface-visibility: hidden;
 }
 
-.call_section {
-  background: url(http://via.placeholder.com/1600x1067/ccc/fff/bg_call_section.jpg) center center no-repeat fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  min-height: 400px;
-  padding: 10% 0;
-}
+
 
 .call_section_admission {
   background: #FFC107 url(../img/pattern_1.svg) center center repeat fixed;
