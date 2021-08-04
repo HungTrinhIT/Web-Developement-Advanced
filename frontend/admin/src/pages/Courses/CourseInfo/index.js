@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import courseApi from "../../../api/courseApi";
 import { Tabs } from "antd";
 import CourseInfoDetail from "./CourseInfoDetail";
@@ -32,9 +32,7 @@ const CourseInfo = ({ activeTab, ...props }) => {
           <CourseInfoImage course={course} />
         </TabPane>
         <TabPane tab="Lessons" key="3">
-          <Link to={`courses/${id}/lessons`}>
-            <CourseInfoLesson />
-          </Link>
+          <CourseInfoLesson />
         </TabPane>
       </Tabs>
     </div>

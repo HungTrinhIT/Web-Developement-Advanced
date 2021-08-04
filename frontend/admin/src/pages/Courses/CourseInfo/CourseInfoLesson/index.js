@@ -51,7 +51,7 @@ const CourseInfoLesson = () => {
             title="Are you sure to delete this course?"
             onConfirm={() => onDeleteCourseConfirm(record.id)}
             okText="Delete"
-            cancelText="Cancle"
+            cancelText="Cancel"
           >
             <Button
               type="danger"

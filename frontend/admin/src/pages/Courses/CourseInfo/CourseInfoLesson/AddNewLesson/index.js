@@ -1,46 +1,54 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Form,
-  Input,
-  Select,
-  Row,
-  Col,
-  Button,
-  InputNumber,
-  message,
-  Radio,
-} from "antd";
+import { Form, Input, sRow, Col, Button, Upload, Row, message } from "antd";
 
 import { useParams } from "react-router-dom";
 import lessonApi from "../../../../../api/lessonApi";
 import PageTitle from "../../../../../components/PageTitle";
-import { RollbackOutlined } from "@ant-design/icons";
+import { RollbackOutlined, UploadOutlined } from "@ant-design/icons";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const AddNewLesson = (props) => {
   const [form] = Form.useForm();
   const { id } = useParams();
-  const [lesson, setLesson] = useState([]);
   const lessonRef = useRef();
   const executeScroll = () => lessonRef.current.scrollIntoView();
   const [loading, setLoading] = useState(false);
-
+  const [lessonContent, setLessonContent] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
   const onFinish = async (values) => {
-    const newValues = {
-      ...values,
-      course_id: id,
+    // Convert video to base 64
+
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedFile);
+
+    reader.onloadend = async () => {
+      const videoBase64 = await reader.result;
+      const newValues = {
+        ...values,
+        course_id: id,
+        video: videoBase64,
+        lessonContent: lessonContent,
+      };
+      uploadLesson(newValues);
     };
-    setLoading(true);
-    try {
-      const data = await lessonApi.add(newValues);
-      message.success("Add new lesson successfully");
-      executeScroll();
-      setLoading(false);
-    } catch (error) {
-      throw error;
-      setLoading(false);
-    }
+    reader.onerror = () => {
+      message.error("Something went wrong");
+    };
   };
 
+  const uploadLesson = async (lesson) => {
+    setLoading(true);
+    try {
+      const response = await lessonApi.add(lesson);
+      console.log(response.data);
+      message.success("Upload lesson successfully!");
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      message.error("Upload failed!");
+    }
+  };
   const formItemLayout = {
     labelCol: {
       span: 24,
@@ -51,9 +59,25 @@ const AddNewLesson = (props) => {
     props.history.push(`/courses/${id}`);
   };
 
+  const videoProps = {
+    onRemove: (file) => {
+      setSelectedFile(null);
+    },
+    beforeUpload: (file) => {
+      if (file.type !== "video/mp4") {
+        message.error(`${file.name} is not a video file`);
+        return Upload.LIST_IGNORE;
+      }
+      return false;
+    },
+    onChange: (info) => {
+      setSelectedFile(info.file);
+    },
+  };
+
   return (
     <div ref={lessonRef}>
-      <PageTitle title="Add new category">
+      <PageTitle title="Add new lesson">
         <Button
           type="primary"
           icon={<RollbackOutlined />}
@@ -80,34 +104,46 @@ const AddNewLesson = (props) => {
               rules={[
                 {
                   required: true,
-                  message: "Please input the Lesson Name!",
+                  message: "Please input the lesson name!",
                 },
               ]}
             >
               <Input placeholder="Lesson Name" />
             </Form.Item>
           </Col>
-        </Row>
-        <Row>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item
-              label="Lesson Content"
               name="lessonContent"
+              label="Lesson content"
               rules={[
                 {
                   required: true,
-                  message: "Please input the Lesson Content!",
+                  message: "Please input th lesson content",
                 },
               ]}
             >
-              <Input placeholder="Lesson Content" />
+              <CKEditor
+                editor={ClassicEditor}
+                onChange={(e, editor) => setLessonContent(editor.getData())}
+              />
             </Form.Item>
           </Col>
-        </Row>
-        <Row>
           <Col span={12}>
-            <Form.Item label="Lesson Video" name="video">
-              <Input placeholder="https://youtu.be/CCOLMsvZ5dQ" />
+            <Form.Item
+              label="Lesson Video"
+              name="video"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input th lesson content",
+                },
+              ]}
+            >
+              <Upload {...videoProps}>
+                <Button icon={<UploadOutlined />} className="icon">
+                  Upload lesson video
+                </Button>
+              </Upload>
             </Form.Item>
           </Col>
         </Row>
