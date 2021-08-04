@@ -3,28 +3,19 @@ const db = require("../utils/db");
 const TB_NAME = "course";
 
 module.exports = {
-  all(search, priceOrder, saleOrder) {
-    let order = {};
-    if(priceOrder !== undefined)
+  all(query) {
+    const {search, price} = query; 
+    if("search" in query && "price" in query)
     {
-        order["price"] = priceOrder;
+      return db(TB_NAME).whereRaw(`MATCH(courseName) AGAINST('${search}')`).andWhere("isDeleted", false).orderBy("price",`${price}`);
     }
-    if(saleOrder !== undefined)
-    {
-        order["sale"] = saleOrder;
-    }
-    console.log(order);
-    if(search !== undefined && order !== undefined)
-    {
-      return db(TB_NAME).whereRaw(`MATCH(courseName) AGAINST('${search}')`).andWhere("isDeleted", false).orderBy('price', `${order}`);
-    }
-    else if(search !== undefined && order === undefined)
+    else if("search" in query)
     {
       return db(TB_NAME).whereRaw(`MATCH(courseName) AGAINST('${search}')`).andWhere("isDeleted", false);
     }
-    else if(search === undefined && order !== undefined)
+    else if("order" in query)
     {
-      return db(TB_NAME).andWhere("isDeleted", false).orderBy('price', `${order}`);
+      return db(TB_NAME).andWhere("isDeleted", false).orderBy("price",`${price}`);
     }
     else{
       return db(TB_NAME).where("isDeleted", false);

@@ -5,15 +5,13 @@ const { cloudinary } = require("../utils/cloudinary");
 
 const courseModel = require("../models/course.model");
 const categoryModel = require("../models/category.model");
-
+const queryString = require('query-string');
 // Get all
 router.get("/", async function (req, res) {
-  const search = req.query.search;
-  const priceOrder = req.query.price;
-  const saleOrder = req.query.sale;
+  const query = req.query;
   const coursesIncludeCategoryName = [];
   
-  const courses = await courseModel.all(search, priceOrder, saleOrder);
+  const courses = await courseModel.all(query);
   for (let course of courses) {
     let category = await categoryModel.singleById(course.category_id);
     if (category) {
