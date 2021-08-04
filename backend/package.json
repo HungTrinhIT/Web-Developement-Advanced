@@ -27,6 +27,7 @@
     "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
     "nodemon": "^2.0.12",
+    "query-string": "^7.0.1",
     "randomstring": "^1.2.1",
     "uuid": "^8.3.2"
   }
