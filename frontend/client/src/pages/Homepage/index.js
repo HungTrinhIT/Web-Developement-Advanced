@@ -17,7 +17,7 @@ const Homepage = () => {
     const fetchAllCourses = async () => {
       try {
         const courseData = await courseApi.getAll();
-        setCourses(courseData.data);
+        setCourses(courseData.data.courses);
       } catch (error) {
         throw error;
       }

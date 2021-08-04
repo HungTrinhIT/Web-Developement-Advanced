@@ -3,23 +3,26 @@ const db = require("../utils/db");
 const TB_NAME = "course";
 
 module.exports = {
-  all(query) {
-    const {search, price} = query; 
+  async all(query) {
+    const {search, price, page=1} = query; 
+    let queryData = [];
+
     if("search" in query && "price" in query)
     {
-      return db(TB_NAME).whereRaw(`MATCH(courseName) AGAINST('${search}')`).andWhere("isDeleted", false).orderBy("price",`${price}`);
+      queryData = await db(TB_NAME).whereRaw(`MATCH(courseName) AGAINST('${search}')`).andWhere("isDeleted", false).orderBy("price",`${price}`);
     }
     else if("search" in query)
     {
-      return db(TB_NAME).whereRaw(`MATCH(courseName) AGAINST('${search}')`).andWhere("isDeleted", false);
+      queryData = await db(TB_NAME).whereRaw(`MATCH(courseName) AGAINST('${search}')`).andWhere("isDeleted", false);
     }
     else if("order" in query)
     {
-      return db(TB_NAME).andWhere("isDeleted", false).orderBy("price",`${price}`);
+      queryData = await db(TB_NAME).andWhere("isDeleted", false).orderBy("price",`${price}`);
     }
     else{
-      return db(TB_NAME).where("isDeleted", false);
+      queryData = await db(TB_NAME).where("isDeleted", false);
     }
+    return queryData;
   },
 
   async singleById(id) {
