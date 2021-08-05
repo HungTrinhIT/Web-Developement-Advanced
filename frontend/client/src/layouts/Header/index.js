@@ -1,12 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
-export const Header = ({ categories, ...props }) => {
+import { connect } from "react-redux";
+const Header = ({ categories, ...props }) => {
   return (
     <header className="header menu_2">
       <div id="logo">
         <Link to="/">
-          <img src="assets/img/logo.png" width={149} height={42} alt />
+          <img
+            src="assets/img/logo.png"
+            width={149}
+            height={42}
+            alt="hinh ne"
+          />
         </Link>
       </div>
       <ul id="top_menu">
@@ -51,18 +56,13 @@ export const Header = ({ categories, ...props }) => {
               <a href="#0">Categories</a>
             </span>
             <ul>
-              {categories &&
-                categories
-                  .filter((cat, index) => {
-                    return cat.cat_id !== null;
-                  })
-                  .map((item, index) => {
-                    return (
-                      <li>
-                        <a>{item.catName}</a>
-                      </li>
-                    );
-                  })}
+              {props.rootCategories.map((item, index) => {
+                return (
+                  <li key={item.id}>
+                    <Link to={`/courses?cat=${item.id}`}>{item.catName}</Link>
+                  </li>
+                );
+              })}
             </ul>
           </li>
           <li>
@@ -127,10 +127,10 @@ export const Header = ({ categories, ...props }) => {
     </header>
   );
 };
-// const mapStateToProps = (state) => {
-//   return {
-//     categories: state.categories.categories,
-//   };
-// };
-// export default connect(mapStateToProps)(Header);
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+    categories: state.categories.categories,
+    rootCategories: state.categories.rootCategories,
+  };
+};
+export default connect(mapStateToProps)(Header);

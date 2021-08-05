@@ -22,7 +22,7 @@ const AddCourse = (props) => {
   const [fullDescription, setFullDescription] = useState("");
   const addCourseRef = useRef();
   const executeScroll = () => addCourseRef.current.scrollIntoView();
-
+  
   const onFinish = async (values) => {
     values = { ...values, fullDescription };
     try {

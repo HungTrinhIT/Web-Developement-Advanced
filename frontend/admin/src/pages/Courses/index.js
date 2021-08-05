@@ -2,13 +2,32 @@ import React, { useEffect, useState } from "react";
 import courseApi from "../../api/courseApi";
 import { connect } from "react-redux";
 import PageTitle from "../../components/PageTitle";
-import { Button, Tooltip, Table, Tag, Space, Popconfirm, message } from "antd";
+import {
+  Button,
+  Tooltip,
+  Table,
+  Tag,
+  Space,
+  Popconfirm,
+  message,
+  Pagination,
+} from "antd";
 import { Link } from "react-router-dom";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
 import "./course.css";
 const Courses = () => {
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState({
+    courses: [],
+    totalCourses: 0,
+    currentPage: 1,
+    totalPage: 1,
+  });
+  const [filter, setFilter] = useState({
+    limit: 10,
+    page: 1,
+  });
+
   const onDeleteCourseConfirm = async (id) => {
     try {
       await courseApi.delete(id);
@@ -21,11 +40,12 @@ const Courses = () => {
   };
   useEffect(() => {
     const fetchAllCourses = async () => {
-      const data = await courseApi.getAll();
-      setCourses(data.data.courses);
+      console.log(filter);
+      const data = await courseApi.getAll(filter);
+      setCourses(data.data);
     };
     fetchAllCourses();
-  }, []);
+  }, [filter]);
   const columns = [
     {
       title: "Course name",
@@ -134,6 +154,12 @@ const Courses = () => {
       ),
     },
   ];
+  const onPaginateHandleChange = (selectedPage) => {
+    setFilter({
+      ...filter,
+      page: selectedPage,
+    });
+  };
 
   return (
     <div>
@@ -152,10 +178,21 @@ const Courses = () => {
 
       <Table
         columns={columns}
-        dataSource={courses}
+        dataSource={courses.courses}
         scroll={{ x: 1500 }}
-        pagination={{ pageSize: "15" }}
+        pagination={false}
       />
+      <div className="d-flex justify-content-center align-items-center mt-3">
+        <Pagination
+          total={courses.totalCourses}
+          showQuickJumper
+          showTotal={(total) => `Total ${total} courses`}
+          defaultCurrent={1}
+          onChange={onPaginateHandleChange}
+          defaultPageSize={10}
+          current={courses.currentPage}
+        />
+      </div>
     </div>
   );
 };
