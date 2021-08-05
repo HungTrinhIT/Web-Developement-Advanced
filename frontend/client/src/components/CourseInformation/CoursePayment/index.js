@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import wishListApi from '../../api/wishlistAPI';
+import wishListApi from '../../../api/wishlistAPI'
 import { useParams } from 'react-router-dom';
 
 const CoursePayment = ({ course, ...props }) => {
