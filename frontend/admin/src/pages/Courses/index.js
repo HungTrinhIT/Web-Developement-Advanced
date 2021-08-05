@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import courseApi from "../../api/courseApi";
 import { connect } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
+
 import PageTitle from "../../components/PageTitle";
 import {
   Button,
@@ -27,7 +29,8 @@ const Courses = () => {
     limit: 10,
     page: 1,
   });
-
+  const history = useHistory();
+  const location = useLocation();
   const onDeleteCourseConfirm = async (id) => {
     try {
       await courseApi.delete(id);
@@ -45,6 +48,7 @@ const Courses = () => {
       setCourses(data.data);
     };
     fetchAllCourses();
+    console.log(location);
   }, [filter]);
   const columns = [
     {
