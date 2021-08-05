@@ -5,10 +5,19 @@ import App from "./App";
 import "antd/dist/antd.css";
 import reportWebVitals from "./reportWebVitals";
 
+// Setup redux
+import rootReducer from "./redux/reducers/rootReducer";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+const store = createStore(
+  rootReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById("root")
 );
 
