@@ -12,7 +12,7 @@ const CourseReviews = ({ course, ...props }) => {
   const [avgRate, setAvgRate] = useState();
   const [loading, setLoading] = useState(false);
   const [reviews, setReviews] = useState([]);
-  const userID = "bf323da3-c98b-4093-874e-f907d7559b1e";
+  const userID = "6afc696d-f9a1-4745-b946-228a2e52a568";
   useEffect(() => {
     const fetchAllRate = async () => {
       try {
@@ -75,7 +75,7 @@ const CourseReviews = ({ course, ...props }) => {
 
       <div className="col-lg-3">
         <div id="review_summary">
-          <strong>{Math.round((avgRate + Number.EPSILON) * 100) / 100}</strong>
+          <strong>{avgRate?Number.parseFloat(avgRate).toFixed(1):0}</strong>
           <div className="rating">
           <Rate disabled value={avgRate} allowHalf/>
           </div>

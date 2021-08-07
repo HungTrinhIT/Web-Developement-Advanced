@@ -65,7 +65,7 @@ router.post("/", async function (req, res) {
     for (let i = 0; i < rateData.length; i++) {
       totalRate += rateData[i].value;
     }
-    let avgRate = totalRate / rateData.length;
+    let avgRate = (totalRate / rateData.length).toFixed(1);
     const courseUpdated = await courseModel.update(rate.course_id, {
       "rate": avgRate
     })
@@ -88,7 +88,7 @@ router.post("/", async function (req, res) {
     for (let i = 0; i < rateData.length; i++) {
       totalRate += rateData[i].value;
     }
-    let avgRate = totalRate / rateData.length;
+    let avgRate = (totalRate / rateData.length).toFixed(1);
     const courseUpdated = await courseModel.update(rate.course_id, {
       "rate": avgRate
     })
