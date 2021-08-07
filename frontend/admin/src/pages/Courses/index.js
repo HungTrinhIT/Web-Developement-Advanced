@@ -1,14 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import courseApi from "../../api/courseApi";
 import { connect } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
+import { debounce } from "lodash";
 import PageTitle from "../../components/PageTitle";
-import { Button, Tooltip, Table, Tag, Space, Popconfirm, message } from "antd";
+import {
+  Button,
+  Tooltip,
+  Table,
+  Tag,
+  Space,
+  Popconfirm,
+  message,
+  Pagination,
+  Input,
+  Select,
+} from "antd";
 import { Link } from "react-router-dom";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
 import "./course.css";
-const Courses = () => {
-  const [courses, setCourses] = useState([]);
+const { Option } = Select;
+const Courses = (props) => {
+  const [courses, setCourses] = useState({
+    courses: [],
+    totalCourses: 0,
+    currentPage: 1,
+    totalPage: 1,
+  });
+  const [filter, setFilter] = useState({
+    limit: 10,
+    page: 1,
+    search: "",
+    categories: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
+  const location = useLocation();
   const onDeleteCourseConfirm = async (id) => {
     try {
       await courseApi.delete(id);
@@ -19,13 +47,21 @@ const Courses = () => {
       throw error;
     }
   };
+
   useEffect(() => {
     const fetchAllCourses = async () => {
-      const data = await courseApi.getAll();
-      setCourses(data.data.courses);
+      for (let key in filter) {
+        if (!filter[key]) {
+          delete filter[key];
+        }
+      }
+
+      const data = await courseApi.getAll(filter);
+      setCourses(data.data);
     };
     fetchAllCourses();
-  }, []);
+    console.log(location);
+  }, [filter]);
   const columns = [
     {
       title: "Course name",
@@ -134,7 +170,29 @@ const Courses = () => {
       ),
     },
   ];
+  const onPaginateHandleChange = (selectedPage) => {
+    setFilter({
+      ...filter,
+      page: selectedPage,
+    });
+  };
 
+  const categoryHandleChange = (value) => {
+    const categoriesConcat = value.join(".");
+    setFilter({
+      ...filter,
+      search: "",
+      categories: categoriesConcat,
+    });
+  };
+  const onSearchHandler = (e) => {
+    setFilter({
+      ...filter,
+      categories: "",
+      search: e.target.value,
+    });
+  };
+  const { categories } = props;
   return (
     <div>
       <PageTitle title="Courses Management">
@@ -150,14 +208,68 @@ const Courses = () => {
         </Link>
       </PageTitle>
 
+      <div className="course-filter mb-3 d-flex align-items-center justify-content-between">
+        <Input.Search
+          placeholder="Search course"
+          name="search"
+          loading={loading}
+          enterButton
+          style={{ width: "250px" }}
+          onChange={onSearchHandler}
+          value={filter.search}
+        />
+        <Select
+          mode="multiple"
+          allowClear
+          name="cagories"
+          placeholder="Select category"
+          onChange={categoryHandleChange}
+          style={{ width: "400px" }}
+          showSearch
+          filterOption={(input, option) =>
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          filterSort={(optionA, optionB) =>
+            optionA.children
+              .toLowerCase()
+              .localeCompare(optionB.children.toLowerCase())
+          }
+        >
+          {categories &&
+            categories
+              .filter((cat) => cat.cat_id !== null)
+              .map((cat) => (
+                <Option value={cat.id} key={cat.id}>
+                  {cat.catName}
+                </Option>
+              ))}
+        </Select>
+      </div>
+
       <Table
         columns={columns}
-        dataSource={courses}
+        dataSource={courses.courses}
         scroll={{ x: 1500 }}
-        pagination={{ pageSize: "15" }}
+        pagination={false}
       />
+      <div className="d-flex justify-content-center align-items-center mt-3">
+        <Pagination
+          total={courses.totalCourses}
+          showQuickJumper
+          showSizeChanger={false}
+          showTotal={(total) => `Total ${total} courses`}
+          defaultCurrent={1}
+          onChange={onPaginateHandleChange}
+          defaultPageSize={filter.limit}
+          current={courses.currentPage}
+        />
+      </div>
     </div>
   );
 };
-
-export default connect()(Courses);
+const mapStateToProps = (state) => {
+  return {
+    categories: state.categories.categories,
+  };
+};
+export default connect(mapStateToProps)(Courses);

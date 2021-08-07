@@ -34,6 +34,8 @@ const CourseInfo = ({ activeTab, ...props }) => {
         <TabPane tab="Lessons" key="3">
           <CourseInfoLesson />
         </TabPane>
+        <TabPane tab="Teacher" key="4"></TabPane>
+        <TabPane tab="Reviews" key="5"></TabPane>
       </Tabs>
     </div>
   );

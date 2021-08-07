@@ -8,7 +8,13 @@ import NewsList from "../../components/NewsList";
 import courseApi from "../../api/courseApi";
 import { Link } from "react-router-dom";
 import categoryApi from "../../api/categoryApi";
-const Homepage = () => {
+import { connect } from "react-redux";
+import createAction from "../../redux/action/createAction";
+import {
+  FETCH_ALL_CATEGORIES,
+  FETCH_ALL_COURSE,
+} from "../../redux/action/type";
+const Homepage = (props) => {
   const [courses, setCourses] = useState([]);
   const [categories, setCategories] = useState([]);
   const [newCourses, setNewCourses] = useState([]);
@@ -19,6 +25,7 @@ const Homepage = () => {
       try {
         const courseData = await courseApi.getAll();
         setCourses(courseData.data.courses);
+        props.dispatch(createAction(FETCH_ALL_COURSE, courseData.data));
       } catch (error) {
         throw error;
       }
@@ -28,6 +35,7 @@ const Homepage = () => {
       try {
         const categoryData = await categoryApi.getAllParents();
         setCategories(categoryData.data);
+        props.dispatch(createAction(FETCH_ALL_CATEGORIES, categoryData.data));
       } catch (error) {
         throw error;
       }
@@ -172,4 +180,8 @@ const Homepage = () => {
     </main>
   );
 };
-export default Homepage;
+
+const mapStateToProps = (state) => {
+  return {};
+};
+export default connect(mapStateToProps)(Homepage);
