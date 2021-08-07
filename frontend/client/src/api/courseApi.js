@@ -20,6 +20,10 @@ const courseApi = {
   updateView: (id) => {
     const url = `/courses/view/${id}`;
     return axiosClient.patch(url);
+  },
+  update: (course, id) => {
+    const url = `/courses/${id}`;
+    return axiosClient.patch(url, course);
   }
 };
 

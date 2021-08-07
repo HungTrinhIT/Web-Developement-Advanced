@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { v4: uuidv4 } = require("uuid");
+const courseModel = require("../models/course.model");
 const rateModel = require("../models/rate.model");
 const userModel = require("../models/user.model");
 const { cloudinary } = require("../utils/cloudinary");
@@ -51,16 +52,26 @@ router.get("/:id", async function (req, res) {
 // Add new rate
 router.post("/", async function (req, res) {
   let rate = req.body;
-  
+
   const isExist = await rateModel.singleByBothId(rate.course_id, rate.user_id);
   if (isExist) {
-    let {content=isExist.content, value=isExist.value} = rate;
+    let { content = isExist.content, value = isExist.value } = rate;
     const ids = await rateModel.update(isExist.id, {
       "content": content,
       "value": value
     });
+    const rateData = await rateModel.allByCourse(rate.course_id);
+    let totalRate = 0;
+    for (let i = 0; i < rateData.length; i++) {
+      totalRate += rateData[i].value;
+    }
+    let avgRate = totalRate / rateData.length;
+    const courseUpdated = await courseModel.update(rate.course_id, {
+      "rate": avgRate
+    })
     return res.status(201).json({
-      rate: ids
+      rate: ids,
+      course: courseUpdated
     });
   }
   else {
@@ -72,10 +83,21 @@ router.post("/", async function (req, res) {
       logUpdatedDate: new Date(),
     };
     const ids = await rateModel.add(rate);
+    const rateData = await rateModel.allByCourse(rate.course_id);
+    let totalRate = 0;
+    for (let i = 0; i < rateData.length; i++) {
+      totalRate += rateData[i].value;
+    }
+    let avgRate = totalRate / rateData.length;
+    const courseUpdated = await courseModel.update(rate.course_id, {
+      "rate": avgRate
+    })
     return res.status(201).json({
-      rate: ids
+      rate: ids,
+      course: courseUpdated
     })
   }
+
 });
 
 // Delete rate

@@ -17,7 +17,7 @@ const CourseInformation = (props) => {
                         {/* /section */}
                         <CourseLessons />
                         {/* /section */}
-                        <CourseReviews />
+                        <CourseReviews course = {course}/>
                         {/* /section */}
                     </div>
                     {/* /col */}

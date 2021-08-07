@@ -8,7 +8,7 @@ const CourseComment = ({ rate, ...props }) => {
     return (
         <div className="review-box clearfix" style={{ border: '1px solid rgba(0, 0, 0, 0.05)', marginTop: '10px' }}>
             <div className="rating" style={{ marginLeft: '10px' }}>
-                <Rate disabled defaultValue={rate.value} />
+                <Rate disabled defaultValue={rate.value} allowHalf/>
                 <Comment
                     author={<a>{rate.fullname}</a>}
                     avatar={
