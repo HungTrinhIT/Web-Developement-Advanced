@@ -1,6 +1,6 @@
 import React from "react";
 import Slider from "react-slick";
-import CourseItem from "../CourseItem";
+import CourseItem from "./CourseItem";
 
 const Carousel = (props) => {
   // Config for course carousel

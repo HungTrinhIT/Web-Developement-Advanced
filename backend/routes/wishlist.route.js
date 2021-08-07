@@ -3,20 +3,20 @@ const router = express.Router();
 const wishListModel = require("../models/wishlist.model");
 const courseModel = require("../models/course.model");
 const { v4: uuidv4 } = require("uuid");
-const wishlistModel = require("../models/wishlist.model");
+
 // Get all
 router.get("/", async function (req, res) {
   const wishlist = await wishListModel.all();
-  const wishListIncludeCategoryName = [];
+  const wishListIncludeCourseName = [];
   for (let wish of wishlist) {
     let course = await courseModel.singleById(wish.course_id);
     if (course) {
       wish.courseName = course.courseName;
-      wishListIncludeCategoryName.push(wish);
+      wishListIncludeCourseName.push(wish);
     }
   }
 
-  res.json(wishListIncludeCategoryName);
+  res.json(wishListIncludeCourseName);
 });
 
 // Get all by UserID

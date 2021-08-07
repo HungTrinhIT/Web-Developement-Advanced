@@ -1,5 +1,5 @@
 import react from 'react';
-import CourseGridItem from '../CourseGridItem';
+import CourseGridItem from './CourseGridItem';
 
 const CourseGrid = (props) => {
     const {courses} = props;

@@ -1,9 +1,9 @@
 import React from 'react';
-import CourseDescription from '../CourseDescription';
+import CourseDescription from './CourseDescription';
 import CourseDetailNavbar from '../CourseDetailNavbar';
-import CourseLessons from '../CourseLessons';
-import CoursePayment from '../CoursePayment';
-import CourseReviews from '../CourseReviews';
+import CourseLessons from './CourseLessons';
+import CoursePayment from './CoursePayment';
+import CourseReviews from './CourseReviews';
 
 const CourseInformation = (props) => {
     const {course} = props;
@@ -17,7 +17,7 @@ const CourseInformation = (props) => {
                         {/* /section */}
                         <CourseLessons />
                         {/* /section */}
-                        <CourseReviews />
+                        <CourseReviews course = {course}/>
                         {/* /section */}
                     </div>
                     {/* /col */}

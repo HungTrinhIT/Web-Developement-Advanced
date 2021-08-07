@@ -18,10 +18,6 @@ const wishListApi = {
     const url = `/wishlist`;
     return axiosClient.post(url, wishlist);
   },
-  update: (id) => {
-    const url = `/wishlist/${id}`;
-    return axiosClient.patch(url);
-  },
   delete: (id) => {
     const url = `/wishlist/delete/${id}`;
     return axiosClient.patch(url);
