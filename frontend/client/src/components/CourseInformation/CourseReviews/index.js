@@ -75,8 +75,9 @@ const CourseReviews = ({ course, ...props }) => {
 
       <div className="col-lg-3">
         <div id="review_summary">
-          <strong>{avgRate}</strong>
+          <strong>{Math.round((avgRate + Number.EPSILON) * 100) / 100}</strong>
           <div className="rating">
+          <Rate disabled value={avgRate} allowHalf/>
           </div>
           <small>Based on {reviews.length} reviews</small>
         </div>
