@@ -5,15 +5,14 @@ const { cloudinary } = require("../utils/cloudinary");
 
 const courseModel = require("../models/course.model");
 const categoryModel = require("../models/category.model");
-const queryString = require('query-string');
+const queryString = require("query-string");
 // Get all
 router.get("/", async function (req, res) {
   const query = req.query;
   const coursesIncludeCategoryName = [];
-  let {page = 1, limit=10} = query;
+  let { page = 1, limit = 10 } = query;
   page = parseInt(page);
-  if(page < 1)
-  {
+  if (page < 1) {
     page = 1;
   }
   const courses = await courseModel.all(query);
@@ -25,18 +24,23 @@ router.get("/", async function (req, res) {
     }
   }
   const totalCourses = courses.length;
-  const totalPage = totalCourses%10 === 0? Math.floor(totalCourses/limit) : Math.floor(totalCourses/limit) + 1;
-  if(page > totalPage)
-  {
+  const totalPage =
+    totalCourses % 10 === 0
+      ? Math.floor(totalCourses / limit)
+      : Math.floor(totalCourses / limit) + 1;
+  if (page > totalPage) {
     page = totalPage;
   }
-  const coursePaging = courses.slice((page-1)*limit,page*limit);
-  
+  const coursePaging = courses.slice((page - 1) * limit, page * limit);
+
   res.json({
     totalCourses,
     courses: coursePaging,
     currentPage: page,
-    totalPage: totalCourses%10 === 0? Math.floor(totalCourses/limit) : Math.floor(totalCourses/limit) + 1
+    totalPage:
+      totalCourses % 10 === 0
+        ? Math.floor(totalCourses / limit)
+        : Math.floor(totalCourses / limit) + 1,
   });
 });
 
@@ -58,7 +62,6 @@ router.get("/:id", async function (req, res) {
 router.post("/", async function (req, res) {
   let course = req.body;
   const courseId = uuidv4();
-  console.log("course", course);
   course = {
     ...course,
     id: courseId,

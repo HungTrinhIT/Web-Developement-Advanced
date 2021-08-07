@@ -4,24 +4,33 @@ const TB_NAME = "course";
 
 module.exports = {
   async all(query) {
-    const {search, price, page=1} = query; 
     let queryData = [];
+    const { search, price } = query;
+    const cat_id = "categories" in query ? query.categories.split(".") : null;
+    if (cat_id) {
+      for (let i = 0; i < cat_id.length; i++) {
+        const data = await db(TB_NAME).where("category_id", cat_id[i]);
+        queryData = [...queryData, ...data];
+      }
+    } else {
+      if ("search" in query && "price" in query) {
+        queryData = await db(TB_NAME)
+          .whereRaw(`MATCH(courseName) AGAINST('${search}')`)
+          .andWhere("isDeleted", false)
+          .orderBy("price", `${price}`);
+      } else if ("search" in query) {
+        queryData = await db(TB_NAME)
+          .whereRaw(`MATCH(courseName) AGAINST('${search}')`)
+          .andWhere("isDeleted", false);
+      } else if ("order" in query) {
+        queryData = await db(TB_NAME)
+          .andWhere("isDeleted", false)
+          .orderBy("price", `${price}`);
+      } else {
+        queryData = await db(TB_NAME).where("isDeleted", false);
+      }
+    }
 
-    if("search" in query && "price" in query)
-    {
-      queryData = await db(TB_NAME).whereRaw(`MATCH(courseName) AGAINST('${search}')`).andWhere("isDeleted", false).orderBy("price",`${price}`);
-    }
-    else if("search" in query)
-    {
-      queryData = await db(TB_NAME).whereRaw(`MATCH(courseName) AGAINST('${search}')`).andWhere("isDeleted", false);
-    }
-    else if("order" in query)
-    {
-      queryData = await db(TB_NAME).andWhere("isDeleted", false).orderBy("price",`${price}`);
-    }
-    else{
-      queryData = await db(TB_NAME).where("isDeleted", false);
-    }
     return queryData;
   },
 
@@ -36,7 +45,6 @@ module.exports = {
   allFullTextSearch(search) {
     return db(TB_NAME).whereRaw(`MATCH(courseName) AGAINST('${search}')`);
   },
-
 
   newestCourse(limit) {
     return db(TB_NAME).orderBy("logCreatedDate", "desc").limit(limit);
