@@ -4,7 +4,6 @@ import { Layout, Menu } from "antd";
 import {
   HomeOutlined,
   AppstoreAddOutlined,
-  FileOutlined,
   BookOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -20,8 +19,20 @@ const Sidebar = (props) => {
   };
   const location = useLocation();
   return (
-    <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-      <div className="logo"></div>
+    <Sider
+      collapsible
+      collapsed={collapsed}
+      onCollapse={onCollapse}
+      style={{
+        overflow: "auto",
+        height: "100vh",
+        position: "fixed",
+        left: 0,
+      }}
+    >
+      <div class="logo" style={{ background: "transparent" }}>
+        <img src="assets/img/logo.png" alt="logo" />
+      </div>
       <Menu
         theme="dark"
         defaultSelectedKeys={["1"]}

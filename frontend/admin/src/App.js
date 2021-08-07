@@ -110,8 +110,8 @@ function App(props) {
     <Layout style={{ minHeight: "100vh" }}>
       <Router>
         <Sidebar />
-        <Layout className="site-layout">
-          <Navbar />
+        <Layout className="site-layout" style={{ marginLeft: 200 }}>
+          {/* <Navbar /> */}
           <Content style={{ margin: "0 16px" }}>
             <CustomBreadcrumb />
             <div
