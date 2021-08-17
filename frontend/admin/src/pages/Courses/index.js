@@ -60,7 +60,6 @@ const Courses = (props) => {
       setCourses(data.data);
     };
     fetchAllCourses();
-    console.log(location);
   }, [filter]);
   const columns = [
     {

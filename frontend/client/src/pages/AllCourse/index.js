@@ -1,22 +1,46 @@
 import React, { useEffect, useState } from "react";
 import courseApi from "../../api/courseApi";
 import CourseGrid from "../../components/CourseGrid";
+import { Pagination, Checkbox, Form } from "antd";
 import "./AllCourse.css";
-const AllCourse = () => {
-  const [courses, setCourses] = useState([]);
 
+const AllCourse = () => {
+  const [courseData, setCourseData] = useState({
+    courses: [],
+    totalCourses: 0,
+    currentPage: 1,
+    totalPage: 1,
+  });
+  const [filter, setFilter] = useState({
+    limit: 10,
+    page: 1,
+    search: "",
+    categories: "",
+  });
   useEffect(() => {
     const fetchAllCourses = async () => {
       try {
-        const courseData = await courseApi.getAll();
-        setCourses(courseData.data.courses);
+        for (let key in filter) {
+          if (!filter[key]) {
+            delete filter[key];
+          }
+        }
+        const response = await courseApi.getAll(filter);
+        setCourseData(response.data);
       } catch (error) {
         throw error;
       }
     };
 
     fetchAllCourses();
-  }, []);
+  }, [filter]);
+  const onPaginateHandleChange = (selectedPage) => {
+    setFilter({
+      ...filter,
+      page: selectedPage,
+    });
+  };
+  const { totalCourses, courses, currentPage, totalPage } = courseData;
   return (
     <main>
       <section id="hero_in" className="courses">
@@ -70,12 +94,11 @@ const AllCourse = () => {
               </div>
             </li>
             <li>
-              <select name="orderby" className="selectbox">
-                <option value="category">Category</option>
-                <option value="category 2">Literature</option>
-                <option value="category 3">Architecture</option>
-                <option value="category 4">Economy</option>
-              </select>
+              <Form>
+                <Form.Item label="Check">
+                  <Checkbox>Nickname is required</Checkbox>
+                </Form.Item>
+              </Form>
             </li>
           </ul>
         </div>
@@ -86,7 +109,6 @@ const AllCourse = () => {
         <div className="row">
           <aside className="col-lg-3" id="sidebar">
             <div id="filters_col">
-              {" "}
               <a
                 data-toggle="collapse"
                 href="#collapseFilters"
@@ -213,7 +235,21 @@ const AllCourse = () => {
             {/*/filters col*/}
           </aside>
           {/* /aside */}
-          <CourseGrid courses={courses} />
+          <div className="col-lg-9">
+            <CourseGrid courses={courses} />
+            <div className="d-flex justify-content-center align-items-center mt-3">
+              <Pagination
+                total={totalCourses}
+                showQuickJumper
+                showSizeChanger={false}
+                showTotal={(total) => `Total ${total} courses`}
+                defaultCurrent={1}
+                onChange={onPaginateHandleChange}
+                defaultPageSize={filter.limit}
+                current={currentPage}
+              />
+            </div>
+          </div>
           {/* /col */}
         </div>
         {/* /row */}
@@ -247,7 +283,7 @@ const AllCourse = () => {
           {/* /row */}
         </div>
         {/* /container */}
-      </div>  
+      </div>
       {/* /bg_color_1 */}
     </main>
   );

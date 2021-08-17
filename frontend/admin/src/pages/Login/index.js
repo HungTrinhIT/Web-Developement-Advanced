@@ -1,9 +1,12 @@
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input, Button, Checkbox, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import authApi from "../../api/auth";
 import parseJWT from "../../utils/parseJWT";
 import { useHistory } from "react-router-dom";
-const Login = () => {
+import createAction from "../../redux/action/createAction";
+import { FETCH_USER } from "../../redux/action/type";
+import { connect } from "react-redux";
+const Login = (props) => {
   const history = useHistory();
 
   const onFinish = async ({ username, password, ...values }) => {
@@ -16,9 +19,15 @@ const Login = () => {
         localStorage.setItem("elearning_accessToken", res.data.accessToken);
         const obj = parseJWT(res.data.accessToken);
         localStorage.setItem("user", JSON.stringify(obj.responseUser));
+        props.dispatch(
+          createAction(FETCH_USER, {
+            ...obj.responseUser,
+            token: res.data.accessToken,
+          })
+        );
         history.push("/");
       } else {
-        alert("Invalid login.");
+        message.error("Invalid credentials");
       }
     } catch (err) {
       if (err.response) {
@@ -63,20 +72,15 @@ const Login = () => {
         <Form.Item name="remember" valuePropName="checked" noStyle>
           <Checkbox>Remember me</Checkbox>
         </Form.Item>
-
-        <a className="login-form-forgot" href="">
-          Forgot password
-        </a>
       </Form.Item>
 
       <Form.Item>
         <Button type="primary" htmlType="submit" className="login-form-button">
           Log in
         </Button>
-        Or <a href="">register now!</a>
       </Form.Item>
     </Form>
   );
 };
 
-export default Login;
+export default connect()(Login);

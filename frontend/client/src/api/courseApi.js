@@ -3,7 +3,7 @@ import axiosClient from "./axiosClient";
 const courseApi = {
   getAll: (params) => {
     const url = "/courses";
-    return axiosClient.get(url);
+    return axiosClient.get(url, { params });
   },
   getById: (id) => {
     const url = `/courses/${id}`;
@@ -24,7 +24,7 @@ const courseApi = {
   update: (course, id) => {
     const url = `/courses/${id}`;
     return axiosClient.patch(url, course);
-  }
+  },
 };
 
 export default courseApi;

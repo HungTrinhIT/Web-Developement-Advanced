@@ -22,7 +22,7 @@ import AddCourse from "./pages/Courses/AddNewCourse";
 import createAction from "./redux/action/createAction";
 import categoryApi from "./api/categoryApi";
 import { connect } from "react-redux";
-import { FETCH_ALL_CATEGORIES } from "./redux/action/type";
+import { FETCH_ALL_CATEGORIES, FETCH_USER } from "./redux/action/type";
 import CourseInfo from "./pages/Courses/CourseInfo";
 import AddUser from "./pages/Users/AddNewUser";
 import UserInfo from "./pages/Users/UserInfo";
@@ -96,9 +96,18 @@ const routes = [
 function App(props) {
   useEffect(() => {
     const fetchAllCategories = async () => {
+      console.log(JSON.parse(localStorage.getItem("user")));
       try {
         const response = await categoryApi.getAll();
         props.dispatch(createAction(FETCH_ALL_CATEGORIES, response.data));
+        if (localStorage.getItem("user")) {
+          props.dispatch(
+            createAction(FETCH_USER, {
+              ...JSON.parse(localStorage.getItem("user")),
+              token: JSON.parse(localStorage.getItem("elearning_accessToken")),
+            })
+          );
+        }
       } catch (error) {
         throw error;
       }
