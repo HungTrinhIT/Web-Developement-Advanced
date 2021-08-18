@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const app = express();
+const auth = require("./middlewares/auth.mdw");
 require("express-async-errors");
 require("dotenv").config();
 app.use(morgan("dev"));
@@ -11,12 +12,12 @@ app.use(express.urlencoded({ limit: "100mb", extended: true }));
 // Routing
 app.use("/api/courses", require("./routes/course.route"));
 app.use("/api/categories", require("./routes/category.route"));
-app.use("/api/users", require("./routes/user.route"));
-app.use("/api/lessons", require("./routes/lesson.route"));
+app.use("/api/users", auth, require("./routes/user.route"));
+app.use("/api/lessons", auth, require("./routes/lesson.route"));
 app.use("/api/auth", require("./routes/auth.route"));
-app.use("/api/wishlist", require("./routes/wishlist.route"));
+app.use("/api/wishlist", auth, require("./routes/wishlist.route"));
 app.use("/api/rate", require("./routes/rate.route"));
-app.use("/api/purchase", require("./routes/purchase.route"));
+app.use("/api/purchase", auth, require("./routes/purchase.route"));
 app.use("/api/chatbot", require("./routes/chatbot.route"));
 
 // Error Handling

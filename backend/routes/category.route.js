@@ -3,10 +3,12 @@ const router = express.Router();
 const categoryModel = require("../models/category.model");
 const { v4: uuidv4 } = require("uuid");
 const courseModel = require("../models/course.model");
-
+const auth = require("../middlewares/auth.mdw");
+const userModel = require("../models/user.model");
 // Get all categories
 router.get("/", async function (req, res) {
   const categories = await categoryModel.all();
+  console.log(req.user);
   res.json(categories);
 });
 
@@ -34,9 +36,18 @@ router.get("/:id", async function (req, res) {
 });
 
 //Add new categories
-router.post("/", async function (req, res) {
+router.post("/", auth, async function (req, res) {
   const { catName, catParent } = req.body;
-
+  const { responseUser } = req.user;
+  const { id } = responseUser;
+  const user = await userModel.singleById(id);
+  if (!user) {
+    return res.status(400).json({
+      msg: "User is not exist",
+    });
+  } else if (user.role !== 0) {
+    return res.status(403).send("Access denied.");
+  }
   if (catName) {
     const isExist = await categoryModel.singleByName(catName);
     if (!isExist) {
@@ -45,6 +56,7 @@ router.post("/", async function (req, res) {
         id: uuidv4(),
         catName,
         cat_id: catParent,
+        logCreatedBy: id,
       };
 
       const ids = await categoryModel.add(newCategory);
@@ -65,10 +77,21 @@ router.post("/", async function (req, res) {
 });
 
 //Delete categories
-router.patch("/delete/:id", async function (req, res) {
+router.patch("/delete/:id", auth, async function (req, res) {
   const catId = req.params.id;
   const cat = await categoryModel.singleById(catId);
 
+  const { responseUser } = req.user;
+  const { id } = responseUser;
+  const user = await userModel.singleById(id);
+  console.log(user);
+  if (!user) {
+    return res.status(400).json({
+      msg: "User is not exist",
+    });
+  } else if (user.role !== 0) {
+    return res.status(403).send("Access denied.");
+  }
   if (cat !== null) {
     if (cat.cat_id !== null) {
       const coursesByID = await courseModel.getCountOfCourseByCategory(catId);
@@ -94,7 +117,7 @@ router.patch("/delete/:id", async function (req, res) {
 });
 
 //Update categories
-router.patch("/:id", async function (req, res) {
+router.patch("/:id", auth, async function (req, res) {
   const id = req.params.id;
   const updatedCategory = req.body;
 

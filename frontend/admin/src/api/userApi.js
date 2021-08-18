@@ -39,6 +39,16 @@ const userApi = {
     const url = `/users/upload-avatar/${id}`;
     return axiosClient.patch(url, image);
   },
+
+  lockUser: (id) => {
+    const url = `/users/lock/${id}`;
+    return axiosClient.patch(url);
+  },
+
+  unLockUser: (id) => {
+    const url = `/users/unlock/${id}`;
+    return axiosClient.patch(url);
+  },
 };
 
 export default userApi;

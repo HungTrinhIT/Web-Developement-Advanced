@@ -5,7 +5,9 @@ const bcrypt = require("bcryptjs");
 const {cloudinary} = require('../utils/cloudinary')
 const userSchema = require("../schemas/user.json");
 const router = express.Router();
+const isAdmin= require("../middlewares/isAdmin.mdw")
 const { v4: uuidv4 } = require("uuid");
+const isAdminMdw = require("../middlewares/isAdmin.mdw");
 // Get all
 router.get("/", async function (req, res) {
   const users = await userModel.all();
@@ -31,6 +33,37 @@ router.get("/:id", async function (req, res) {
 
   res.json(user);
 });
+
+// Lock user
+router.patch('/lock/:id',isAdminMdw,async function(req,res){
+  const id = req.params.id;
+  console.log("äsdasd")
+  const user = await userModel.singleById(id);
+  if(!user) return res.status(202).send("User is not exist");
+  
+  await userModel.update(id, {
+    isBlocked: true
+  })
+  return res.json({
+    msg:"Lock user successfully"
+  })
+})
+
+// Unlock user
+router.patch('/unlock/:id',isAdminMdw,async function(req,res){
+  const id = req.params.id;
+  const user = await userModel.singleById(id);
+  
+  if(!user) return res.status(400).send("User is not eixst");
+  
+  
+  await userModel.update(id, {
+    isBlocked: false
+  })
+  return res.json({
+    msg:"Unlock user successfully"
+  })
+})
 
 router.post("/", validate(userSchema), async (req, res, next) => {
   const user = req.body;

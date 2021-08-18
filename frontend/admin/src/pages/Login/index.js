@@ -16,6 +16,11 @@ const Login = (props) => {
         password,
       });
 
+      if (res.status == 206) {
+        console.log(res.data.msg);
+        message.warning(res.data.msg);
+        return;
+      }
       const { isAuthenticated } = res.data;
       if (isAuthenticated) {
         const { accessToken } = res.data;

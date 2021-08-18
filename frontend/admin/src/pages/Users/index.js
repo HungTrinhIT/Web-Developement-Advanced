@@ -14,9 +14,11 @@ import PageTitle from "../../components/PageTitle";
 import {
   DeleteOutlined,
   EditOutlined,
+  LockOutlined,
   MailOutlined,
   PhoneOutlined,
   PlusOutlined,
+  UnlockOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import userApi from "../../api/userApi";
@@ -53,6 +55,19 @@ const Users = () => {
       throw error;
     }
   };
+  const onLockUser = async (id, isBlocked) => {
+    if (isBlocked.data[0] === 0) {
+      const res = await userApi.lockUser(id);
+      const data = await userApi.getAll();
+      setUsers(data.data);
+      message.success(res.data.msg);
+    } else {
+      const res = await userApi.unLockUser(id);
+      const data = await userApi.getAll();
+      setUsers(data.data);
+      message.success(res.data.msg);
+    }
+  };
   const columns = [
     {
       title: "Fullname",
@@ -79,6 +94,19 @@ const Users = () => {
       title: "Username",
       dataIndex: "username",
       key: "username",
+      width: 120,
+    },
+    {
+      title: "Status",
+      dataIndex: "isBlocked",
+      key: "isBlocked",
+      width: 100,
+      render: (isBlocked) =>
+        isBlocked.data[0] === 0 ? (
+          <Tag color="#87d068">Enable</Tag>
+        ) : (
+          <Tag color="gold">Blocked</Tag>
+        ),
     },
     {
       title: "Email",
@@ -134,6 +162,7 @@ const Users = () => {
       title: "Role",
       dataIndex: "role",
       key: "role",
+      width: 100,
       render: (role, record) => {
         switch (+role) {
           case 0:
@@ -176,7 +205,7 @@ const Users = () => {
     {
       title: "Action",
       key: "action",
-      width: 100,
+      width: 150,
       fixed: "right",
       render: (text, record) => (
         <Space size="middle">
@@ -184,13 +213,39 @@ const Users = () => {
             title="Are you sure to delete this course?"
             onConfirm={() => onDeleteUserConfirm(record.id)}
             okText="Delete"
-            cancelText="Cancle"
+            cancelText="Cancel"
           >
             <Button
               type="danger"
               shape="circle"
               icon={<DeleteOutlined className="icon" />}
             />
+          </Popconfirm>
+          <Popconfirm
+            title={
+              record.isBlocked.data[0] === 0
+                ? "Are you sure to lock this user?"
+                : "Are you sure to unlock this user?"
+            }
+            onConfirm={() => onLockUser(record.id, record.isBlocked)}
+            okText={record.isBlocked.data[0] === 0 ? "Lock" : "Unlock"}
+            cancelText="Cancel"
+          >
+            {record.isBlocked.data[0] === 0 ? (
+              <Tooltip title="Lock User">
+                <Button
+                  shape="circle"
+                  icon={<LockOutlined className="icon" />}
+                />
+              </Tooltip>
+            ) : (
+              <Tooltip title="Unlock User">
+                <Button
+                  shape="circle"
+                  icon={<UnlockOutlined className="icon" />}
+                />
+              </Tooltip>
+            )}
           </Popconfirm>
           <Link to={`/users/${record.id}`}>
             <Button

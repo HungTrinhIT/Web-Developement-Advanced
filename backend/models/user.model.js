@@ -49,7 +49,7 @@ module.exports = {
     userUpdated.logUpdatedDate = new Date();
     return db(TB_NAME).where("id", id).update(userUpdated);
   },
-
+  
   updateRefreshToken(id, refreshToken) {
     return db(TB_NAME).where("id", id).update("rfToken", refreshToken);
   },

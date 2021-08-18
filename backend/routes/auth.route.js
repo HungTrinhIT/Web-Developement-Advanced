@@ -8,9 +8,16 @@ const jwt = require("jsonwebtoken");
 const randomstring = require("randomstring");
 router.post("/", validate(authSchema), async (req, res, next) => {
   const user = await userModel.singleByName(req.body.username);
+
   if (!user) {
     return res.json({
       isAuthenticated: false,
+    });
+  }
+
+  if (user && user.isBlocked.toJSON().data[0] === 1) {
+    return res.status(206).json({
+      msg: "Your account has been locked",
     });
   }
   if (!bcrypt.compareSync(req.body.password, user.password)) {
@@ -18,13 +25,14 @@ router.post("/", validate(authSchema), async (req, res, next) => {
       authenticated: false,
     });
   }
-  const { username, id, avatar, fullname, email } = user;
+  const { username, id, avatar, fullname, email, role } = user;
   const responseUser = {
     username,
     id,
     avatar,
     fullname,
     email,
+    role,
   };
 
   const accessToken = jwt.sign(
