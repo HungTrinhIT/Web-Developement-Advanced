@@ -10,7 +10,7 @@ router.post("/", validate(authSchema), async (req, res, next) => {
   const user = await userModel.singleByName(req.body.username);
   if (!user) {
     return res.json({
-      authenticated: false,
+      isAuthenticated: false,
     });
   }
   if (!bcrypt.compareSync(req.body.password, user.password)) {
@@ -41,7 +41,7 @@ router.post("/", validate(authSchema), async (req, res, next) => {
   await userModel.updateRefreshToken(user.id, refreshToken);
 
   return res.json({
-    authenticated: true,
+    isAuthenticated: true,
     accessToken,
     refreshToken,
   });

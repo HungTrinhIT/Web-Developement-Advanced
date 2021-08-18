@@ -4,11 +4,16 @@ module.exports = {
   all() {
     return db(TB_NAME).where("isDeleted", false);
   },
-
+  allChildrenByParent(id) {
+    return db(TB_NAME).where({
+      isDeleted: false,
+      cat_id: id,
+    });
+  },
   allParents() {
     return db(TB_NAME).where({
-      "isDeleted": false,
-      "cat_id": null
+      isDeleted: false,
+      cat_id: null,
     });
   },
 

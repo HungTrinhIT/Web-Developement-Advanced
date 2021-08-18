@@ -1,8 +1,7 @@
 import "./App.css";
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout } from "antd";
 import Sidebar from "./layouts/Sidebar";
-import CustomBreadcrumb from "./layouts/Breadcrumb";
 import Navbar from "./layouts/Navbar";
 import CustomFooter from "./layouts/Footer";
 import {
@@ -28,6 +27,8 @@ import AddUser from "./pages/Users/AddNewUser";
 import UserInfo from "./pages/Users/UserInfo";
 import AddNewLesson from "./pages/Courses/CourseInfo/CourseInfoLesson/AddNewLesson";
 import LessonDetail from "./pages/Courses/CourseInfo/CourseInfoLesson/LessonDetail";
+import parseJwt from "./utils/parseJWT";
+
 const { Content } = Layout;
 const routes = [
   {
@@ -93,39 +94,47 @@ const routes = [
   },
 ];
 
-function App(props) {
+const App = (props) => {
+  const [collapsed, setCollapsed] = useState(false);
   useEffect(() => {
-    const fetchAllCategories = async () => {
-      console.log(JSON.parse(localStorage.getItem("user")));
-      try {
-        const response = await categoryApi.getAll();
-        props.dispatch(createAction(FETCH_ALL_CATEGORIES, response.data));
-        if (localStorage.getItem("user")) {
-          props.dispatch(
-            createAction(FETCH_USER, {
-              ...JSON.parse(localStorage.getItem("user")),
-              token: JSON.parse(localStorage.getItem("elearning_accessToken")),
-            })
-          );
+    const accessToken = localStorage.getItem("elearning_accessToken");
+    if (accessToken) {
+      const userInfo = parseJwt(accessToken);
+      props.dispatch(
+        createAction(FETCH_USER, {
+          userInfo: userInfo.responseUser,
+          token: accessToken,
+        })
+      );
+      const fetchAllCategories = async () => {
+        try {
+          const response = await categoryApi.getAll();
+          props.dispatch(createAction(FETCH_ALL_CATEGORIES, response.data));
+        } catch (error) {
+          throw error;
         }
-      } catch (error) {
-        throw error;
-      }
-    };
-    fetchAllCategories();
+      };
+      fetchAllCategories();
+    }
   }, []);
-
+  const onCollapse = (collapsed) => {
+    setCollapsed(collapsed);
+  };
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Router>
-        <Sidebar />
-        <Layout className="site-layout" style={{ marginLeft: 200 }}>
-          {/* <Navbar /> */}
+        <Sidebar collapsed={collapsed} onCollapse={onCollapse} />
+        <Layout className="site-layout">
+          <Navbar />
           <Content style={{ margin: "0 16px" }}>
-            <CustomBreadcrumb />
+            {/* <CustomBreadcrumb /> */}
             <div
               className="site-layout-background"
-              style={{ padding: 24, minHeight: 360 }}
+              style={{
+                margin: "24px 16px",
+                padding: 24,
+                minHeight: 280,
+              }}
             >
               <Switch>
                 <Route path="/login" component={Login} />
@@ -147,7 +156,7 @@ function App(props) {
       </Router>
     </Layout>
   );
-}
+};
 function PrivateRoute({ component: Component, ...rest }) {
   return (
     <Route

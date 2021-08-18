@@ -37,7 +37,7 @@ const CourseInfoDetail = ({ course, categories, ...props }) => {
   const onFinish = async (values) => {
     values = { ...values, fullDescription };
     try {
-      const response = await courseApi.update(values, id);
+      await courseApi.update(values, id);
       message.success("Course is updated successfully");
       executeScroll();
     } catch (error) {

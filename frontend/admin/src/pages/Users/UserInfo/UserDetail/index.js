@@ -1,17 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Form,
-  Input,
-  Select,
-  Row,
-  Col,
-  Button,
-  InputNumber,
-  message,
-  Radio,
-} from "antd";
+import { Form, Input, Row, Col, Button, message, Radio } from "antd";
 
-import { useParams } from "react-router-dom";
 import userApi from "../../../../api/userApi";
 
 const UserDetail = ({ user, ...props }) => {
@@ -44,10 +33,6 @@ const UserDetail = ({ user, ...props }) => {
     labelCol: {
       span: 24,
     },
-  };
-
-  const goBack = () => {
-    props.history.push("/users");
   };
 
   return (

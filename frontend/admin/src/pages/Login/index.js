@@ -1,11 +1,11 @@
 import { Form, Input, Button, Checkbox, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import authApi from "../../api/auth";
-import parseJWT from "../../utils/parseJWT";
 import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
+import parseJwt from "../../utils/parseJWT";
 import createAction from "../../redux/action/createAction";
 import { FETCH_USER } from "../../redux/action/type";
-import { connect } from "react-redux";
 const Login = (props) => {
   const history = useHistory();
 
@@ -15,16 +15,19 @@ const Login = (props) => {
         username,
         password,
       });
-      if (res.data.authenticated) {
-        localStorage.setItem("elearning_accessToken", res.data.accessToken);
-        const obj = parseJWT(res.data.accessToken);
-        localStorage.setItem("user", JSON.stringify(obj.responseUser));
+
+      const { isAuthenticated } = res.data;
+      if (isAuthenticated) {
+        const { accessToken } = res.data;
+        localStorage.setItem("elearning_accessToken", accessToken);
+        const userInfo = parseJwt(accessToken);
         props.dispatch(
           createAction(FETCH_USER, {
-            ...obj.responseUser,
-            token: res.data.accessToken,
+            userInfo: userInfo.responseUser,
+            token: accessToken,
           })
         );
+
         history.push("/");
       } else {
         message.error("Invalid credentials");

@@ -1,9 +1,8 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useState } from "react";
 import courseApi from "../../api/courseApi";
 import { connect } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
-import { debounce } from "lodash";
 import PageTitle from "../../components/PageTitle";
+import queryString from "query-string";
 import {
   Button,
   Tooltip,
@@ -16,7 +15,7 @@ import {
   Input,
   Select,
 } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
 import "./course.css";
@@ -34,9 +33,9 @@ const Courses = (props) => {
     search: "",
     categories: "",
   });
-  const [loading, setLoading] = useState(false);
-  const history = useHistory();
+
   const location = useLocation();
+  const history = useHistory();
   const onDeleteCourseConfirm = async (id) => {
     try {
       await courseApi.delete(id);
@@ -47,7 +46,14 @@ const Courses = (props) => {
       throw error;
     }
   };
-
+  useEffect(() => {
+    const query = queryString.parse(location.search);
+    const categories = query && query.categories ? query.categories : "";
+    setFilter({
+      ...filter,
+      categories: [categories],
+    });
+  }, []);
   useEffect(() => {
     const fetchAllCourses = async () => {
       for (let key in filter) {
@@ -55,7 +61,9 @@ const Courses = (props) => {
           delete filter[key];
         }
       }
-
+      if (filter.categories !== "") {
+        history.push("/courses");
+      }
       const data = await courseApi.getAll(filter);
       setCourses(data.data);
     };
@@ -178,6 +186,7 @@ const Courses = (props) => {
 
   const categoryHandleChange = (value) => {
     const categoriesConcat = value.join(".");
+
     setFilter({
       ...filter,
       search: "",
@@ -211,7 +220,6 @@ const Courses = (props) => {
         <Input.Search
           placeholder="Search course"
           name="search"
-          loading={loading}
           enterButton
           style={{ width: "250px" }}
           onChange={onSearchHandler}

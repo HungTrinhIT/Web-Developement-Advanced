@@ -1,16 +1,33 @@
 const { default: knex } = require("knex");
 const db = require("../utils/db");
 const TB_NAME = "course";
-
+const categoryModel = require("./category.model");
 module.exports = {
   async all(query) {
     let queryData = [];
     const { search, price } = query;
-    const cat_id = "categories" in query ? query.categories.split(".") : null;
-    if (cat_id) {
-      for (let i = 0; i < cat_id.length; i++) {
-        const data = await db(TB_NAME).where("category_id", cat_id[i]);
-        queryData = [...queryData, ...data];
+    const cat_ids = "categories" in query ? query.categories.split(".") : null;
+
+    // Search by categories
+    if (cat_ids) {
+      for (const catID of cat_ids) {
+        const category = await categoryModel.singleById(catID);
+        if (!category) return [];
+        if (category && !category.cat_id) {
+          // Get all subcategories
+          const subCategories = await categoryModel.allChildrenByParent(
+            category.id
+          );
+          let data = [];
+
+          for (let subCatItem of subCategories) {
+            data = await db(TB_NAME).where("category_id", subCatItem.id);
+            queryData = [...queryData, ...data];
+          }
+        } else {
+          const data = await db(TB_NAME).where("category_id", catID);
+          queryData = [...queryData, ...data];
+        }
       }
     } else {
       if ("search" in query && "price" in query) {

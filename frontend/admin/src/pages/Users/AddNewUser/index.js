@@ -1,21 +1,9 @@
-import React, { useState, useRef } from "react";
-import {
-  Form,
-  Input,
-  Select,
-  Row,
-  Col,
-  Button,
-  InputNumber,
-  message,
-  Radio,
-} from "antd";
+import React, { useRef } from "react";
+import { Form, Input, Row, Col, Button, message, Radio } from "antd";
 
 import PageTitle from "../../../components/PageTitle";
 import { RollbackOutlined } from "@ant-design/icons";
-import courseApi from "../../../api/courseApi";
 import userApi from "../../../api/userApi";
-const { Option } = Select;
 
 const AddUser = (props) => {
   const [form] = Form.useForm();
@@ -51,7 +39,6 @@ const AddUser = (props) => {
   const goBack = () => {
     props.history.push("/users");
   };
-  const { categories } = props;
 
   return (
     <div ref={addUser}>

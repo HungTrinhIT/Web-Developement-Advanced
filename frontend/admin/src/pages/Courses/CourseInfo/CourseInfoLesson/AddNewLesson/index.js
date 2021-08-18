@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Form, Input, sRow, Col, Button, Upload, Row, message } from "antd";
+import React, { useState, useRef } from "react";
+import { Form, Input, Col, Button, Upload, Row, message } from "antd";
 
 import { useParams } from "react-router-dom";
 import lessonApi from "../../../../../api/lessonApi";
@@ -12,7 +12,6 @@ const AddNewLesson = (props) => {
   const [form] = Form.useForm();
   const { id } = useParams();
   const lessonRef = useRef();
-  const executeScroll = () => lessonRef.current.scrollIntoView();
   const [loading, setLoading] = useState(false);
   const [lessonContent, setLessonContent] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);

@@ -1,6 +1,6 @@
 import React from "react";
-import { Form, Input, Button, Checkbox, Row, Col, message } from "antd";
-import bcrypt from "bcryptjs";
+import { Form, Input, Button, Row, Col, message } from "antd";
+
 import { useParams } from "react-router-dom";
 import userApi from "../../../../api/userApi";
 const ChangePassword = () => {

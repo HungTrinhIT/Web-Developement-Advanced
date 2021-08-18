@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Layout, Menu } from "antd";
 
 import {
@@ -12,30 +12,16 @@ const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 const Sidebar = (props) => {
-  const [collapsed, setCollapsed] = useState(false);
-
-  const onCollapse = (collapsed) => {
-    setCollapsed(collapsed);
-  };
   const location = useLocation();
+  const { collapsed, onCollapse } = props;
   return (
-    <Sider
-      collapsible
-      collapsed={collapsed}
-      onCollapse={onCollapse}
-      style={{
-        overflow: "auto",
-        height: "100vh",
-        position: "fixed",
-        left: 0,
-      }}
-    >
-      <div class="logo" style={{ background: "transparent" }}>
+    <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+      <div className="logo" style={{ background: "transparent" }}>
         <img src="assets/img/logo.png" alt="logo" />
       </div>
       <Menu
         theme="dark"
-        defaultSelectedKeys={["1"]}
+        defaultSelectedKeys={["/"]}
         mode="inline"
         selectedKeys={[location.pathname]}
       >

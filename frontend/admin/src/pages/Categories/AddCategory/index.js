@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import categoryApi from "../../../api/categoryApi";
 import { RollbackOutlined } from "@ant-design/icons";
 import PageTitle from "../../../components/PageTitle";
@@ -39,6 +39,7 @@ const AddNewCategory = (props) => {
           break;
         case 200:
           message.warning(data.data.msg);
+          break;
         default:
           return;
       }

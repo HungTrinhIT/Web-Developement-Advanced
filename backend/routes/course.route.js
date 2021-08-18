@@ -16,6 +16,7 @@ router.get("/", async function (req, res) {
     page = 1;
   }
   const courses = await courseModel.all(query);
+
   for (let course of courses) {
     let category = await categoryModel.singleById(course.category_id);
     if (category) {

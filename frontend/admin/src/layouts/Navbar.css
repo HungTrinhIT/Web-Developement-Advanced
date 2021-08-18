@@ -1,0 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
+
+.userFullname {
+    font-family: 'Architects Daughter', cursive;
+    margin-right: 24px;
+    font-size: 1.2rem;
+    font-weight: bold
+}

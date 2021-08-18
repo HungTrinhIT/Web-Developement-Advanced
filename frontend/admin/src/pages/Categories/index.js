@@ -15,17 +15,24 @@ import {
   Table,
   message,
   Popconfirm,
+  Select,
 } from "antd";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import createAction from "../../redux/action/createAction";
 import { FETCH_ALL_CATEGORIES } from "../../redux/action/type";
+const { Option } = Select;
+const ALL_CATEGORIES = 1;
+const PARENT_CATEGORIES = 2;
+const CHILDREN_CATEGORIES = 3;
 
 const Categories = (props) => {
+  const { categories } = props;
   const [visible, setVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [categorySelected, setCategorySelected] = useState({});
+  const [filter, setFilter] = useState(ALL_CATEGORIES);
   useEffect(() => {
     const fetchAllCategories = async () => {
       try {
@@ -43,12 +50,20 @@ const Categories = (props) => {
       title: "Category Name",
       dataIndex: "catName",
       key: "catName",
+      render: (catName, record) => {
+        return <Link to={`/courses?categories=${record.id}`}>{catName}</Link>;
+      },
     },
     {
       title: "Parent Category",
       dataIndex: "parentCatName",
       key: "parentCatName",
-      render: (parentCatName) => <Tag color={"geekblue"}>{parentCatName}</Tag>,
+      render: (parentCatName, record) =>
+        !record.cat_id ? (
+          <Tag color={"#f50"}>Main</Tag>
+        ) : (
+          <Tag color={"#2db7f5"}>{parentCatName}</Tag>
+        ),
     },
     {
       title: "Created Date",
@@ -139,7 +154,9 @@ const Categories = (props) => {
     setCategorySelected({});
     setVisible(false);
   };
-
+  const onTypeCategoryChange = (value) => {
+    setFilter(value);
+  };
   const onDeleteCategory = async (id) => {
     try {
       const data = await categoryApi.delete(id);
@@ -163,6 +180,21 @@ const Categories = (props) => {
       [e.target.name]: e.target.value,
     });
   };
+
+  let tableData = [];
+  switch (filter) {
+    case ALL_CATEGORIES:
+      tableData = categories;
+      break;
+    case PARENT_CATEGORIES:
+      tableData = categories.filter((cat) => cat.cat_id === null);
+      break;
+    case CHILDREN_CATEGORIES:
+      tableData = categories.filter((cat) => cat.cat_id !== null);
+      break;
+    default:
+      break;
+  }
   return (
     <div>
       <PageTitle title="Categories">
@@ -177,13 +209,22 @@ const Categories = (props) => {
           </Tooltip>
         </Link>
       </PageTitle>
+      <div className="d-flex justify-content-end mb-3">
+        <Select
+          defaultValue={ALL_CATEGORIES}
+          style={{ width: 120 }}
+          onChange={onTypeCategoryChange}
+          placeholder="Select type category"
+        >
+          <Option value={ALL_CATEGORIES}>All</Option>
+          <Option value={PARENT_CATEGORIES}>Main Categories</Option>
+          <Option value={CHILDREN_CATEGORIES}>Sub Categories</Option>
+        </Select>
+      </div>
+
       <Row gutter={16}>
         <Col span={24}>
-          <Table
-            dataSource={props.categories}
-            columns={columnRootCategoriesTable}
-            bordered
-          />
+          <Table dataSource={tableData} columns={columnRootCategoriesTable} />
         </Col>
       </Row>
 

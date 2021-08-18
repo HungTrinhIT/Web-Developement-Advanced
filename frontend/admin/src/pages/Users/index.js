@@ -63,7 +63,7 @@ const Users = () => {
           <Link to={`/users/${record.id}`}>
             <div className="d-flex align-items-center">
               {record.avatar ? (
-                <img src={`${record.avatar}`} className="img-small" />
+                <img src={`${record.avatar}`} className="img-small" alt="img" />
               ) : (
                 <Avatar size="large" icon={<UserOutlined />} className="icon" />
               )}
@@ -142,6 +142,8 @@ const Users = () => {
             return <Tag color="gold">Teacher</Tag>;
           case 2:
             return <Tag color="blue">Student</Tag>;
+          default:
+            return;
         }
       },
     },
