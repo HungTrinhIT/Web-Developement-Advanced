@@ -17,6 +17,7 @@ app.use("/api/auth", require("./routes/auth.route"));
 app.use("/api/wishlist", require("./routes/wishlist.route"));
 app.use("/api/rate", require("./routes/rate.route"));
 app.use("/api/purchase", require("./routes/purchase.route"));
+app.use("/api/chatbot", require("./routes/chatbot.route"));
 
 // Error Handling
 app.use(function (req, res, next) {
