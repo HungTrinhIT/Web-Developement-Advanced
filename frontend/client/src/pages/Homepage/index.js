@@ -17,6 +17,7 @@ import {
 const Homepage = (props) => {
   const [courses, setCourses] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [highlightCourses, setHighlightCourse] = useState([]);
   const [newCourses, setNewCourses] = useState([]);
   const [mostViewCourse, setMostViewCourse] = useState([]);
   const limit = 10;
@@ -36,6 +37,15 @@ const Homepage = (props) => {
         const categoryData = await categoryApi.getAllParents();
         setCategories(categoryData.data);
         props.dispatch(createAction(FETCH_ALL_CATEGORIES, categoryData.data));
+      } catch (error) {
+        throw error;
+      }
+    };
+
+    const fetchHighLightLastWeek = async () => {
+      try {
+        const courseData = await courseApi.getHighlightLastWeek();
+        setHighlightCourse(courseData.data);
       } catch (error) {
         throw error;
       }
@@ -61,6 +71,7 @@ const Homepage = (props) => {
 
     fetchAllCourses();
     fetchAllCategories();
+    fetchHighLightLastWeek();
     fetchNewCourses();
     fetchMostViewCourses();
   }, []);
@@ -87,6 +98,15 @@ const Homepage = (props) => {
             </Link>
           </p>
         </div>
+
+        <div className="main_title_2">
+          <span>
+            <em />
+          </span>
+          <h2>Top 3 Highlight Courses</h2>
+        </div>
+
+        <Carousel courses={highlightCourses} />
 
         <div className="main_title_2">
           <span>

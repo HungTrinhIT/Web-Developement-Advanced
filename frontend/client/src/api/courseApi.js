@@ -9,6 +9,10 @@ const courseApi = {
     const url = `/courses/${id}`;
     return axiosClient.get(url);
   },
+  getHighlightLastWeek: () => {
+    const url = `/courses/lastweek`;
+    return axiosClient.get(url);
+  },
   getNewest: (limit) => {
     const url = `/courses/new/${limit}`;
     return axiosClient.get(url);

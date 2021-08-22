@@ -36,10 +36,10 @@ const UserInfo = (props) => {
           <UserImage user={user} />
         </TabPane>
         <TabPane tab="Learning" key="4">
-          <UserLearning />
+          <UserLearning user={user}/>
         </TabPane>
         <TabPane tab="Wishlist" key="5">
-          <UserWishlist />
+          <UserWishlist user={user}/>
         </TabPane>
       </Tabs>
     </div>

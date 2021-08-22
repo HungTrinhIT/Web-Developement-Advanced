@@ -1,16 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Form, Input, Row, Col, Button, message, Radio } from "antd";
+import { Form, Input, Row, Col, Button, message, Radio, Avatar } from "antd";
+import {
+    UserOutlined,
+} from "@ant-design/icons";
 import userApi from "../../../api/userApi";
 
-const ProfileDescription = ({user, ...props}) => {
+const ProfileDescription = ({ user, ...props }) => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
-    
+
     useEffect(() => {
         form.setFieldsValue({
-          ...user,
+            ...user,
         });
-      }, [user]);
+    }, [user]);
     const onFinish = async (values) => {
         const userID = user.id;
         setLoading(true);
@@ -25,7 +28,17 @@ const ProfileDescription = ({user, ...props}) => {
     };
     return (
         <div>
-            <Form
+            <div className="row">
+            <aside className="col-lg-3" id="sidebar">
+                <div className="d-flex align-items-center">
+                    {user.avatar ? (
+                        <img src={`${user.avatar}`} className="img-small" style={{ maxWidth: "250px", maxHeight: "250px" }} />
+                    ) : (
+                        <Avatar size="large" icon={<UserOutlined />} className="icon" />
+                    )}
+                </div>
+            </aside>
+            <Form  className="col-lg-9"
                 form={form}
                 name="userProfile"
                 onFinish={onFinish}
@@ -94,6 +107,7 @@ const ProfileDescription = ({user, ...props}) => {
                     </Button>
                 </Form.Item>
             </Form>
+            </div>
         </div>
     );
 };

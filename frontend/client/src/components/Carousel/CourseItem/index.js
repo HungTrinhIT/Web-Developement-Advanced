@@ -1,3 +1,4 @@
+import { Rate } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -8,7 +9,7 @@ const CourseItem = (props) => {
       <div className="box_grid">
         <figure>
           <a href="#0" className="wish_bt" />
-          <Link to={`/course-detail/${course.id}`}>
+          <Link to={`/courses/${course.id}`}>
             <img
               style={{ height: "200px", width: "100%", objectFit: "cover" }}
               src={
@@ -32,11 +33,7 @@ const CourseItem = (props) => {
               : course.shortDescription}
           </p>
           <div className="rating">
-            <i className="icon_star voted" />
-            <i className="icon_star voted" />
-            <i className="icon_star voted" />
-            <i className="icon_star" />
-            <i className="icon_star" /> <small>(145)</small>
+            <Rate disabled value={course.rate} allowHalf />
           </div>
         </div>
         <ul>
@@ -47,7 +44,7 @@ const CourseItem = (props) => {
             <i className="icon_like" /> 890
           </li>
           <li>
-            <Link to={`/course-detail/${course.id}`} class="main-btn">
+            <Link to={`/courses/${course.id}`} class="main-btn">
               Enroll now
             </Link>
           </li>

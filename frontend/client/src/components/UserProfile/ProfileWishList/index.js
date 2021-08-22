@@ -37,7 +37,7 @@ const ProfileWishList = ({user, ...props}) => {
             dataIndex: 'courseName',
             key: 'courseName',
             render: (text, record) => (
-              <Link to={`/course-detail/${record.course_id}`}>{text}</Link>
+              <Link to={`/courses/${record.course_id}`}>{text}</Link>
             ),
         },
         {

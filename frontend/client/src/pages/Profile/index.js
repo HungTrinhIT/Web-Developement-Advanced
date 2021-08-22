@@ -9,6 +9,8 @@ import {
     UserOutlined,
 } from "@ant-design/icons";
 import ProfileLearning from '../../components/UserProfile/ProfileLearning';
+import ChangePassword from '../../components/UserProfile/ChangePassword';
+import ProfileImage from '../../components/UserProfile/ProfileImage';
 const { TabPane } = Tabs;
 
 const Profile = () => {
@@ -36,26 +38,17 @@ const Profile = () => {
             </section>
             {/*/hero_in*/}
             <div className="container margin_60_35">
-                <div className="row">
-                    <aside className="col-lg-3" id="sidebar">
-                        <div className="d-flex align-items-center">
-                            {user.avatar ? (
-                                <img src={`${user.avatar}`} className="img-small" style={{ maxWidth: "300px", maxHeight: "300px" }} />
-                            ) : (
-                                <Avatar size="large" icon={<UserOutlined />} className="icon" />
-                            )}
-                        </div>
-                    </aside>
+                    
                     {/*/aside */}
-                    <Tabs type="card" className="col-lg-9">
+                    <Tabs type="card">
                         <TabPane tab="Profile" key="1">
                             <ProfileDescription user={user} />
                         </TabPane>
                         <TabPane tab="Change Password" key="2">
-
+                            <ChangePassword user={user}/>
                         </TabPane>
                         <TabPane tab="Avatar" key="3">
-
+                            <ProfileImage user={user} />
                         </TabPane>
                         <TabPane tab="My Learning" key="4">
                             <ProfileLearning user={user} />
@@ -66,7 +59,6 @@ const Profile = () => {
                     </Tabs>
 
                     {/* /col */}
-                </div>
                 {/* /row */}
             </div>
             {/* /container */}

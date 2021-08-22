@@ -27,7 +27,7 @@ function App() {
         <Header />
         <Switch>
           <Route exact={true} path="/" component={Homepage} />
-          <Route path="/course-detail/:id" component={CourseDetail} />
+          <Route path="/courses/:id" component={CourseDetail} />
           <Route path="/courses" component={AllCourse} />
           <Route path="/cart" component={Cart} />
           <Route path="/register" component={Register} />

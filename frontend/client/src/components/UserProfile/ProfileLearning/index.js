@@ -18,16 +18,7 @@ const ProfileLearning = ({user, ...props}) => {
         };
         fetchLearning();
     }, []);
-    const onDeleteWishlistConfirm = async (id) => {
-        try {
-          await purchaseApi.delete(id);
-          const data = await purchaseApi.getByUserID(user.id);
-          setLearning(data.data);
-          message.success("Course is deleted successfully!");
-        } catch (error) {
-          throw error;
-        }
-      };
+    
     const columns = [
         {
             title: 'Course Name',
@@ -35,31 +26,10 @@ const ProfileLearning = ({user, ...props}) => {
             dataIndex: 'courseName',
             key: 'courseName',
             render: (text, record) => (
-              <Link to={`/course-detail/${record.course_id}`}>{text}</Link>
+              <Link to={`/courses/${record.course_id}`}>{text}</Link>
             ),
         },
-        {
-            title: "Action",
-            key: "action",
-            width: 30,
-            fixed: "right",
-            render: (text, record) => (
-              <Space size="middle">
-                <Popconfirm
-                  title="Are you sure to delete this course?"
-                  onConfirm={() => onDeleteWishlistConfirm(record.id)}
-                  okText="Delete"
-                  cancelText="Cancle"
-                >
-                  <Button
-                    type="danger"
-                    shape="circle"
-                    icon={<DeleteOutlined className="icon" />}
-                  />
-                </Popconfirm>
-              </Space>
-            ),
-          },
+        
     ];
     return (
         <div>
