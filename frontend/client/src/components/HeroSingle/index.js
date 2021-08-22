@@ -15,22 +15,6 @@ const HeroSingle = () => {
             Increase your expertise in business, technology and personal
             development
           </p>
-          <form>
-            <div id="custom-search-input">
-              <div className="input-group">
-                <input
-                  type="text"
-                  className=" search-query"
-                  placeholder="Ex. Architecture, Specialization..."
-                />
-                <input
-                  type="submit"
-                  className="btn_search"
-                  defaultValue="Search"
-                />
-              </div>
-            </div>
-          </form>
         </div>
       </div>
     </section>
