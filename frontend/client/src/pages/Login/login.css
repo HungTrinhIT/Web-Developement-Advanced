@@ -1,11 +1,25 @@
 .login-wrp {
-    background-color: #605193;
+    margin: 84px 0;
+    display: flex;
     height: 100vh;
-    margin-top: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
 }
 
 .login-container {
-    width: 300px;
-    border-radius: 4px;
-    padding: 40px 16px;
+    width: 400px;
+}
+
+.btn_1:focus {
+    outline: none;
+
+}
+
+.login__title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-bottom: 2px solid #a0a0a0;
+    margin-bottom: 16px;
 }

@@ -127,7 +127,6 @@ const App = (props) => {
         <Layout className="site-layout">
           <Navbar />
           <Content style={{ margin: "0 16px" }}>
-            {/* <CustomBreadcrumb /> */}
             <div
               className="site-layout-background"
               style={{
@@ -136,8 +135,12 @@ const App = (props) => {
                 minHeight: 280,
               }}
             >
-              <Switch>
+              {props.user.isAuthenticated ? (
+                <Redirect to="/" exact={true} />
+              ) : (
                 <Route path="/login" component={Login} />
+              )}
+              <Switch>
                 {routes.map(({ component, exact, path }, index) => {
                   return (
                     <PrivateRoute
@@ -175,5 +178,9 @@ function PrivateRoute({ component: Component, ...rest }) {
     />
   );
 }
-
-export default connect()(App);
+const mapStateToProps = (state) => {
+  return {
+    user: state.users,
+  };
+};
+export default connect(mapStateToProps)(App);

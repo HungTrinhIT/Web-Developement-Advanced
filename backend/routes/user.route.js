@@ -37,7 +37,7 @@ router.get("/:id", async function (req, res) {
 // Lock user
 router.patch('/lock/:id',isAdminMdw,async function(req,res){
   const id = req.params.id;
-  console.log("äsdasd")
+  
   const user = await userModel.singleById(id);
   if(!user) return res.status(202).send("User is not exist");
   

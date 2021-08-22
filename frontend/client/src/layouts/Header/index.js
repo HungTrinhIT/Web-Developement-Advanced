@@ -1,129 +1,211 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-const Header = ({ categories, ...props }) => {
-  return (
-    <header className="header menu_2">
-      <div id="logo">
-        <Link to="/">
-          <img
-            src="assets/img/logo.png"
-            width={149}
-            height={42}
-            alt="hinh ne"
-          />
-        </Link>
-      </div>
-      <ul id="top_menu">
-        <li>
-          <a href="login.html" className="login">
-            Login
-          </a>
-        </li>
-        <li>
-          <a href="#0" className="search-overlay-menu-btn">
-            Search
-          </a>
-        </li>
-        <li className="hidden_tablet">
-          <a href="admission.html" className="btn_1 rounded">
-            Admission
-          </a>
-        </li>
-      </ul>
-      {/* /top_menu */}
-      <a href="#menu" className="btn_mobile">
-        <div className="hamburger hamburger--spin" id="hamburger">
-          <div className="hamburger-box">
-            <div className="hamburger-inner" />
-          </div>
-        </div>
-      </a>
-      <nav id="menu" className="main-menu">
-        <ul>
+import { Dropdown, Menu, Avatar } from "antd";
+import createAction from "../../redux/action/createAction";
+import { LOG_OUT } from "../../redux/action/type";
+
+const Header = ({ categories, user, ...props }) => {
+  const { userInfo, isAuthenticated } = user;
+  const history = useHistory();
+  const onLogout = () => {
+    localStorage.removeItem("elearning_accessToken");
+    props.dispatch(createAction(LOG_OUT, null));
+    history.push("/");
+  };
+  const menu = (
+    <Menu>
+      <Menu.Item key="logout">
+        <a target="_blank" rel="noopener noreferrer" onClick={onLogout}>
+          Logout
+        </a>
+      </Menu.Item>
+    </Menu>
+  );
+  const avatar = userInfo.avatar ? (
+    <ul className="avatar">
+      <li>
+        <img
+          src={userInfo.avatar}
+          style={{
+            height: "48px",
+            width: "48px",
+            objectFit: "cover",
+            borderRadius: "100vh",
+            border: "2px solid #ffffff",
+          }}
+          alt={userInfo.fullName}
+        />
+        <ul className="avatar-sub">
           <li>
-            <span>
-              <Link to="/">Home</Link>
-            </span>
+            {isAuthenticated ? (
+              <div className="d-flex align-items-center">
+                <img
+                  src={userInfo.avatar}
+                  style={{
+                    height: "48px",
+                    width: "48px",
+                    objectFit: "cover",
+                    borderRadius: "100vh",
+                    border: "2px solid #ffffff",
+                    marginRight: "8px",
+                  }}
+                  alt={userInfo.fullname}
+                />
+                <div>
+                  <p
+                    className="mb-2"
+                    style={{
+                      fontWeight: "bold",
+                      color: "#662d91",
+                    }}
+                  >
+                    {userInfo.fullname}
+                  </p>
+                  <p
+                    className="mb-0"
+                    style={{ fontSize: "10px", color: "rgb(106, 111, 115)" }}
+                  >
+                    {userInfo.email}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <Avatar
+                style={{ backgroundColor: "#87d068" }}
+                icon={<i className="fas fa-user" />}
+                className="icon"
+                size="large"
+              />
+            )}
           </li>
           <li>
-            <span>
-              <Link to="/courses">Courses</Link>
-            </span>
+            <Link to="/profile">My learning</Link>
           </li>
           <li>
-            <span>
-              <a href="#0">Categories</a>
-            </span>
-            <ul>
-              {props.rootCategories.map((item, index) => {
-                return (
-                  <li key={item.id}>
-                    <Link to={`/courses?cat=${item.id}`}>{item.catName}</Link>
-                  </li>
-                );
-              })}
-            </ul>
+            <Link to="/profile">My wishlist</Link>
           </li>
           <li>
-            <span>
-              <a href="#0">Extra Pages</a>
-            </span>
-            <ul>
-              <li>
-                <a href="media-gallery.html">Media gallery</a>
-              </li>
-              <li>
-                <a href="cart-1.html">Cart page 1</a>
-              </li>
-              <li>
-                <a href="cart-2.html">Cart page 2</a>
-              </li>
-              <li>
-                <a href="cart-3.html">Cart page 3</a>
-              </li>
-              <li>
-                <a href="pricing-tables.html">Responsive pricing tables</a>
-              </li>
-              <li>
-                <a href="coming_soon/index.html">Coming soon</a>
-              </li>
-              <li>
-                <a href="icon-pack-1.html">Icon pack 1</a>
-              </li>
-              <li>
-                <a href="icon-pack-2.html">Icon pack 2</a>
-              </li>
-              <li>
-                <a href="icon-pack-3.html">Icon pack 3</a>
-              </li>
-              <li>
-                <a href="icon-pack-4.html">Icon pack 4</a>loca
-              </li>
-            </ul>
+            <Link to="/profile">Profile edit</Link>
           </li>
           <li>
-            <span>
-              <a href="#0">Buy template</a>
-            </span>
+            <Link to="/profile">Become teacher</Link>
+          </li>
+          <li>
+            <a onClick={onLogout}>Log out</a>
           </li>
         </ul>
-      </nav>
-      {/* Search Menu */}
-      <div className="search-overlay-menu">
-        <span className="search-overlay-close">
-          <span className="closebt">
-            <i className="ti-close" />
-          </span>
-        </span>
-        <form role="search" id="searchform" method="get">
-          <input defaultValue name="q" type="search" placeholder="Search..." />
-          <button type="submit">
-            <i className="icon_search" />
-          </button>
-        </form>
+      </li>
+    </ul>
+  ) : (
+    <Dropdown overlay={menu} placement="bottomRight" arrow>
+      <Avatar
+        style={{ backgroundColor: "#87d068" }}
+        icon={<i className="fas fa-user-graduate"></i>}
+        className="icon"
+      />
+    </Dropdown>
+  );
+
+  const displayNavbarUser = isAuthenticated ? (
+    <>
+      <div className="mr-1">
+        <Link to="/profile">
+          <button className="myBtn">My wishlist</button>
+        </Link>
       </div>
-      {/* End Search Menu */}
+      <div className="mr-4">
+        <Link to="/profile">
+          <button className="myBtn">My Learning</button>
+        </Link>
+      </div>
+      <div>{avatar}</div>
+    </>
+  ) : (
+    <>
+      <a
+        href="http://localhost:3001/"
+        target="_blank"
+        style={{
+          fontSize: "16px",
+          color: "white",
+          marginRight: "16px",
+        }}
+      >
+        Become Udema Teacher
+      </a>
+      <div className="hidden_tablet mr-2">
+        <Link to="/login" className="myBtn rounded">
+          LOG IN
+        </Link>
+      </div>
+      <div className="hidden_tablet">
+        <Link to="/register" className="myBtn rounded">
+          SIGN UP
+        </Link>
+      </div>
+    </>
+  );
+  return (
+    <header className="header menu_2 d-flex align-items-center justify-content-between">
+      <div className="d-flex align-items-center">
+        <div id="logo">
+          <Link to="/">
+            <img
+              src="assets/img/logo.png"
+              style={{
+                width: "112px",
+                height: "auto",
+                objectFit: "cover",
+              }}
+              width={124}
+              height={42}
+              alt="hinh ne"
+            />
+          </Link>
+        </div>
+        <a href="#menu" className="btn_mobile">
+          <div className="hamburger hamburger--spin" id="hamburger">
+            <div className="hamburger-box">
+              <div className="hamburger-inner" />
+            </div>
+          </div>
+        </a>
+        <nav id="menu" className="main-menu">
+          <ul>
+            <li>
+              <span className="mr-2">
+                <i className="fas fa-th mr-1"></i>
+                <span>Categories</span>
+              </span>
+              <ul>
+                {props.rootCategories.map((item, index) => {
+                  return (
+                    <li key={item.id}>
+                      <Link to={`/courses?cat=${item.id}`}>{item.catName}</Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </li>
+            <li>
+              <form>
+                <div id="custom-search-input" className="mt-0">
+                  <div className="input-group">
+                    <input
+                      type="text"
+                      className=" search-query"
+                      placeholder="Ex. Architecture, Specialization..."
+                    />
+                  </div>
+                </div>
+              </form>
+            </li>
+          </ul>
+        </nav>
+        {/* /top_menu */}
+      </div>
+      <div className="d-flex align-items-center">{displayNavbarUser}</div>
     </header>
   );
 };
@@ -131,6 +213,7 @@ const mapStateToProps = (state) => {
   return {
     categories: state.categories.categories,
     rootCategories: state.categories.rootCategories,
+    user: state.users,
   };
 };
 export default connect(mapStateToProps)(Header);
