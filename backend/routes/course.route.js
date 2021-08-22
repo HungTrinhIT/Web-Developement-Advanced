@@ -45,6 +45,20 @@ router.get("/", async function (req, res) {
   });
 });
 
+router.get("/lastweek", async function (req, res) {
+  const courses = await courseModel.allLastWeek();
+  const coursesIncludeCategoryName = [];
+  for (let course of courses) {
+    let category = await categoryModel.singleById(course.category_id);
+    if (category) {
+      course.categoryName = category.catName;
+      coursesIncludeCategoryName.push(course);
+    }
+  }
+
+  res.json(coursesIncludeCategoryName);
+});
+
 // Get single by ID
 router.get("/:id", async function (req, res) {
   const id = req.params.id;
@@ -52,7 +66,7 @@ router.get("/:id", async function (req, res) {
 
   if (course === null) {
     return res.json({
-      msg: `Course is not found`,
+      msg: `Course is not exist`,
     });
   }
 
@@ -141,6 +155,9 @@ router.get("/mostview/:limit", async function (req, res) {
 
   res.json(coursesIncludeCategoryName);
 });
+
+// Fetch Last Week Course
+
 
 router.patch("/view/:id", async function (req, res) {
   const id = req.params.id;

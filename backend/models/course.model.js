@@ -51,12 +51,19 @@ module.exports = {
     return queryData;
   },
 
+
+
   async singleById(id) {
     const course = await db(TB_NAME)
       .where("id", id)
       .andWhere("isDeleted", false);
     if (course.length === 0) return null;
     return course[0];
+  },
+
+  allLastWeek() {
+    console.log("last week model");
+    return db(TB_NAME).whereRaw('logCreatedDate > now() - interval 7 day').orderBy("view", "desc").limit(3);
   },
 
   allFullTextSearch(search) {
