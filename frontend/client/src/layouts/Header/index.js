@@ -89,7 +89,9 @@ const Header = ({ categories, user, ...props }) => {
             <Link to="/profile">Profile edit</Link>
           </li>
           <li>
+
             <Link to="/profile">Become teacher</Link>
+
           </li>
           <li>
             <a onClick={onLogout}>Log out</a>

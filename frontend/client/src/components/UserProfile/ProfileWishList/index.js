@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { Table, Button, Space, Popconfirm, message } from "antd";
 import { Link } from "react-router-dom";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import wishListApi from '../../api/wishlistAPI';
+import wishListApi from '../../../api/wishlistAPI';
 
-const ProfileWishList = () => {
+const ProfileWishList = ({user, ...props}) => {
   const [wishlist, setWishList] = useState([]);
-    const user_id = 1;
+    
     useEffect(() => {
         const fetchWishListByID = async () => {
             try {
-                const wishListData = await wishListApi.getAllByUserID(user_id);
+                const wishListData = await wishListApi.getAllByUserID(user.id);
                 console.log(wishListData.data);
                 setWishList(wishListData.data);
               } catch (error) {
@@ -23,7 +23,7 @@ const ProfileWishList = () => {
   const onDeleteWishlistConfirm = async (id) => {
     try {
       await wishListApi.delete(id);
-      const data = await wishListApi.getAllByUserID(user_id);
+      const data = await wishListApi.getAllByUserID(user.id);
       setWishList(data.data);
       message.success("Course is deleted successfully!");
     } catch (error) {
@@ -37,7 +37,7 @@ const ProfileWishList = () => {
             dataIndex: 'courseName',
             key: 'courseName',
             render: (text, record) => (
-              <Link to={`/course-detail/${record.course_id}`}>{text}</Link>
+              <Link to={`/courses/${record.course_id}`}>{text}</Link>
             ),
         },
         {

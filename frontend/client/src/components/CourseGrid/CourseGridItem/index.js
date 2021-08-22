@@ -9,7 +9,7 @@ const CourseGridItem = (props) => {
                 <figure className="block-reveal">
                     <div className="block-horizzontal" />
                     <a href="#0" className="wish_bt" />
-                    <Link to={`/course-detail/${course.id}`}><img style = {{height : "300px", objectFit : "cover"}}
+                    <Link to={`/courses/${course.id}`}><img style = {{height : "300px", objectFit : "cover"}}
                     src={course.image??"http://via.placeholder.com/800x533/ccc/fff/course__list_2.jpg"} className="img-fluid" alt /></Link>
                     <div className="price">${course.sale?(course.price*(100-course.sale)/100):course.price}</div>
                     <div className="preview"><span>Preview course</span></div>
@@ -22,7 +22,7 @@ const CourseGridItem = (props) => {
                 <ul>
                     <li><i className="icon_clock_alt" /> 1h 30min</li>
                     <li><i className="icon_like" /> 890</li>
-                    <li><Link to={`/course-detail/${course.id}`}>Enroll now</Link></li>
+                    <li><Link to={`/courses/${course.id}`}>Enroll now</Link></li>
                 </ul>
             </div>
         </div>
