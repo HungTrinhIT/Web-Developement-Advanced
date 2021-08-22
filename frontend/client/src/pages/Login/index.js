@@ -11,7 +11,6 @@ const Login = (props) => {
   const history = useHistory();
 
   const onFinish = async ({ username, password, ...values }) => {
-    console.log("values: ", values);
     try {
       const res = await authApi.auth({
         username,
@@ -35,7 +34,7 @@ const Login = (props) => {
           })
         );
 
-        history.push("/");
+        history.goBack();
       } else {
         message.error("Invalid credentials");
       }

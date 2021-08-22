@@ -8,6 +8,7 @@ import { LOG_OUT } from "../../redux/action/type";
 const Header = ({ categories, user, ...props }) => {
   const { userInfo, isAuthenticated } = user;
   const history = useHistory();
+  console.log(props);
   const onLogout = () => {
     localStorage.removeItem("elearning_accessToken");
     props.dispatch(createAction(LOG_OUT, null));

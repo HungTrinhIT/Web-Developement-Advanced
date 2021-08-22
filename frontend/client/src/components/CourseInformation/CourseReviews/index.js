@@ -3,16 +3,19 @@ import rateApi from "../../../api/rateApi";
 import courseApi from "../../../api/courseApi";
 import { Avatar, Comment, Form, Rate, Input, Button, message } from "antd";
 import CourseComment from "./CourseComment";
-import {useParams} from "react-router-dom";
+import { Redirect, useParams, useHistory } from "react-router-dom";
+import { connect } from "react-redux";
 
-const CourseReviews = ({ course, ...props }) => {
+const CourseReviews = ({ course, user, ...props }) => {
   const [form] = Form.useForm();
-  const {id} = useParams()
+  const { id } = useParams()
   const [rate, setRate] = useState();
   const [avgRate, setAvgRate] = useState();
   const [loading, setLoading] = useState(false);
   const [reviews, setReviews] = useState([]);
-  const userID = "6afc696d-f9a1-4745-b946-228a2e52a568";
+  const history = useHistory();
+  const {userInfo, isAuthenticated} = user;
+
   useEffect(() => {
     const fetchAllRate = async () => {
       try {
@@ -29,21 +32,27 @@ const CourseReviews = ({ course, ...props }) => {
 
   const onFinish = async (values) => {
     setLoading(true);
-    const newValues = {
-      ...values,
-      "course_id": course.id,
-      "user_id": userID
-    }
+
     try {
-      const data = await rateApi.add(newValues);
-      message.success(data.data.msg);
+      if (isAuthenticated) {
+        const newValues = {
+          ...values,
+          "course_id": course.id,
+          "user_id": userInfo.id
+        }
+        const data = await rateApi.add(newValues);
+        message.success(data.data.msg);
 
-      const rateData = await rateApi.getAllByCourseID(id);
-      setReviews(rateData.data);
+        const rateData = await rateApi.getAllByCourseID(id);
+        setReviews(rateData.data);
 
-      const courseData = await courseApi.getById(id);
-      setAvgRate(courseData.data.rate);
-
+        const courseData = await courseApi.getById(id);
+        setAvgRate(courseData.data.rate);
+      }
+      else {
+        console.log("ABC");
+        history.push("/login");
+      }
       setLoading(false);
     } catch (error) {
       throw error;
@@ -72,12 +81,11 @@ const CourseReviews = ({ course, ...props }) => {
         </Form.Item>
       </Form>
 
-
       <div className="col-lg-3">
         <div id="review_summary">
-          <strong>{avgRate?Number.parseFloat(avgRate).toFixed(1):0}</strong>
+          <strong>{avgRate ? Number.parseFloat(avgRate).toFixed(1) : 0}</strong>
           <div className="rating">
-          <Rate disabled value={avgRate} allowHalf/>
+            <Rate disabled value={avgRate} allowHalf />
           </div>
           <small>Based on {reviews.length} reviews</small>
         </div>
@@ -90,4 +98,9 @@ const CourseReviews = ({ course, ...props }) => {
     </div>
   );
 };
-export default CourseReviews;
+const mapStateToProps = (state) => {
+  return {
+    user: state.users,
+  };
+};
+export default connect(mapStateToProps)(CourseReviews);
