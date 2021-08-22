@@ -16,19 +16,19 @@ const Header = ({ categories, ...props }) => {
       </div>
       <ul id="top_menu">
         <li>
-          <a href="login.html" className="login">
-            Login
-          </a>
-        </li>
-        <li>
           <a href="#0" className="search-overlay-menu-btn">
             Search
           </a>
         </li>
         <li className="hidden_tablet">
-          <a href="admission.html" className="btn_1 rounded">
-            Admission
-          </a>
+          <Link to="/login" className="btn_1 rounded">
+            LOG IN
+          </Link>
+        </li>
+        <li className="hidden_tablet">
+          <Link to="/register" className="btn_1 rounded">
+            SIGN UP
+          </Link>
         </li>
       </ul>
       {/* /top_menu */}
@@ -64,48 +64,6 @@ const Header = ({ categories, ...props }) => {
                 );
               })}
             </ul>
-          </li>
-          <li>
-            <span>
-              <a href="#0">Extra Pages</a>
-            </span>
-            <ul>
-              <li>
-                <a href="media-gallery.html">Media gallery</a>
-              </li>
-              <li>
-                <a href="cart-1.html">Cart page 1</a>
-              </li>
-              <li>
-                <a href="cart-2.html">Cart page 2</a>
-              </li>
-              <li>
-                <a href="cart-3.html">Cart page 3</a>
-              </li>
-              <li>
-                <a href="pricing-tables.html">Responsive pricing tables</a>
-              </li>
-              <li>
-                <a href="coming_soon/index.html">Coming soon</a>
-              </li>
-              <li>
-                <a href="icon-pack-1.html">Icon pack 1</a>
-              </li>
-              <li>
-                <a href="icon-pack-2.html">Icon pack 2</a>
-              </li>
-              <li>
-                <a href="icon-pack-3.html">Icon pack 3</a>
-              </li>
-              <li>
-                <a href="icon-pack-4.html">Icon pack 4</a>loca
-              </li>
-            </ul>
-          </li>
-          <li>
-            <span>
-              <a href="#0">Buy template</a>
-            </span>
           </li>
         </ul>
       </nav>

@@ -23,15 +23,16 @@ function App() {
   return (
     <div id="page">
       <Router>
-        <Route path="/login" component={Login} />
         <Header />
         <Switch>
           <Route exact={true} path="/" component={Homepage} />
-          <Route path="/course-detail/:id" component={CourseDetail} />
           <Route path="/courses" component={AllCourse} />
+          <Route path="/course-detail/:id" component={CourseDetail} />
           <Route path="/cart" component={Cart} />
-          <Route path="/register" component={Register} />
           <Route path="/profile" component={Profile} />
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+
           <Route path="**" component={PageNotFound} />
         </Switch>
         <Footer />
