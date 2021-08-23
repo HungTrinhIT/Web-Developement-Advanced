@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CourseDescription from './CourseDescription';
 import CourseDetailNavbar from '../CourseDetailNavbar';
 import CourseLessons from './CourseLessons';
@@ -6,10 +6,37 @@ import CoursePayment from './CoursePayment';
 import CourseReviews from './CourseReviews';
 import { Tabs } from 'antd';
 import CourseTeacherDetail from './CourseTeacherDetail';
+import purchaseApi from '../../api/purchaseApi';
+import { connect } from "react-redux";
 const { TabPane } = Tabs;
 
-const CourseInformation = (props) => {
-    const { course } = props;
+const CourseInformation = ({course, user, ...props}) => {
+    const [purchaseStatus, setPurchaseStatus] = useState(false);
+    const { userInfo, isAuthenticated } = user;
+
+    useEffect(() => {
+        const fetchPurchase = async () => {
+            try {
+                if (isAuthenticated) {
+                    const purchaseData = await purchaseApi.singleByBothID(course.id, userInfo.id);
+                    if (purchaseData.data.isExist === true) {
+                        setPurchaseStatus(true);
+                    }
+                    else {
+                        setPurchaseStatus(false);
+                    }
+                }
+                else { }
+            } catch (error) {
+                throw error;
+            }
+        };
+        fetchPurchase();
+    }, [purchaseStatus]);
+
+    const onChangePurchaseStatus = () => {
+        setPurchaseStatus(true);
+    };
     return (
         <div className="bg_color_1">
 
@@ -21,7 +48,7 @@ const CourseInformation = (props) => {
                                 <CourseDescription course={course} />
                             </TabPane>
                             <TabPane tab="Course Lesson" key="2">
-                                <CourseLessons course={course}/>
+                                <CourseLessons course={course} purchaseStatus = {purchaseStatus}/>
                             </TabPane>
                             <TabPane tab="Course Review" key="3">
                                 <CourseReviews course={course} />
@@ -33,7 +60,7 @@ const CourseInformation = (props) => {
                         </Tabs>
                     </div>
                     {/* /col */}
-                    <CoursePayment course={course} />
+                    <CoursePayment course={course} onChangePurchaseStatus= {onChangePurchaseStatus} purchaseStatus = {purchaseStatus}/>
                 </div>
                 {/* /row */}
             </div>
@@ -41,4 +68,9 @@ const CourseInformation = (props) => {
         </div>
     );
 };
-export default CourseInformation;
+const mapStateToProps = (state) => {
+    return {
+        user: state.users,
+    };
+};
+export default connect(mapStateToProps)(CourseInformation);

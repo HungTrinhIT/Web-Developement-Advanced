@@ -3,12 +3,12 @@ import wishListApi from '../../../api/wishlistAPI'
 import purchaseApi from '../../../api/purchaseApi'
 import { useParams } from 'react-router-dom';
 import { connect } from "react-redux";
+import { message } from 'antd';
 
-const CoursePayment = ({ course, user, ...props }) => {
+const CoursePayment = ({ course, user, onChangePurchaseStatus, purchaseStatus, ...props }) => {
     const { id } = useParams();
     const [wish, setWish] = useState(null);
     const [status, setStatus] = useState(false);
-    const [purchaseStatus, setPurchaseStatus] = useState(false);
     const { userInfo, isAuthenticated } = user;
     const onHandleWishList = async () => {
         if (status === true) {
@@ -29,28 +29,14 @@ const CoursePayment = ({ course, user, ...props }) => {
             "user_id": userInfo.id,
             "course_id": id
         });
-        setPurchaseStatus(true);
-    };
-
-    useEffect(() => {
-        const fetchPurchase = async () => {
-            try {
-                if (isAuthenticated) {
-                    const purchaseData = await purchaseApi.singleByBothID(id, userInfo.id);
-                    if (purchaseData.data.isExist === true) {
-                        setPurchaseStatus(true);
-                    }
-                    else {
-                        setPurchaseStatus(false);
-                    }
-                }
-                else { }
-            } catch (error) {
-                throw error;
+        onChangePurchaseStatus();
+        message.success({
+            content:"You have just enrolled this course!!! Let's Learn",
+            style:{
+            marginTop:"15vh",
             }
-        };
-        fetchPurchase();
-    }, [purchaseStatus]);
+            });
+    };
 
     useEffect(() => {
         const fetchWishListByID = async () => {
