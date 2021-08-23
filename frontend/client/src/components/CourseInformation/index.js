@@ -21,7 +21,7 @@ const CourseInformation = (props) => {
                                 <CourseDescription course={course} />
                             </TabPane>
                             <TabPane tab="Course Lesson" key="2">
-                                <CourseLessons />
+                                <CourseLessons course={course}/>
                             </TabPane>
                             <TabPane tab="Course Review" key="3">
                                 <CourseReviews course={course} />

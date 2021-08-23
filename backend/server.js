@@ -13,7 +13,7 @@ app.use(express.urlencoded({ limit: "100mb", extended: true }));
 app.use("/api/courses", require("./routes/course.route"));
 app.use("/api/categories", require("./routes/category.route"));
 app.use("/api/users", require("./routes/user.route"));
-app.use("/api/lessons", auth, require("./routes/lesson.route"));
+app.use("/api/lessons", require("./routes/lesson.route"));
 app.use("/api/auth", require("./routes/auth.route"));
 app.use("/api/wishlist", require("./routes/wishlist.route"));
 app.use("/api/rate", require("./routes/rate.route"));
