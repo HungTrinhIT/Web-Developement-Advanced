@@ -50,7 +50,6 @@ const CourseReviews = ({ course, user, ...props }) => {
         setAvgRate(courseData.data.rate);
       }
       else {
-        console.log("ABC");
         history.push("/login");
       }
       setLoading(false);

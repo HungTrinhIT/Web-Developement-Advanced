@@ -1,33 +1,42 @@
 import React from "react";
-import { Form, Input, Row, Col, Button, message, Radio } from "antd";
+import { Form, Input, message } from "antd";
 import "./register.css";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import userApi from "../../api/userApi";
 const Register = () => {
   const [form] = Form.useForm();
-
+  const history = useHistory();
   const formItemLayout = {
     labelCol: {
       span: 24,
     },
   };
   const onFinish = async (values) => {
-    // try {
-    //   const response = await userApi.add(values);
-    //   switch (response.status) {
-    //     case 202:
-    //       message.error(response.data.msg);
-    //       break;
-    //     case 201:
-    //       form.resetFields();
-    //       message.success("Add new user successfully!");
-    //       executeScroll();
-    //       break;
-    //     default:
-    //       break;
-    //   }
-    // } catch (error) {
-    //   throw error;
-    // }
+    try {
+      // Role student
+      values.role = 2;
+      const response = await userApi.add(values);
+      switch (response.status) {
+        case 202:
+          message.error(response.data.msg);
+          break;
+        case 201:
+          form.resetFields();
+          history.push("/login");
+          message.success({
+            content: "Add new user successfully, let log in to Udema!",
+            style: {
+              marginTop: "15vh",
+            },
+          });
+
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      throw error;
+    }
   };
   return (
     <div className="register-wrp">
@@ -112,9 +121,9 @@ const Register = () => {
               span: 24,
             }}
           >
-            <a class="btn_1 rounded full-width mt-2" htmlType="submit">
+            <button class="btn_1 rounded full-width mt-2" type="submit">
               Register
-            </a>
+            </button>
           </Form.Item>
 
           <div class="text-center add_top_10">
