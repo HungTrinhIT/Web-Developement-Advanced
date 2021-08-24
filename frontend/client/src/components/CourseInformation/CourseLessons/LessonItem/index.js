@@ -30,17 +30,24 @@ const LessonItem = ({ lesson, user, purchase, ...props }) => {
     };
 
     const handleCancel = () => {
+        setIsPlaying(false);
         setIsModalVisible(false);
-        onPauseHandler();
     };
 
     const onPlayHandler = () => {
+        console.log("Playing")
         setIsPlaying(true);
     };
     const onPauseHandler = () => {
+        console.log("Pause")
+        setIsPlaying(false);
+    };
+    const onEndedHandler = () => {
+        console.log("End");
         setIsPlaying(false);
     };
     const onReadyHandler = () => {
+        console.log("Ready");
         setIsPlaying(true);
     };
 
@@ -56,7 +63,7 @@ const LessonItem = ({ lesson, user, purchase, ...props }) => {
             bodyStyle = {{height : "750px"}}
             >
                 <ReactPlayer url={`${lesson.video}`} controls={true} volume={0.8} 
-                playing = {isPlaying} onPlay = {onPlayHandler} onPause = {onPauseHandler} onReady = {onReadyHandler}/>
+                playing = {isPlaying} onPlay = {onPlayHandler} onPause = {onPauseHandler} onEnded = {onEndedHandler} onReady = {onReadyHandler}/>
             </Modal>
         </div>
     );
