@@ -20,7 +20,7 @@ import { CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, EditOutlined,
 import moment from "moment";
 import "./course.css";
 const { Option } = Select;
-const Courses = ({user, ...props}) => {
+const Courses = ({ user, ...props }) => {
   const [courses, setCourses] = useState({
     courses: [],
     totalCourses: 0,
@@ -71,36 +71,36 @@ const Courses = ({user, ...props}) => {
     fetchAllCourses();
   }, [filter]);
   const onCompleteCourse = async (id, isCompleted, teacher_id) => {
-    if (isCompleted.data[0] === 0 && (userInfo.role === 0 || userInfo.id === teacher_id)) {
+    if (userInfo.role !== 0 && userInfo.id !== teacher_id) {
+      message.error({
+        content: "You don't have power to do this!",
+        style: {
+          marginTop: "15vh",
+        }
+      });
+
+    }
+    else if (isCompleted.data[0] === 0) {
       const res = await courseApi.completeCourse(id);
       const data = await courseApi.getAll();
       setCourses(data.data);
       message.success({
-        content:"Complete Course!",
-        style:{
-        marginTop:"15vh",
+        content: "Complete Course!",
+        style: {
+          marginTop: "15vh",
         }
-        });
-    } 
-    else if(userInfo.role !== 0 && userInfo.id !== teacher_id)
-    {
-      message.error({
-        content:"You don't have power to do this!",
-        style:{
-        marginTop:"15vh",
-        }
-        });
+      });
     }
     else {
       const res = await courseApi.incompleteCourse(id);
       const data = await courseApi.getAll();
       setCourses(data.data);
       message.success({
-        content:"Incomplete Course!",
-        style:{
-        marginTop:"15vh",
+        content: "Incomplete Course!",
+        style: {
+          marginTop: "15vh",
         }
-        });
+      });
     }
   };
   const columns = [
@@ -122,9 +122,12 @@ const Courses = ({user, ...props}) => {
     },
     {
       title: "Teacher",
-      dataIndex: "teacher_id",
-      key: "teacher_id",
+      dataIndex: "fullname",
+      key: "fullname",
       width: 150,
+      render: (text, record) => (
+        <Link to={`/users/${record.teacher_id}`}>{text}</Link>
+      ),
     },
     {
       title: "Price",

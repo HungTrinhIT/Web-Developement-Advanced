@@ -5,6 +5,7 @@ const { cloudinary } = require("../utils/cloudinary");
 
 const courseModel = require("../models/course.model");
 const categoryModel = require("../models/category.model");
+const userModel = require("../models/user.model");
 const queryString = require("query-string");
 // Get all
 router.get("/", async function (req, res) {
@@ -19,8 +20,13 @@ router.get("/", async function (req, res) {
 
   for (let course of courses) {
     let category = await categoryModel.singleById(course.category_id);
+    let teacher = await userModel.singleById(course.teacher_id);
     if (category) {
       course.categoryName = category.catName;
+      coursesIncludeCategoryName.push(course);
+    }
+    if (teacher) {
+      course.fullname = teacher.fullname;
       coursesIncludeCategoryName.push(course);
     }
   }
@@ -50,10 +56,12 @@ router.get("/lastweek", async function (req, res) {
   const coursesIncludeCategoryName = [];
   for (let course of courses) {
     let category = await categoryModel.singleById(course.category_id);
+    
     if (category) {
       course.categoryName = category.catName;
       coursesIncludeCategoryName.push(course);
     }
+    
   }
 
   res.json(coursesIncludeCategoryName);
