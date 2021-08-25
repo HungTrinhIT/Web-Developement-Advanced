@@ -10,15 +10,16 @@ import purchaseApi from '../../api/purchaseApi';
 import { connect } from "react-redux";
 const { TabPane } = Tabs;
 
-const CourseInformation = ({course, user, ...props}) => {
+const CourseInformation = ({ course, user, ...props }) => {
     const [purchaseStatus, setPurchaseStatus] = useState(false);
     const { userInfo, isAuthenticated } = user;
+    const { id } = course;
 
     useEffect(() => {
         const fetchPurchase = async () => {
             try {
                 if (isAuthenticated) {
-                    const purchaseData = await purchaseApi.singleByBothID(course.id, userInfo.id);
+                    const purchaseData = await purchaseApi.singleByBothID(id, userInfo.id);
                     if (purchaseData.data.isExist === true) {
                         setPurchaseStatus(true);
                     }
@@ -46,21 +47,18 @@ const CourseInformation = ({course, user, ...props}) => {
                         <Tabs type="card">
                             <TabPane tab="Description" key="1">
                                 <CourseDescription course={course} />
+                                <CourseLessons course={course} purchaseStatus={purchaseStatus} />
+                                <CourseReviews course={course} purchaseStatus={purchaseStatus} />
                             </TabPane>
-                            <TabPane tab="Course Lesson" key="2">
-                                <CourseLessons course={course} purchaseStatus = {purchaseStatus}/>
+                            <TabPane tab="Teacher Detail" key="2">
+                                <CourseTeacherDetail course={course} />
                             </TabPane>
-                            <TabPane tab="Course Review" key="3">
-                                <CourseReviews course={course} />
-                            </TabPane>
-                            <TabPane tab="Teacher Detail" key="4">
-                                <CourseTeacherDetail course={course}/>
-                            </TabPane>
+                            
 
                         </Tabs>
                     </div>
                     {/* /col */}
-                    <CoursePayment course={course} onChangePurchaseStatus= {onChangePurchaseStatus} purchaseStatus = {purchaseStatus}/>
+                    <CoursePayment course={course} onChangePurchaseStatus={onChangePurchaseStatus} purchaseStatus={purchaseStatus} />
                 </div>
                 {/* /row */}
             </div>

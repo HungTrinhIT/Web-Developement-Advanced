@@ -156,7 +156,36 @@ router.get("/mostview/:limit", async function (req, res) {
   res.json(coursesIncludeCategoryName);
 });
 
-// Fetch Last Week Course
+// Complete course
+router.patch('/complete/:id',async function(req,res){
+  const id = req.params.id;
+  
+  const course = await courseModel.singleById(id);
+  if(!course) return res.status(202).send("Course is not exist");
+  
+  await courseModel.update(id, {
+    isCompleted: true
+  })
+  return res.json({
+    msg:"Course is complete"
+  })
+})
+
+// Uncomplete course
+router.patch('/incomplete/:id',async function(req,res){
+  const id = req.params.id;
+  const course = await courseModel.singleById(id);
+  
+  if(!course) return res.status(400).send("Course is not eixst");
+  
+  
+  await courseModel.update(id, {
+    isCompleted: false
+  })
+  return res.json({
+    msg:"Course is incomplete"
+  })
+})
 
 
 router.patch("/view/:id", async function (req, res) {
