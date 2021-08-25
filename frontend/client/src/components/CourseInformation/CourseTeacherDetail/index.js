@@ -5,7 +5,7 @@ import {
 } from "@ant-design/icons";
 import userApi from "../../../api/userApi";
 
-const CourseTeacherDetail = ({course, ...props}) => {
+const CourseTeacherDetail = ({ course, ...props }) => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [teacher, setTeacher] = useState({});
@@ -26,73 +26,34 @@ const CourseTeacherDetail = ({course, ...props}) => {
             ...teacher,
         });
     }, [teacher]);
-    
+
     return (
         <div>
+            <div className="intro_title">
+                <h2>Teacher Information</h2>
+            </div>
             <div className="row">
-                <aside className="col-lg-4" id="sidebar">
-                    <div className="d-flex align-items-center">
-                        {teacher.avatar ? (
-                            <img src={`${teacher.avatar}`} style={{ maxWidth: "300px", maxHeight: "300px" }} />
-                        ) : (
-                            <Avatar size="large" icon={<UserOutlined />} className="icon" />
-                        )}
-                    </div>
-                </aside>
-                <Form className="col-lg-8"
-                    form={form}
-                    name="userProfile"
-                >
-                    
-                        <Col span={20}>
-                            <Form.Item
-                                label="Username"
-                                name="username"
-                                rules={[
-                                    {
-                                        required: false,
-                                        message: "Please input your username!",
-                                    },
-                                ]}
-                            >
-                                <Input placeholder="Username" disabled />
-                            </Form.Item>
 
-                            <Form.Item label="Address" name="address">
-                                <Input placeholder="255 Nguyen Van Cu, F.12, Binh Thanh district, Ho Chi Minh" disabled />
-                            </Form.Item>
-                            <Form.Item label="Phone" name="phone">
-                                <Input placeholder="012335245" disabled />
-                            </Form.Item>
-                        </Col>
-                        <Col span={20}>
-                            <Form.Item
-                                label="Fullname"
-                                name="fullname"
-                                rules={[
-                                    {
-                                        required: false,
-                                        message: "Please input your fullname!",
-                                    },
-                                ]}
-                            >
-                                <Input placeholder="Cristian Ronaldo" disabled />
-                            </Form.Item>
-                            <Form.Item
-                                name="email"
-                                label="Email"
-                                rules={[
-                                    { type: "email" },
-                                    {
-                                        required: false,
-                                        message: "Please enter email!",
-                                    },
-                                ]}
-                            >
-                                <Input placeholder="example@gamil.com" disabled />
-                            </Form.Item>
-                        </Col>    
-                </Form>
+                <aside className="center col-lg-12" id="sidebar">
+                    <div className="profile">
+                        <div className="d-flex align-items-center" >
+                            {teacher.avatar ? (
+                                <img className="rounded-circle center" src={`${teacher.avatar}`} style={{ width: "150px", height: "150px", marginBottom: "25px"}} />
+                                
+                            ) : (
+                                <Avatar size="large" icon={<UserOutlined />} className="icon" />
+                            )}
+                        </div>
+                        <ul>
+                            <li>User Name: <span className="float-right">{teacher.username}</span> </li>
+                            <li>Full Name: <span className="float-right">{teacher.fullname}</span></li>
+                            <li>Address: <span className="float-right">{teacher.address}</span></li>
+                            <li>Phone: <span className="float-right"> {teacher.phone}</span></li>
+                            <li>Email: <span className="float-right"> {teacher.email}</span></li>
+                        </ul>
+                    </div>
+
+                </aside>
             </div>
         </div>
     );
