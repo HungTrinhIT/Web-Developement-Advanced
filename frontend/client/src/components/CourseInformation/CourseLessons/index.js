@@ -7,12 +7,13 @@ import purchaseApi from '../../../api/purchaseApi';
 
 const CourseLessons = ({ course, user, ...props }) => {
     const [lesson, setLesson] = useState([]);
+    const {id} = useParams();
     const { userInfo, isAuthenticated } = user;
     const [purchaseStatus, setPurchaseStatus] = useState(false);
     useEffect(() => {
         const fetchAllLesson = async () => {
             try {
-                const lessonData = await lessonApi.getAllForTeacher(course.id);
+                const lessonData = await lessonApi.getAllForTeacher(id);
                 setLesson(lessonData.data);
             } catch (error) {
                 throw error;
@@ -25,7 +26,7 @@ const CourseLessons = ({ course, user, ...props }) => {
         const fetchPurchase = async () => {
             try {
                 if (isAuthenticated) {
-                    const purchaseData = await purchaseApi.singleByBothID(course.id, userInfo.id);
+                    const purchaseData = await purchaseApi.singleByBothID(id, userInfo.id);
                     if (purchaseData.data.isExist === true) {
                         setPurchaseStatus(true);
                     }

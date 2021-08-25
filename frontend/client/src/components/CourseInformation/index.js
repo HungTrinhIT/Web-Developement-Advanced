@@ -8,12 +8,13 @@ import { Tabs } from 'antd';
 import CourseTeacherDetail from './CourseTeacherDetail';
 import purchaseApi from '../../api/purchaseApi';
 import { connect } from "react-redux";
+import { useParams } from 'react-router-dom';
 const { TabPane } = Tabs;
 
 const CourseInformation = ({ course, user, ...props }) => {
     const [purchaseStatus, setPurchaseStatus] = useState(false);
     const { userInfo, isAuthenticated } = user;
-    const { id } = course;
+    const { id } = useParams();
 
     useEffect(() => {
         const fetchPurchase = async () => {
