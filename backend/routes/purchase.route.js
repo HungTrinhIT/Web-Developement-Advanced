@@ -28,6 +28,7 @@ router.get("/user/:id", async function (req, res) {
         let course = await courseModel.singleById(purchase.course_id);
         if (course) {
             purchase.courseName = course.courseName;
+            purchase.isCompleted = course.isCompleted;
             purchaseIncludeCourseName.push(purchase);
         }
     }

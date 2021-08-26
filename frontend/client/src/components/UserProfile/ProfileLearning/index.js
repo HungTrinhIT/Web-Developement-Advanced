@@ -10,7 +10,6 @@ const ProfileLearning = ({user, ...props}) => {
         const fetchLearning = async () => {
             try {
                 const learningData = await purchaseApi.getByUserID(user.id);
-                console.log(learningData.data);
                 setLearning(learningData.data);
               } catch (error) {
                 throw error;
@@ -27,6 +26,17 @@ const ProfileLearning = ({user, ...props}) => {
             key: 'courseName',
             render: (text, record) => (
               <Link to={`/courses/${record.course_id}`}>{text}</Link>
+            ),
+        },
+        {
+            title: 'Course Status',
+            width: 500,
+            dataIndex: 'isCompleted',
+            key: 'isCompleted',
+            render: (text, record) => (
+                record.isCompleted.data[0]
+                ?<a style={{color : "green"}}>Complete</a>
+                :<a style={{color : "red"}}>Incomplete</a>
             ),
         },
         

@@ -6,7 +6,7 @@ import CourseComment from "./CourseComment";
 import { Redirect, useParams, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 
-const CourseReviews = ({ course, user, ...props }) => {
+const CourseReviews = ({ course, user, purchaseStatus, ...props }) => {
   const [form] = Form.useForm();
   const { id } = useParams()
   const [rate, setRate] = useState();
@@ -14,7 +14,7 @@ const CourseReviews = ({ course, user, ...props }) => {
   const [loading, setLoading] = useState(false);
   const [reviews, setReviews] = useState([]);
   const history = useHistory();
-  const {userInfo, isAuthenticated} = user;
+  const { userInfo, isAuthenticated } = user;
 
   useEffect(() => {
     const fetchAllRate = async () => {
@@ -34,23 +34,42 @@ const CourseReviews = ({ course, user, ...props }) => {
     setLoading(true);
 
     try {
-      if (isAuthenticated) {
+      if (isAuthenticated === true && purchaseStatus === true) {
         const newValues = {
           ...values,
           "course_id": course.id,
           "user_id": userInfo.id
         }
-        const data = await rateApi.add(newValues);
-        message.success(data.data.msg);
 
-        const rateData = await rateApi.getAllByCourseID(id);
-        setReviews(rateData.data);
+        if (newValues.value === undefined || newValues.content === undefined) {
+          message.error({
+            content:"You must input your rating score and content for this course!",
+            style:{
+            marginTop:"15vh",
+            }
+            });
+        }
+        else {
+          const data = await rateApi.add(newValues);
+          message.success(data.data.msg);
 
-        const courseData = await courseApi.getById(id);
-        setAvgRate(courseData.data.rate);
+          const rateData = await rateApi.getAllByCourseID(id);
+          setReviews(rateData.data);
+
+          const courseData = await courseApi.getById(id);
+          setAvgRate(courseData.data.rate);
+        }
+      }
+      else if(isAuthenticated === true && purchaseStatus === false)
+      {
+        message.error({
+          content:"You must buy the course first for post review!",
+          style:{
+          marginTop:"15vh",
+          }
+          });
       }
       else {
-        console.log("ABC");
         history.push("/login");
       }
       setLoading(false);
@@ -67,6 +86,9 @@ const CourseReviews = ({ course, user, ...props }) => {
 
   return (
     <div>
+      <div className="intro_title">
+        <h2>Reviews</h2>
+      </div>
       <Form form={form} onFinish={onFinish} name="addNewReview">
         <Form.Item name="value">
           <Rate allowHalf tooltips={desc} onChange={onReviewHandleChange} />

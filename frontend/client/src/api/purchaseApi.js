@@ -9,6 +9,10 @@ const purchaseApi = {
     const url = `/purchase/user/${id}`;
     return axiosClient.get(url);
   },
+  singleByBothID: (course_id, user_id) => {
+    const url = `/purchase/${course_id}/${user_id}`;
+    return axiosClient.get(url);
+  },
   add: (purchase) => {
     const url = `/purchase`;
     return axiosClient.post(url, purchase);

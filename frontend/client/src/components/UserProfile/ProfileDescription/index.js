@@ -26,27 +26,40 @@ const ProfileDescription = ({ user, ...props }) => {
             setLoading(false);
         }
     };
+
+    const layout = {
+        labelCol: { span: 8 },
+        wrapperCol: { span: 16 },
+    };
+    const tailLayout = {
+        wrapperCol: { offset: 8, span: 16 },
+    };
     return (
         <div>
-            <div className="row">
-            <aside className="col-lg-3" id="sidebar">
+
+
+            <aside className="center col-lg-24">
                 <div className="d-flex align-items-center">
                     {user.avatar ? (
-                        <img src={`${user.avatar}`} className="img-small" style={{ maxWidth: "250px", maxHeight: "250px" }} />
+                        <img src={`${user.avatar}`} className="rounded-circle center" style={{ maxWidth: "250px", maxHeight: "250px", marginBottom: "25px"}} />
                     ) : (
                         <Avatar size="large" icon={<UserOutlined />} className="icon" />
                     )}
                 </div>
             </aside>
-            <Form  className="col-lg-9"
-                form={form}
-                name="userProfile"
-                onFinish={onFinish}
-            >
-                <Row gutter={16}>
-                    <Col span={12}>
+
+
+            <div className="col-lg-24">
+                <Form
+                    {...layout}
+                    form={form}
+                    name="userProfile"
+                    onFinish={onFinish}
+                >
+                    
                         <Form.Item
-                            label="Username"
+                            className="col-lg-24"
+                            label="UserName"
                             name="username"
                             rules={[
                                 {
@@ -57,15 +70,7 @@ const ProfileDescription = ({ user, ...props }) => {
                         >
                             <Input placeholder="Username" disabled />
                         </Form.Item>
-
-                        <Form.Item label="Address" name="address">
-                            <Input placeholder="255 Nguyen Van Cu, F.12, Binh Thanh district, Ho Chi Minh" />
-                        </Form.Item>
-                        <Form.Item label="Phone" name="phone">
-                            <Input placeholder="012335245" />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
+                    
                         <Form.Item
                             label="Fullname"
                             name="fullname"
@@ -78,6 +83,7 @@ const ProfileDescription = ({ user, ...props }) => {
                         >
                             <Input placeholder="Cristian Ronaldo" />
                         </Form.Item>
+                    
                         <Form.Item
                             name="email"
                             label="Email"
@@ -91,6 +97,15 @@ const ProfileDescription = ({ user, ...props }) => {
                         >
                             <Input placeholder="example@gamil.com" disabled />
                         </Form.Item>
+                    
+                        <Form.Item label="Address" name="address">
+                            <Input placeholder="255 Nguyen Van Cu, F.12, Binh Thanh district, Ho Chi Minh" />
+                        </Form.Item>
+                    
+                        <Form.Item label="Phone" name="phone">
+                            <Input placeholder="012335245" />
+                        </Form.Item>
+                    
                         <Form.Item
                             name="description"
                             label="User description"
@@ -98,15 +113,15 @@ const ProfileDescription = ({ user, ...props }) => {
                         >
                             <Input.TextArea rows={4}></Input.TextArea>
                         </Form.Item>
-                    </Col>
-                </Row>
+                    
 
-                <Form.Item>
-                    <Button type="primary" htmlType="submit" loading={loading}>
-                        Update user
-                    </Button>
-                </Form.Item>
-            </Form>
+                    <Form.Item {...tailLayout}>
+                        <Button type="primary" htmlType="submit" loading={loading}>
+                            Update user
+                        </Button>
+                    </Form.Item>
+                </Form>
+
             </div>
         </div>
     );
