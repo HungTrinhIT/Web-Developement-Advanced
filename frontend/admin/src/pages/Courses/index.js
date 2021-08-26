@@ -36,7 +36,7 @@ const Courses = ({ user, ...props }) => {
 
   const location = useLocation();
   const history = useHistory();
-  const { userInfo, isAuthenticated } = user;
+  const { userInfo } = user;
   const onDeleteCourseConfirm = async (id) => {
     try {
       await courseApi.delete(id);
@@ -47,14 +47,14 @@ const Courses = ({ user, ...props }) => {
       throw error;
     }
   };
-  useEffect(() => {
-    const query = queryString.parse(location.search);
-    const categories = query && query.categories ? query.categories : "";
-    setFilter({
-      ...filter,
-      categories: [categories],
-    });
-  }, []);
+  // useEffect(() => {
+  //   const query = queryString.parse(location.search);
+  //   const categories = query && query.categories ? query.categories : "";
+  //   setFilter({
+  //     ...filter,
+  //     categories: [categories],
+  //   });
+  // }, []);
   useEffect(() => {
     const fetchAllCourses = async () => {
       for (let key in filter) {
@@ -114,6 +114,17 @@ const Courses = ({ user, ...props }) => {
         <Link to={`/courses/${record.id}`}>{text}</Link>
       ),
     },
+    {
+      title: 'Status',
+      width: 100,
+      dataIndex: 'isCompleted',
+      key: 'isCompleted',
+      render: (text, record) => (
+          record.isCompleted.data[0]
+          ?<Tag style={{color : "green"}}>Complete</Tag>
+          :<Tag style={{color : "orange"}}>Incomplete</Tag>
+      ),
+  },
     {
       title: "Category",
       width: 200,

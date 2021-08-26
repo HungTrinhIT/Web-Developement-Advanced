@@ -17,14 +17,15 @@ import { RollbackOutlined } from "@ant-design/icons";
 import courseApi from "../../../api/courseApi";
 const { Option } = Select;
 
-const AddCourse = (props) => {
+const AddCourse = ({user, ...props}) => {
   const [form] = Form.useForm();
   const [fullDescription, setFullDescription] = useState("");
   const addCourseRef = useRef();
   const executeScroll = () => addCourseRef.current.scrollIntoView();
+  const { userInfo } = user;
   
   const onFinish = async (values) => {
-    values = { ...values, fullDescription };
+    values = { ...values, fullDescription, teacher_id : userInfo.id};
     try {
       const response = await courseApi.add(values);
       if (response.status === 201) {
@@ -175,6 +176,7 @@ const AddCourse = (props) => {
 const mapStateToProps = (state) => {
   return {
     categories: state.categories.categories,
+    user: state.users,
   };
 };
 export default connect(mapStateToProps)(AddCourse);

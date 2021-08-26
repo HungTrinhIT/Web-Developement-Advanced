@@ -26,6 +26,9 @@ const CourseInfoReview = ({ course, ...props }) => {
             width: 500,
             dataIndex: 'fullname',
             key: 'fullname',
+            render: (text, record) => (
+                <Link to={`/users/${record.user_id}`}>{text}</Link>
+            ),
         },
         {
             title: 'Rate Value',

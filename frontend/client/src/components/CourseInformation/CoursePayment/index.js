@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import wishListApi from '../../../api/wishlistAPI'
 import purchaseApi from '../../../api/purchaseApi'
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { connect } from "react-redux";
 import { message } from 'antd';
+import Cart from '../../../pages/Cart';
 
 const CoursePayment = ({ course, user, onChangePurchaseStatus, purchaseStatus, ...props }) => {
     const { id } = useParams();
@@ -22,20 +23,6 @@ const CoursePayment = ({ course, user, onChangePurchaseStatus, purchaseStatus, .
             });
             setStatus(true);
         }
-    };
-
-    const onHandlePurchase = async () => {
-        await purchaseApi.add({
-            "user_id": userInfo.id,
-            "course_id": id
-        });
-        onChangePurchaseStatus();
-        message.success({
-            content:"You have just enrolled this course!!! Let's Learn",
-            style:{
-            marginTop:"15vh",
-            }
-            });
     };
 
     useEffect(() => {
@@ -76,7 +63,7 @@ const CoursePayment = ({ course, user, onChangePurchaseStatus, purchaseStatus, .
                 </div>
                 {purchaseStatus
                     ? <a className="btn_1 full-width">Purchased</a>
-                    : <a className="btn_1 full-width" onClick={onHandlePurchase}>Purchase</a>
+                    : <Link to={`cart/${id}`}  className="btn_1 full-width">Purchase</Link>
                 }
 
                 <a className="btn_1 full-width outline" onClick={onHandleWishList}><i className="icon_heart" />{status ? "Remove from wishlist" : "Add to wishlist"}</a>

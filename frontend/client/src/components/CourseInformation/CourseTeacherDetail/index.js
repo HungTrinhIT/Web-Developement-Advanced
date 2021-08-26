@@ -33,23 +33,68 @@ const CourseTeacherDetail = ({ course, ...props }) => {
                 <h2>Teacher Information</h2>
             </div>
             <div className="row">
-
                 <aside className="center col-lg-12" id="sidebar">
                     <div className="profile">
                         <div className="d-flex align-items-center" >
                             {teacher.avatar ? (
-                                <img className="rounded-circle center" src={`${teacher.avatar}`} style={{ width: "150px", height: "150px", marginBottom: "25px"}} />
-                                
+                                <img className="rounded-circle center" src={`${teacher.avatar}`} style={{ width: "150px", height: "150px", marginBottom: "25px" }} />
+
                             ) : (
                                 <Avatar size="large" icon={<UserOutlined />} className="icon" />
                             )}
                         </div>
                         <ul>
-                            <li>User Name: <span className="float-right">{teacher.username}</span> </li>
-                            <li>Full Name: <span className="float-right">{teacher.fullname}</span></li>
-                            <li>Address: <span className="float-right">{teacher.address}</span></li>
-                            <li>Phone: <span className="float-right"> {teacher.phone}</span></li>
-                            <li>Email: <span className="float-right"> {teacher.email}</span></li>
+                            <li>
+                                <div className="row">
+                                    <div className="col-lg-2">
+                                        <span style={{ fontWeight: 'bold' }}>User Name:</span>
+                                    </div>
+                                    <div className="col-lg-10">
+                                        <span>{teacher.username}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div className="row">
+                                    <div className="col-lg-2">
+                                        <span style={{ fontWeight: 'bold' }}>Full Name:</span>
+                                    </div>
+                                    <div className="col-lg-10">
+                                        <span>{teacher.fullname}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div className="row">
+                                    <div className="col-lg-2">
+                                        <span style={{ fontWeight: 'bold' }}>Address:</span>
+                                    </div>
+                                    <div className="col-lg-10">
+                                        <span>{teacher.address}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div className="row">
+                                    <div className="col-lg-2">
+                                        <span style={{ fontWeight: 'bold' }}>Phone:</span>
+                                    </div>
+                                    <div className="col-lg-10">
+                                        <span>{teacher.phone}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div className="row">
+                                    <div className="col-lg-2">
+                                        <span style={{ fontWeight: 'bold' }}>Email:</span>
+                                    </div>
+                                    <div className="col-lg-10">
+                                        <span>{teacher.email}</span>
+                                    </div>
+                                </div>
+                            </li>
+
                         </ul>
                     </div>
 

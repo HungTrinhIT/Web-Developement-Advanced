@@ -63,10 +63,9 @@ function App(props) {
         <Header />
         <Switch>
           <Route exact={true} path="/" component={Homepage} />
+          <Route path="/courses/cart/:id" component={Cart} />
           <Route path="/courses/:id" component={CourseDetail} />
           <Route path="/courses" component={AllCourse} />
-          <Route path="/course-detail/:id" component={CourseDetail} />
-          <Route path="/cart" component={Cart} />
           <PrivateRoute path="/profile" component={Profile} exact={false} />
           {login}
           {register}

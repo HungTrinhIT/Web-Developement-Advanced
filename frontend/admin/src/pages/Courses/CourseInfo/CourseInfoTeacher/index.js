@@ -5,7 +5,7 @@ import {
 } from "@ant-design/icons";
 import userApi from "../../../../api/userApi";
 
-const CourseInfoTeacher = ({course, ...props}) => {
+const CourseInfoTeacher = ({ course, ...props }) => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
     const [teacher, setTeacher] = useState({});
@@ -26,74 +26,80 @@ const CourseInfoTeacher = ({course, ...props}) => {
             ...teacher,
         });
     }, [teacher]);
-    
+
     return (
         <div>
-            <div className="row">
-                <aside className="col-lg-4" id="sidebar">
-                    <div className="d-flex align-items-center">
-                        {teacher.avatar ? (
-                            <img src={`${teacher.avatar}`} style={{ maxWidth: "250px", maxHeight: "250px" }} />
-                        ) : (
-                            <Avatar size="large" icon={<UserOutlined />} className="icon" />
-                        )}
-                    </div>
-                </aside>
-                <Form className="col-lg-8"
-                    form={form}
-                    name="userProfile"
-                >
-                    
-                        <Col span={20}>
-                            <Form.Item
-                                label="Username"
-                                name="username"
-                                rules={[
-                                    {
-                                        required: false,
-                                        message: "Please input your username!",
-                                    },
-                                ]}
-                            >
-                                <Input placeholder="Username" disabled />
-                            </Form.Item>
+            <Row>
+                <Col span={8}></Col>
+                <Col span={8}>
+                    <div className="profile">
+                        <div className="d-flex align-items-center" >
+                            {teacher.avatar ? (
+                                <img className="rounded-circle center" src={`${teacher.avatar}`} style={{ width: "150px", height: "150px", marginBottom: "25px" }} />
 
-                            <Form.Item label="Address" name="address">
-                                <Input placeholder="255 Nguyen Van Cu, F.12, Binh Thanh district, Ho Chi Minh" disabled />
-                            </Form.Item>
-                            <Form.Item label="Phone" name="phone">
-                                <Input placeholder="012335245" disabled />
-                            </Form.Item>
-                        </Col>
-                        <Col span={20}>
-                            <Form.Item
-                                label="Fullname"
-                                name="fullname"
-                                rules={[
-                                    {
-                                        required: false,
-                                        message: "Please input your fullname!",
-                                    },
-                                ]}
-                            >
-                                <Input placeholder="Cristian Ronaldo" disabled />
-                            </Form.Item>
-                            <Form.Item
-                                name="email"
-                                label="Email"
-                                rules={[
-                                    { type: "email" },
-                                    {
-                                        required: false,
-                                        message: "Please enter email!",
-                                    },
-                                ]}
-                            >
-                                <Input placeholder="example@gamil.com" disabled />
-                            </Form.Item>
-                        </Col>    
-                </Form>
-            </div>
+                            ) : (
+                                <Avatar size="large" icon={<UserOutlined />} className="icon" />
+                            )}
+                        </div>
+                        <ul>
+                            <li>
+                                <div className="row">
+                                    <div className="col-lg-4">
+                                        <span style={{ fontWeight: 'bold' }}>User Name:</span>
+                                    </div>
+                                    <div className="col-lg-4">
+                                        <span>{teacher.username}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div className="row">
+                                    <div className="col-lg-4">
+                                        <span style={{ fontWeight: 'bold' }}>Full Name:</span>
+                                    </div>
+                                    <div className="col-lg-4">
+                                        <span>{teacher.fullname}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div className="row">
+                                    <div className="col-lg-4">
+                                        <span style={{ fontWeight: 'bold' }}>Address:</span>
+                                    </div>
+                                    <div className="col-lg-4">
+                                        <span>{teacher.address}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div className="row">
+                                    <div className="col-lg-4">
+                                        <span style={{ fontWeight: 'bold' }}>Phone:</span>
+                                    </div>
+                                    <div className="col-lg-4">
+                                        <span>{teacher.phone}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div className="row">
+                                    <div className="col-lg-4">
+                                        <span style={{ fontWeight: 'bold' }}>Email:</span>
+                                    </div>
+                                    <div className="col-lg-4">
+                                        <span>{teacher.email}</span>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </Col>
+                <Col span={8}></Col>
+            </Row>
+
+
         </div>
     );
 };
