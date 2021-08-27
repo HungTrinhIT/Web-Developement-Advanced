@@ -1,33 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import wishListApi from '../../../api/wishlistAPI'
-import { useParams } from 'react-router-dom';
+import purchaseApi from '../../../api/purchaseApi'
+import { Link, useParams } from 'react-router-dom';
+import { connect } from "react-redux";
+import { message } from 'antd';
+import Cart from '../../../pages/Cart';
 
-const CoursePayment = ({ course, ...props }) => {
+const CoursePayment = ({ course, user, onChangePurchaseStatus, purchaseStatus, ...props }) => {
     const { id } = useParams();
-    const user_id = "e99f5201-0c27-4c8e-922b-1a3da363d347";
     const [wish, setWish] = useState(null);
     const [status, setStatus] = useState(false);
+    const { userInfo, isAuthenticated } = user;
     const onHandleWishList = async () => {
         if (status === true) {
-
             await wishListApi.delete(wish.id);
             setStatus(false);
         }
         else {
-
             await wishListApi.add({
-                "user_id": user_id,
+                "user_id": userInfo.id,
                 "course_id": id
             });
             setStatus(true);
         }
-
     };
 
     useEffect(() => {
         const fetchWishListByID = async () => {
             try {
-                const wishData = await wishListApi.singleByBothID(id, user_id);
+                const wishData = await wishListApi.singleByBothID(id, userInfo.id);
                 if (wishData.data.isExist === true) {
                     if (wishData.data.wish.isDeleted.data[0] === 0) {
                         setStatus(true);
@@ -60,7 +61,10 @@ const CoursePayment = ({ course, ...props }) => {
                         {course.sale ? course.sale : 0}% discount price</span>
 
                 </div>
-                <a href="#0" className="btn_1 full-width">Purchase</a>
+                {purchaseStatus
+                    ? <a className="btn_1 full-width">Purchased</a>
+                    : <Link to={`cart/${id}`}  className="btn_1 full-width">Purchase</Link>
+                }
 
                 <a className="btn_1 full-width outline" onClick={onHandleWishList}><i className="icon_heart" />{status ? "Remove from wishlist" : "Add to wishlist"}</a>
                 <div id="list_feat">
@@ -77,4 +81,9 @@ const CoursePayment = ({ course, ...props }) => {
         </aside>
     );
 };
-export default CoursePayment;
+const mapStateToProps = (state) => {
+    return {
+        user: state.users,
+    };
+};
+export default connect(mapStateToProps)(CoursePayment);

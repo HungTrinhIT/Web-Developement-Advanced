@@ -16,11 +16,11 @@ import {
   Select,
 } from "antd";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
 import "./course.css";
 const { Option } = Select;
-const Courses = (props) => {
+const Courses = ({ user, ...props }) => {
   const [courses, setCourses] = useState({
     courses: [],
     totalCourses: 0,
@@ -36,6 +36,7 @@ const Courses = (props) => {
 
   const location = useLocation();
   const history = useHistory();
+  const { userInfo } = user;
   const onDeleteCourseConfirm = async (id) => {
     try {
       await courseApi.delete(id);
@@ -46,14 +47,14 @@ const Courses = (props) => {
       throw error;
     }
   };
-  useEffect(() => {
-    const query = queryString.parse(location.search);
-    const categories = query && query.categories ? query.categories : "";
-    setFilter({
-      ...filter,
-      categories: [categories],
-    });
-  }, []);
+  // useEffect(() => {
+  //   const query = queryString.parse(location.search);
+  //   const categories = query && query.categories ? query.categories : "";
+  //   setFilter({
+  //     ...filter,
+  //     categories: [categories],
+  //   });
+  // }, []);
   useEffect(() => {
     const fetchAllCourses = async () => {
       for (let key in filter) {
@@ -69,6 +70,39 @@ const Courses = (props) => {
     };
     fetchAllCourses();
   }, [filter]);
+  const onCompleteCourse = async (id, isCompleted, teacher_id) => {
+    if (userInfo.role !== 0 && userInfo.id !== teacher_id) {
+      message.error({
+        content: "You don't have power to do this!",
+        style: {
+          marginTop: "15vh",
+        }
+      });
+
+    }
+    else if (isCompleted.data[0] === 0) {
+      const res = await courseApi.completeCourse(id);
+      const data = await courseApi.getAll();
+      setCourses(data.data);
+      message.success({
+        content: "Complete Course!",
+        style: {
+          marginTop: "15vh",
+        }
+      });
+    }
+    else {
+      const res = await courseApi.incompleteCourse(id);
+      const data = await courseApi.getAll();
+      setCourses(data.data);
+      message.success({
+        content: "Incomplete Course!",
+        style: {
+          marginTop: "15vh",
+        }
+      });
+    }
+  };
   const columns = [
     {
       title: "Course name",
@@ -81,6 +115,17 @@ const Courses = (props) => {
       ),
     },
     {
+      title: 'Status',
+      width: 100,
+      dataIndex: 'isCompleted',
+      key: 'isCompleted',
+      render: (text, record) => (
+          record.isCompleted.data[0]
+          ?<Tag style={{color : "green"}}>Complete</Tag>
+          :<Tag style={{color : "orange"}}>Incomplete</Tag>
+      ),
+  },
+    {
       title: "Category",
       width: 200,
       dataIndex: "categoryName",
@@ -88,9 +133,12 @@ const Courses = (props) => {
     },
     {
       title: "Teacher",
-      dataIndex: "teacher_id",
-      key: "teacher_id",
+      dataIndex: "fullname",
+      key: "fullname",
       width: 150,
+      render: (text, record) => (
+        <Link to={`/users/${record.teacher_id}`}>{text}</Link>
+      ),
     },
     {
       title: "Price",
@@ -164,6 +212,32 @@ const Courses = (props) => {
               shape="circle"
               icon={<DeleteOutlined className="icon" />}
             />
+          </Popconfirm>
+          <Popconfirm
+            title={
+              record.isCompleted.data[0] === 0
+                ? "Are you sure to complete this course?"
+                : "Are you sure to uncomplete this course?"
+            }
+            onConfirm={() => onCompleteCourse(record.id, record.isCompleted, record.teacher_id)}
+            okText={record.isCompleted.data[0] === 0 ? "Complete" : "Incomplete"}
+            cancelText="Cancel"
+          >
+            {record.isCompleted.data[0] === 0 ? (
+              <Tooltip title="Complete Course">
+                <Button
+                  shape="circle"
+                  icon={<CheckCircleOutlined className="icon" />}
+                />
+              </Tooltip>
+            ) : (
+              <Tooltip title="Incomplete Course">
+                <Button
+                  shape="circle"
+                  icon={<CloseCircleOutlined className="icon" />}
+                />
+              </Tooltip>
+            )}
           </Popconfirm>
 
           <Link to={`/courses/${record.id}`}>
@@ -277,6 +351,7 @@ const Courses = (props) => {
 const mapStateToProps = (state) => {
   return {
     categories: state.categories.categories,
+    user: state.users,
   };
 };
 export default connect(mapStateToProps)(Courses);

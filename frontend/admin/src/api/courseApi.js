@@ -29,6 +29,16 @@ const courseApi = {
     const url = `/courses/upload-image/${id}`;
     return axiosClient.patch(url, image);
   },
+
+  completeCourse: (id) => {
+    const url = `/courses/complete/${id}`;
+    return axiosClient.patch(url);
+  },
+
+  incompleteCourse: (id) => {
+    const url = `/courses/incomplete/${id}`;
+    return axiosClient.patch(url);
+  },
 };
 
 export default courseApi;

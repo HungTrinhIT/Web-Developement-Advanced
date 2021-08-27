@@ -1,19 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import courseApi from "../../../api/courseApi";
-import { Tabs } from "antd";
+import { message, Tabs } from "antd";
 import CourseInfoDetail from "./CourseInfoDetail";
 import CourseInfoImage from "./CourseInfoImage";
 import CourseInfoLesson from "./CourseInfoLesson";
+import CourseInfoTeacher from "./CourseInfoTeacher";
+import CourseInfoReview from "./CourseInfoReview";
+import {connect} from "react-redux"
 
 const { TabPane } = Tabs;
-const CourseInfo = ({ activeTab, ...props }) => {
+const CourseInfo = ({ activeTab, user, ...props }) => {
   const [course, setCourse] = useState({});
+  const history = useHistory();
   const { id } = useParams();
   useEffect(() => {
+    
     const fetchCourseDetail = async () => {
       try {
         const courseData = await courseApi.getById(id);
+        if(user.userInfo.role !== 0 && user.userInfo.id !== courseData.data.teacher_id)
+        {
+          history.goBack();
+          message.error("You don't have power to do this!");
+        }
         setCourse(courseData.data);
       } catch (error) {
         throw error;
@@ -34,11 +44,20 @@ const CourseInfo = ({ activeTab, ...props }) => {
         <TabPane tab="Lessons" key="3">
           <CourseInfoLesson />
         </TabPane>
-        <TabPane tab="Teacher" key="4"></TabPane>
-        <TabPane tab="Reviews" key="5"></TabPane>
+        <TabPane tab="Teacher" key="4">
+          <CourseInfoTeacher course={course} />
+        </TabPane>
+        <TabPane tab="Reviews" key="5">
+          <CourseInfoReview course={course} />
+        </TabPane>
       </Tabs>
     </div>
   );
 };
 
-export default CourseInfo;
+const mapStateToProps = (state) => {
+  return {
+    user: state.users,
+  };
+};
+export default connect(mapStateToProps)(CourseInfo);

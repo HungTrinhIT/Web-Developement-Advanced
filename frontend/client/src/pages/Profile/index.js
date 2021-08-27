@@ -11,16 +11,17 @@ import {
 import ProfileLearning from '../../components/UserProfile/ProfileLearning';
 import ChangePassword from '../../components/UserProfile/ChangePassword';
 import ProfileImage from '../../components/UserProfile/ProfileImage';
+import { connect } from "react-redux";
 const { TabPane } = Tabs;
 
-const Profile = () => {
-    const [user, setUser] = useState({});
-    const tmpUserID = "e99f5201-0c27-4c8e-922b-1a3da363d347";
+const Profile = ({user, ...props}) => {
+    const [userProfile, setUserProfile] = useState({});
+    const { userInfo } = user;
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                const userData = await userApi.getById(tmpUserID);
-                setUser(userData.data);
+                const userData = await userApi.getById(userInfo.id);
+                setUserProfile(userData.data);
             } catch (error) {
                 throw error;
             }
@@ -42,19 +43,19 @@ const Profile = () => {
                     {/*/aside */}
                     <Tabs type="card">
                         <TabPane tab="Profile" key="1">
-                            <ProfileDescription user={user} />
+                            <ProfileDescription user={userProfile} />
                         </TabPane>
                         <TabPane tab="Change Password" key="2">
-                            <ChangePassword user={user}/>
+                            <ChangePassword user={userProfile}/>
                         </TabPane>
                         <TabPane tab="Avatar" key="3">
-                            <ProfileImage user={user} />
+                            <ProfileImage user={userProfile} />
                         </TabPane>
                         <TabPane tab="My Learning" key="4">
-                            <ProfileLearning user={user} />
+                            <ProfileLearning user={userProfile} />
                         </TabPane>
                         <TabPane tab="Wishlist" key="5">
-                            <ProfileWishList user={user} />
+                            <ProfileWishList user={userProfile} />
                         </TabPane>
                     </Tabs>
 
@@ -66,4 +67,10 @@ const Profile = () => {
 
     );
 };
-export default Profile;
+const mapStateToProps = (state) => {
+    return {
+      user: state.users,
+    };
+  };
+  export default connect(mapStateToProps)(Profile);
+  
