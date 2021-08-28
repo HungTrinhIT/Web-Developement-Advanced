@@ -1,8 +1,7 @@
 import React from "react";
 import CategoryItem from "./CategoryItem";
-import { connect } from "react-redux";
-const CategoryList = (props) => {
-  const { categories } = props;
+
+const CategoryList = ({categories, ...props}) => {
   return (
     <div className="row">
       {categories.map((categoryItem, index) => {
@@ -11,10 +10,4 @@ const CategoryList = (props) => {
     </div>
   );
 };
-const mapStateToProps = (state) => {
-  return {
-    categories: state.categories.rootCategories,
-  };
-};
-
-export default connect(mapStateToProps)(CategoryList);
+export default CategoryList;

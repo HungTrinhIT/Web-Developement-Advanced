@@ -67,6 +67,22 @@ router.get("/lastweek", async function (req, res) {
   res.json(coursesIncludeCategoryName);
 });
 
+router.get("/mostparticipants", async function (req,res){
+  const students = await courseModel.mostParticipants();
+  const studentsIncludeCategoryName = [];
+  for (let student of students)
+  {
+    let category = await categoryModel.singleById(student.category_id);
+
+    if (category) {
+      student.catName = category.catName;
+      studentsIncludeCategoryName.push(student);
+    }
+  }
+  
+  res.json(studentsIncludeCategoryName);
+});
+
 // Get single by ID
 router.get("/:id", async function (req, res) {
   const id = req.params.id;
@@ -163,6 +179,8 @@ router.get("/mostview/:limit", async function (req, res) {
 
   res.json(coursesIncludeCategoryName);
 });
+
+
 
 // Complete course
 router.patch('/complete/:id',async function(req,res){

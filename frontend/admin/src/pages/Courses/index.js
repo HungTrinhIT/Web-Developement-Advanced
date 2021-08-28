@@ -194,7 +194,7 @@ const Courses = ({ user, ...props }) => {
     {
       title: "Action",
       key: "action",
-      width: 100,
+      width: 150,
       fixed: "right",
       render: (text, record) => (
         <Space size="middle">

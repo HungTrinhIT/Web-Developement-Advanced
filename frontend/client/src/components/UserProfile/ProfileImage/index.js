@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, message } from "antd";
 import userApi from "../../../api/userApi";
 
-const ProfileImage = ({ user, ...props }) => {
+const ProfileImage = ({ user, onChangeImage, ...props }) => {
     const [fileInputState, setFileInputState] = useState("");
     const [previewSource, setPreviewSource] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
@@ -46,6 +46,8 @@ const ProfileImage = ({ user, ...props }) => {
                 JSON.stringify({ data: base64EncodedImage })
             );
             setImgSrc(response.data.avatar);
+            console.log(response.data.avatar);
+            onChangeImage(response.data.avatar);
             message.success("Upload avatar successfully");
             setLoading(false);
             setFileInputState("");

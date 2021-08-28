@@ -28,6 +28,13 @@ const Profile = ({user, ...props}) => {
         }
         fetchUserInfo();
     }, []);
+    const onChangeImage = (changeAvatar) => {
+        setUserProfile({
+            ...userProfile,
+            avatar : changeAvatar
+        });
+        
+    };
     return (
         <main>
             <section id="hero_in" className="general">
@@ -43,13 +50,13 @@ const Profile = ({user, ...props}) => {
                     {/*/aside */}
                     <Tabs type="card">
                         <TabPane tab="Profile" key="1">
-                            <ProfileDescription user={userProfile} />
+                            <ProfileDescription user={userProfile}/>
                         </TabPane>
                         <TabPane tab="Change Password" key="2">
                             <ChangePassword user={userProfile}/>
                         </TabPane>
                         <TabPane tab="Avatar" key="3">
-                            <ProfileImage user={userProfile} />
+                            <ProfileImage user={userProfile} onChangeImage={onChangeImage}/>
                         </TabPane>
                         <TabPane tab="My Learning" key="4">
                             <ProfileLearning user={userProfile} />
