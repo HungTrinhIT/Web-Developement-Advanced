@@ -10,17 +10,14 @@ import { Link } from "react-router-dom";
 import categoryApi from "../../api/categoryApi";
 import { connect } from "react-redux";
 import createAction from "../../redux/action/createAction";
-import {
-  FETCH_ALL_CATEGORIES,
-  FETCH_ALL_COURSE,
-} from "../../redux/action/type";
+import { FETCH_ALL_COURSE } from "../../redux/action/type";
 const Homepage = (props) => {
   const [courses, setCourses] = useState([]);
 
   const [highlightCourses, setHighlightCourse] = useState([]);
   const [newCourses, setNewCourses] = useState([]);
   const [mostViewCourse, setMostViewCourse] = useState([]);
-  const [mostParticipantCategory, setMostParticipantCategory] = useState([])
+  const [mostParticipantCategory, setMostParticipantCategory] = useState([]);
   const limit = 10;
   useEffect(() => {
     const fetchAllCourses = async () => {
@@ -28,15 +25,6 @@ const Homepage = (props) => {
         const courseData = await courseApi.getAll();
         setCourses(courseData.data.courses);
         props.dispatch(createAction(FETCH_ALL_COURSE, courseData.data));
-      } catch (error) {
-        throw error;
-      }
-    };
-
-    const fetchAllCategories = async () => {
-      try {
-        const categoryData = await categoryApi.getAll();
-        props.dispatch(createAction(FETCH_ALL_CATEGORIES, categoryData.data));
       } catch (error) {
         throw error;
       }
@@ -68,7 +56,6 @@ const Homepage = (props) => {
         throw error;
       }
     };
-
     const fetchMostParticipantCategory = async () => {
       try {
         const categoryData = await courseApi.getMostParticipants();
@@ -77,9 +64,8 @@ const Homepage = (props) => {
         throw error;
       }
     };
-
     fetchAllCourses();
-    fetchAllCategories();
+
     fetchHighLightLastWeek();
     fetchNewCourses();
     fetchMostViewCourses();
@@ -142,20 +128,7 @@ const Homepage = (props) => {
           <span>
             <em />
           </span>
-          <h2>Categories</h2>
-          
-        </div>
-
-        <CategoryList />
-      </div>
-
-      <div className="container margin_30_95">
-        <div className="main_title_2">
-          <span>
-            <em />
-          </span>
           <h2>Top 5 Most Participants Category</h2>
-          
         </div>
 
         <CategoryList categories={mostParticipantCategory} />
