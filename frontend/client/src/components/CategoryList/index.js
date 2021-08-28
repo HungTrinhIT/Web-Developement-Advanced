@@ -1,8 +1,7 @@
 import React from "react";
 import CategoryItem from "./CategoryItem";
 
-const CategoryList = (props) => {
-  const {categories} = props;
+const CategoryList = ({categories, ...props}) => {
   return (
     <div className="row">
       {categories.map((categoryItem, index) => {

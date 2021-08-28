@@ -4,11 +4,24 @@ import {
     UserOutlined,
 } from "@ant-design/icons";
 import userApi from "../../../api/userApi";
+import {connect} from "react-redux";
 
 const ProfileDescription = ({ user, ...props }) => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
+    const [userProfile, setUserProfile] = useState({});
 
+    useEffect(() => {
+        const fetchUserInfo = async () => {
+            try {
+                const userData = await userApi.getById(user.id);
+                setUserProfile(userData.data);
+            } catch (error) {
+                throw error;
+            }
+        }
+        fetchUserInfo();
+    }, [user]);
     useEffect(() => {
         form.setFieldsValue({
             ...user,
@@ -40,14 +53,13 @@ const ProfileDescription = ({ user, ...props }) => {
 
             <aside className="center col-lg-24">
                 <div className="d-flex align-items-center">
-                    {user.avatar ? (
-                        <img src={`${user.avatar}`} className="rounded-circle center" style={{ maxWidth: "250px", maxHeight: "250px", marginBottom: "25px"}} />
+                    {userProfile.avatar ? (
+                        <img src={`${userProfile.avatar}`} className="rounded-circle center" style={{ maxWidth: "250px", maxHeight: "250px", marginBottom: "25px"}} />
                     ) : (
                         <Avatar size="large" icon={<UserOutlined />} className="icon" />
                     )}
                 </div>
             </aside>
-
 
             <div className="col-lg-24">
                 <Form

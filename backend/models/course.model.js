@@ -78,6 +78,10 @@ module.exports = {
     return db(TB_NAME).orderBy("view", "desc").limit(limit);
   },
 
+  mostParticipants(){
+    return db(TB_NAME).select("category_id").sum({participants:"currentStudent"}).count({quantity:"id"}).whereRaw('logCreatedDate > now() - interval 7 day').groupBy("category_id").limit(5);
+  },
+
   async singleByName(name) {
     const course = await db(TB_NAME)
       .where("courseName", name)

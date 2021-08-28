@@ -21,6 +21,10 @@ const courseApi = {
     const url = `/courses/mostview/${limit}`;
     return axiosClient.get(url);
   },
+  getMostParticipants: ()=>{
+    const url = `/courses/mostparticipants`;
+    return axiosClient.get(url);
+  },
   updateView: (id) => {
     const url = `/courses/view/${id}`;
     return axiosClient.patch(url);

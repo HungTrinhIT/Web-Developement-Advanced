@@ -12,7 +12,7 @@ const CategoryItem = (props) => {
                     <div className="info">
                         <small>
                             <i className="ti-layers" />
-                            15 Programmes
+                            {category.quantity} Courses
                         </small>
                         <h3>{category.catName}</h3>
                     </div>

@@ -20,6 +20,7 @@ const Homepage = (props) => {
   const [highlightCourses, setHighlightCourse] = useState([]);
   const [newCourses, setNewCourses] = useState([]);
   const [mostViewCourse, setMostViewCourse] = useState([]);
+  const [mostParticipantCategory, setMostParticipantCategory] = useState([])
   const limit = 10;
   useEffect(() => {
     const fetchAllCourses = async () => {
@@ -69,11 +70,21 @@ const Homepage = (props) => {
       }
     };
 
+    const fetchMostParticipantCategory = async () => {
+      try {
+        const categoryData = await courseApi.getMostParticipants();
+        setMostParticipantCategory(categoryData.data);
+      } catch (error) {
+        throw error;
+      }
+    };
+
     fetchAllCourses();
     fetchAllCategories();
     fetchHighLightLastWeek();
     fetchNewCourses();
     fetchMostViewCourses();
+    fetchMostParticipantCategory();
   }, []);
   return (
     <main>
@@ -138,10 +149,22 @@ const Homepage = (props) => {
             <em />
           </span>
           <h2>Categories</h2>
-          <p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
+          
         </div>
 
         <CategoryList categories={categories} />
+      </div>
+
+      <div className="container margin_30_95">
+        <div className="main_title_2">
+          <span>
+            <em />
+          </span>
+          <h2>Top 5 Most Participants Category</h2>
+          
+        </div>
+
+        <CategoryList categories={mostParticipantCategory} />
       </div>
       {/* /container */}
       <div className="bg_color_1">
