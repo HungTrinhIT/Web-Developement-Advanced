@@ -12,17 +12,21 @@ router.post("/", validate(authSchema), async (req, res, next) => {
   if (!user) {
     return res.json({
       isAuthenticated: false,
+      msg: "Username or password is not correct!",
+      code: false,
     });
   }
 
   if (user && user.isBlocked.toJSON().data[0] === 1) {
-    return res.status(206).json({
+    return res.json({
       msg: "Your account has been locked",
+      isAuthenticated: false,
     });
   }
   if (!bcrypt.compareSync(req.body.password, user.password)) {
     return res.json({
-      authenticated: false,
+      isAuthenticated: false,
+      msg: "Password is not correct",
     });
   }
   const { username, id, avatar, fullname, email, role } = user;

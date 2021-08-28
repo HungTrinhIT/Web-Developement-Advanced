@@ -1,84 +1,75 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { Dropdown, Menu, Avatar } from "antd";
+import { Avatar, message } from "antd";
 import createAction from "../../redux/action/createAction";
 import { LOG_OUT } from "../../redux/action/type";
 
 const Header = ({ categories, user, ...props }) => {
+  const [search, setSearch] = useState("");
   const { userInfo, isAuthenticated } = user;
   const history = useHistory();
-  console.log(props);
   const onLogout = () => {
     localStorage.removeItem("elearning_accessToken");
     props.dispatch(createAction(LOG_OUT, null));
     history.push("/");
+    message.success({
+      className: "icon",
+      style: {
+        marginTop: "15vh",
+      },
+      content: "You've successfully logged out of Udema. Come back soon!",
+    });
   };
-  const menu = (
-    <Menu>
-      <Menu.Item key="logout">
-        <a target="_blank" rel="noopener noreferrer" onClick={onLogout}>
-          Logout
-        </a>
-      </Menu.Item>
-    </Menu>
-  );
   const avatar = userInfo.avatar ? (
+    <img
+      src={userInfo.avatar}
+      style={{
+        height: "48px",
+        width: "48px",
+        objectFit: "cover",
+        borderRadius: "100vh",
+        border: "2px solid #ffffff",
+      }}
+      alt={userInfo.fullName}
+    />
+  ) : (
+    <Avatar
+      style={{ backgroundColor: "#87d068" }}
+      icon={<i className="fas fa-user" />}
+      className="icon"
+      size="large"
+    />
+  );
+  const userFullnameAndEmail = (
+    <div className="ml-2">
+      <p
+        className="mb-2"
+        style={{
+          fontWeight: "bold",
+          color: "#662d91",
+        }}
+      >
+        {userInfo.fullname}
+      </p>
+      <p
+        className="mb-0"
+        style={{ fontSize: "10px", color: "rgb(106, 111, 115)" }}
+      >
+        {userInfo.email}
+      </p>
+    </div>
+  );
+  const dropdownUserInfo = (
     <ul className="avatar">
       <li>
-        <img
-          src={userInfo.avatar}
-          style={{
-            height: "48px",
-            width: "48px",
-            objectFit: "cover",
-            borderRadius: "100vh",
-            border: "2px solid #ffffff",
-          }}
-          alt={userInfo.fullName}
-        />
+        {avatar}
         <ul className="avatar-sub">
           <li>
-            {isAuthenticated ? (
-              <div className="d-flex align-items-center">
-                <img
-                  src={userInfo.avatar}
-                  style={{
-                    height: "48px",
-                    width: "48px",
-                    objectFit: "cover",
-                    borderRadius: "100vh",
-                    border: "2px solid #ffffff",
-                    marginRight: "8px",
-                  }}
-                  alt={userInfo.fullname}
-                />
-                <div>
-                  <p
-                    className="mb-2"
-                    style={{
-                      fontWeight: "bold",
-                      color: "#662d91",
-                    }}
-                  >
-                    {userInfo.fullname}
-                  </p>
-                  <p
-                    className="mb-0"
-                    style={{ fontSize: "10px", color: "rgb(106, 111, 115)" }}
-                  >
-                    {userInfo.email}
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <Avatar
-                style={{ backgroundColor: "#87d068" }}
-                icon={<i className="fas fa-user" />}
-                className="icon"
-                size="large"
-              />
-            )}
+            <div className="d-flex align-items-center">
+              {avatar}
+              {userFullnameAndEmail}
+            </div>
           </li>
           <li>
             <Link to="/profile">My learning</Link>
@@ -90,9 +81,7 @@ const Header = ({ categories, user, ...props }) => {
             <Link to="/profile">Profile edit</Link>
           </li>
           <li>
-
             <Link to="/profile">Become teacher</Link>
-
           </li>
           <li>
             <a onClick={onLogout}>Log out</a>
@@ -100,14 +89,6 @@ const Header = ({ categories, user, ...props }) => {
         </ul>
       </li>
     </ul>
-  ) : (
-    <Dropdown overlay={menu} placement="bottomRight" arrow>
-      <Avatar
-        style={{ backgroundColor: "#87d068" }}
-        icon={<i className="fas fa-user-graduate"></i>}
-        className="icon"
-      />
-    </Dropdown>
   );
 
   const displayNavbarUser = isAuthenticated ? (
@@ -122,7 +103,7 @@ const Header = ({ categories, user, ...props }) => {
           <button className="myBtn">My Learning</button>
         </Link>
       </div>
-      <div>{avatar}</div>
+      <div>{dropdownUserInfo}</div>
     </>
   ) : (
     <>
@@ -149,6 +130,13 @@ const Header = ({ categories, user, ...props }) => {
       </div>
     </>
   );
+  const onSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+  const onCourseSearchSubmit = (e) => {
+    e.preventDefault();
+    history.push(`/courses?search=${search}`);
+  };
   return (
     <header className="header menu_2 d-flex align-items-center justify-content-between">
       <div className="d-flex align-items-center">
@@ -192,13 +180,16 @@ const Header = ({ categories, user, ...props }) => {
               </ul>
             </li>
             <li>
-              <form>
+              <form onSubmit={onCourseSearchSubmit}>
                 <div id="custom-search-input" className="mt-0">
                   <div className="input-group">
                     <input
                       type="text"
                       className=" search-query"
                       placeholder="Ex. Architecture, Specialization..."
+                      value={search}
+                      onChange={onSearchChange}
+                      name="search"
                     />
                   </div>
                 </div>

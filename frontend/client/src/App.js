@@ -20,7 +20,8 @@ import PageNotFound from "./pages/PageNotFound";
 import { connect } from "react-redux";
 import createAction from "./redux/action/createAction";
 import parseJwt from "./utils/parseJWT";
-import { FETCH_USER } from "./redux/action/type";
+import { FETCH_ALL_CATEGORIES, FETCH_USER } from "./redux/action/type";
+import categoryApi from "./api/categoryApi";
 function App(props) {
   const { user } = props;
 
@@ -33,6 +34,14 @@ function App(props) {
 
   useEffect(() => {
     const accessToken = localStorage.getItem("elearning_accessToken");
+    const fetchAllCategories = async () => {
+      try {
+        const categoryData = await categoryApi.getAll();
+        props.dispatch(createAction(FETCH_ALL_CATEGORIES, categoryData.data));
+      } catch (error) {
+        throw error;
+      }
+    };
     if (accessToken) {
       const userInfo = parseJwt(accessToken);
       props.dispatch(
@@ -41,6 +50,7 @@ function App(props) {
           token: accessToken,
         })
       );
+      fetchAllCategories();
     }
   }, []);
 
