@@ -17,11 +17,6 @@ const Login = (props) => {
         password,
       });
 
-      if (res.status === 206) {
-        console.log(res.data.msg);
-        message.warning(res.data.msg);
-        return;
-      }
       const { isAuthenticated } = res.data;
       if (isAuthenticated) {
         const { accessToken } = res.data;
@@ -33,10 +28,22 @@ const Login = (props) => {
             token: accessToken,
           })
         );
-
-        history.goBack();
+        message.success({
+          content: "Login successfully",
+          style: {
+            marginTop: "15vh",
+          },
+        });
+        setTimeout(() => {
+          history.goBack();
+        }, 1500);
       } else {
-        message.error("Invalid credentials");
+        message.error({
+          content: res.data.msg,
+          style: {
+            marginTop: "15vh",
+          },
+        });
       }
     } catch (err) {
       if (err.response) {

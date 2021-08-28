@@ -1,22 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import courseApi from "../../api/courseApi";
 import CourseGrid from "../../components/CourseGrid";
-import { Pagination, Checkbox, Form } from "antd";
 import "./AllCourse.css";
-
-const AllCourse = () => {
+import { Pagination, Checkbox, Form, Collapse, Row, Col } from "antd";
+import { connect } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+const plainOptions = [];
+const { Panel } = Collapse;
+const AllCourse = (props) => {
   const [courseData, setCourseData] = useState({
     courses: [],
     totalCourses: 0,
     currentPage: 1,
     totalPage: 1,
   });
+  const coursesRef = useRef();
+
   const [filter, setFilter] = useState({
     limit: 10,
     page: 1,
     search: "",
     categories: "",
   });
+  const [checkedList, setCheckedList] = React.useState([]);
+  const params = useParams();
+  const history = useHistory();
   useEffect(() => {
     const fetchAllCourses = async () => {
       try {
@@ -27,6 +35,8 @@ const AllCourse = () => {
         }
         const response = await courseApi.getAll(filter);
         setCourseData(response.data);
+
+        executeScroll();
       } catch (error) {
         throw error;
       }
@@ -34,13 +44,58 @@ const AllCourse = () => {
 
     fetchAllCourses();
   }, [filter]);
+
   const onPaginateHandleChange = (selectedPage) => {
     setFilter({
       ...filter,
       page: selectedPage,
     });
   };
+
+  const concatCategories = (listCategory) => listCategory.join(".");
+  const onCategoryChange = (list) => {
+    const stringCategories = concatCategories(list);
+    setCheckedList(list);
+    setFilter({
+      ...filter,
+      categories: stringCategories,
+    });
+    if (stringCategories.length !== 0) {
+      history.replace(`?categories=${stringCategories}`);
+    } else {
+      history.replace(history.location.pathname);
+    }
+  };
+  const executeScroll = () => coursesRef.current.scrollIntoView();
+
   const { totalCourses, courses, currentPage, totalPage } = courseData;
+
+  const { categories } = props;
+  const viewFilterByCategories = (
+    <Checkbox.Group onChange={onCategoryChange} style={{ width: "100%" }}>
+      <Collapse defaultActiveKey={["1"]} ghost>
+        {categories.map((cat) => {
+          const { catName, children } = cat;
+          return (
+            <Panel header={catName} key={cat.id}>
+              {children.length > 0 ? (
+                <Row>
+                  {children.map((cat) => {
+                    return (
+                      <Col span={24}>
+                        <Checkbox value={cat.id}>{cat.catName}</Checkbox>
+                      </Col>
+                    );
+                  })}
+                </Row>
+              ) : null}
+            </Panel>
+          );
+        })}
+      </Collapse>
+    </Checkbox.Group>
+  );
+
   return (
     <main>
       <section id="hero_in" className="courses">
@@ -53,59 +108,9 @@ const AllCourse = () => {
           </div>
         </div>
       </section>
-      {/*/hero_in*/}
-      <div className="filters_listing sticky_horizontal">
-        <div className="container">
-          <ul className="clearfix">
-            <li>
-              <div className="switch-field">
-                <input
-                  type="radio"
-                  id="all"
-                  name="listing_filter"
-                  defaultValue="all"
-                  defaultChecked
-                />
-                <label htmlFor="all">All</label>
-                <input
-                  type="radio"
-                  id="popular"
-                  name="listing_filter"
-                  defaultValue="popular"
-                />
-                <label htmlFor="popular">Popular</label>
-                <input
-                  type="radio"
-                  id="latest"
-                  name="listing_filter"
-                  defaultValue="latest"
-                />
-                <label htmlFor="latest">Latest</label>
-              </div>
-            </li>
-            <li>
-              <div className="layout_view">
-                <a href="#0" className="active">
-                  <i className="icon-th" />
-                </a>
-                <a href="courses-list.html">
-                  <i className="icon-th-list" />
-                </a>
-              </div>
-            </li>
-            <li>
-              <Form>
-                <Form.Item label="Check">
-                  <Checkbox>Nickname is required</Checkbox>
-                </Form.Item>
-              </Form>
-            </li>
-          </ul>
-        </div>
-        {/* /container */}
-      </div>
+
       {/* /filters */}
-      <div className="container margin_60_35">
+      <div className="container margin_60_35" ref={coursesRef}>
         <div className="row">
           <aside className="col-lg-3" id="sidebar">
             <div id="filters_col">
@@ -121,48 +126,7 @@ const AllCourse = () => {
               <div className="collapse show" id="collapseFilters">
                 <div className="filter_type">
                   <h6>Category</h6>
-                  <ul>
-                    <li>
-                      <label>
-                        <input
-                          type="checkbox"
-                          className="icheck"
-                          defaultChecked
-                        />
-                        all <small>(945)</small>
-                      </label>
-                    </li>
-                    <li>
-                      <label>
-                        <input type="checkbox" className="icheck" />
-                        Architecture <small>(45)</small>
-                      </label>
-                    </li>
-                    <li>
-                      <label>
-                        <input type="checkbox" className="icheck" />
-                        Managment <small>(30)</small>
-                      </label>
-                    </li>
-                    <li>
-                      <label>
-                        <input type="checkbox" className="icheck" />
-                        Business <small>(25)</small>
-                      </label>
-                    </li>
-                    <li>
-                      <label>
-                        <input type="checkbox" className="icheck" />
-                        Litterature <small>(56)</small>
-                      </label>
-                    </li>
-                    <li>
-                      <label>
-                        <input type="checkbox" className="icheck" />
-                        Biology <small>(10)</small>
-                      </label>
-                    </li>
-                  </ul>
+                  {viewFilterByCategories}
                 </div>
                 <div className="filter_type">
                   <h6>Rating</h6>
@@ -289,4 +253,10 @@ const AllCourse = () => {
   );
 };
 
-export default AllCourse;
+const mapStateToProps = (state) => {
+  return {
+    categories: state.categories.categories,
+  };
+};
+
+export default connect(mapStateToProps)(AllCourse);

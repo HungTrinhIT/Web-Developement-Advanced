@@ -16,7 +16,7 @@ import {
 } from "../../redux/action/type";
 const Homepage = (props) => {
   const [courses, setCourses] = useState([]);
-  const [categories, setCategories] = useState([]);
+
   const [highlightCourses, setHighlightCourse] = useState([]);
   const [newCourses, setNewCourses] = useState([]);
   const [mostViewCourse, setMostViewCourse] = useState([]);
@@ -35,8 +35,7 @@ const Homepage = (props) => {
 
     const fetchAllCategories = async () => {
       try {
-        const categoryData = await categoryApi.getAllParents();
-        setCategories(categoryData.data);
+        const categoryData = await categoryApi.getAll();
         props.dispatch(createAction(FETCH_ALL_CATEGORIES, categoryData.data));
       } catch (error) {
         throw error;
@@ -89,9 +88,7 @@ const Homepage = (props) => {
   return (
     <main>
       <HeroSingle />
-      {/* /hero_single */}
       <Features />
-      {/* /features */}
 
       <div className="container-fluid margin_120_0">
         <div className="main_title_2">
@@ -137,12 +134,9 @@ const Homepage = (props) => {
 
         <Carousel courses={mostViewCourse} />
 
-        {/* /carousel */}
-
-        {/* /container */}
         <hr />
       </div>
-      {/* /carousel Popular Course*/}
+
       <div className="container margin_30_95">
         <div className="main_title_2">
           <span>
@@ -152,7 +146,7 @@ const Homepage = (props) => {
           
         </div>
 
-        <CategoryList categories={categories} />
+        <CategoryList />
       </div>
 
       <div className="container margin_30_95">
@@ -224,7 +218,7 @@ const Homepage = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {};
-};
+const mapStateToProps = (state) => {};
 export default connect(mapStateToProps)(Homepage);
+
+// Result

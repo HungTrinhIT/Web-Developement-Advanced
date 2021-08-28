@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import courseApi from "../../api/courseApi";
 import { connect } from "react-redux";
 import PageTitle from "../../components/PageTitle";
@@ -16,7 +16,13 @@ import {
   Select,
 } from "antd";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import { CheckCircleOutlined, CloseCircleOutlined, DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import moment from "moment";
 import "./course.css";
 const { Option } = Select;
@@ -47,14 +53,7 @@ const Courses = ({ user, ...props }) => {
       throw error;
     }
   };
-  // useEffect(() => {
-  //   const query = queryString.parse(location.search);
-  //   const categories = query && query.categories ? query.categories : "";
-  //   setFilter({
-  //     ...filter,
-  //     categories: [categories],
-  //   });
-  // }, []);
+
   useEffect(() => {
     const fetchAllCourses = async () => {
       for (let key in filter) {
@@ -76,11 +75,9 @@ const Courses = ({ user, ...props }) => {
         content: "You don't have power to do this!",
         style: {
           marginTop: "15vh",
-        }
+        },
       });
-
-    }
-    else if (isCompleted.data[0] === 0) {
+    } else if (isCompleted.data[0] === 0) {
       const res = await courseApi.completeCourse(id);
       const data = await courseApi.getAll();
       setCourses(data.data);
@@ -88,10 +85,9 @@ const Courses = ({ user, ...props }) => {
         content: "Complete Course!",
         style: {
           marginTop: "15vh",
-        }
+        },
       });
-    }
-    else {
+    } else {
       const res = await courseApi.incompleteCourse(id);
       const data = await courseApi.getAll();
       setCourses(data.data);
@@ -99,7 +95,7 @@ const Courses = ({ user, ...props }) => {
         content: "Incomplete Course!",
         style: {
           marginTop: "15vh",
-        }
+        },
       });
     }
   };
@@ -115,16 +111,17 @@ const Courses = ({ user, ...props }) => {
       ),
     },
     {
-      title: 'Status',
+      title: "Status",
       width: 100,
-      dataIndex: 'isCompleted',
-      key: 'isCompleted',
-      render: (text, record) => (
-          record.isCompleted.data[0]
-          ?<Tag style={{color : "green"}}>Complete</Tag>
-          :<Tag style={{color : "orange"}}>Incomplete</Tag>
-      ),
-  },
+      dataIndex: "isCompleted",
+      key: "isCompleted",
+      render: (text, record) =>
+        record.isCompleted.data[0] ? (
+          <Tag style={{ color: "green" }}>Complete</Tag>
+        ) : (
+          <Tag style={{ color: "orange" }}>Incomplete</Tag>
+        ),
+    },
     {
       title: "Category",
       width: 200,
@@ -219,8 +216,12 @@ const Courses = ({ user, ...props }) => {
                 ? "Are you sure to complete this course?"
                 : "Are you sure to uncomplete this course?"
             }
-            onConfirm={() => onCompleteCourse(record.id, record.isCompleted, record.teacher_id)}
-            okText={record.isCompleted.data[0] === 0 ? "Complete" : "Incomplete"}
+            onConfirm={() =>
+              onCompleteCourse(record.id, record.isCompleted, record.teacher_id)
+            }
+            okText={
+              record.isCompleted.data[0] === 0 ? "Complete" : "Incomplete"
+            }
             cancelText="Cancel"
           >
             {record.isCompleted.data[0] === 0 ? (
