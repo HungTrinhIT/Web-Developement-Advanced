@@ -1,5 +1,6 @@
 import React from "react";
 import { Layout, Menu } from "antd";
+import { connect } from "react-redux";
 
 import {
   HomeOutlined,
@@ -14,6 +15,7 @@ const { SubMenu } = Menu;
 const Sidebar = (props) => {
   const location = useLocation();
   const { collapsed, onCollapse } = props;
+  const { userInfo } = props.user;
   return (
     <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
       <div className="logo" style={{ background: "transparent" }}>
@@ -28,14 +30,17 @@ const Sidebar = (props) => {
         <Menu.Item key="/" icon={<HomeOutlined />}>
           <Link to="/">Home</Link>
         </Menu.Item>
-        <SubMenu key="/users-parent" icon={<UserOutlined />} title="Users">
-          <Menu.Item key="/users">
-            <Link to="/users">Users</Link>
-          </Menu.Item>
-          <Menu.Item key="/users/add">
-            <Link to="/users/add">Add new user</Link>
-          </Menu.Item>
-        </SubMenu>
+        {userInfo.role === 0
+          ? <SubMenu key="/users-parent" icon={<UserOutlined />} title="Users">
+            <Menu.Item key="/users">
+              <Link to="/users">Users</Link>
+            </Menu.Item>
+            <Menu.Item key="/users/add">
+              <Link to="/users/add">Add new user</Link>
+            </Menu.Item>
+          </SubMenu>
+          : null
+        }
 
         <Menu.Item key="/categories" icon={<AppstoreAddOutlined />}>
           <Link to="/categories">Category</Link>
@@ -54,4 +59,9 @@ const Sidebar = (props) => {
   );
 };
 
-export default Sidebar;
+const mapStateToProps = (state) => {
+  return {
+    user: state.users,
+  };
+};
+export default connect(mapStateToProps)(Sidebar);

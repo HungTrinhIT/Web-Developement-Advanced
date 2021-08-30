@@ -39,6 +39,9 @@ const LessonDetail = (props) => {
 
   const onFinish = async (values) => {
     const lessonID = lesson_id;
+    values = {
+      ...values, lessonContent
+    }
     setLoading(true);
     try {
       const data = await lessonApi.update(lessonID, values);
