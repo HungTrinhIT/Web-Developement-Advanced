@@ -9,6 +9,7 @@ const Header = ({ categories, user, ...props }) => {
   const [search, setSearch] = useState("");
   const { userInfo, isAuthenticated } = user;
   const history = useHistory();
+
   const onLogout = () => {
     localStorage.removeItem("elearning_accessToken");
     props.dispatch(createAction(LOG_OUT, null));
@@ -173,7 +174,9 @@ const Header = ({ categories, user, ...props }) => {
                 {props.rootCategories.map((item, index) => {
                   return (
                     <li key={item.id}>
-                      <Link to={`/courses?cat=${item.id}`}>{item.catName}</Link>
+                      <Link to={`/courses?categories=${item.id}`}>
+                        {item.catName}
+                      </Link>
                     </li>
                   );
                 })}

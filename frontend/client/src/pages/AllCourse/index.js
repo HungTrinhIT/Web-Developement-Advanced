@@ -4,7 +4,7 @@ import CourseGrid from "../../components/CourseGrid";
 import "./AllCourse.css";
 import { Pagination, Checkbox, Form, Collapse, Row, Col } from "antd";
 import { connect } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 const plainOptions = [];
 const { Panel } = Collapse;
 const AllCourse = (props) => {
@@ -23,8 +23,25 @@ const AllCourse = (props) => {
     categories: "",
   });
   const [checkedList, setCheckedList] = React.useState([]);
-  const params = useParams();
+
   const history = useHistory();
+  const location = useLocation();
+  const useQuery = () => {
+    return new URLSearchParams(useLocation().search);
+  };
+
+  const query = useQuery();
+  useEffect(async () => {
+    const categories = query.get("categories");
+    const search = query.get("search");
+    setFilter({
+      ...filter,
+      search: search !== null ? search : "",
+      categories: categories !== null ? categories : "",
+    });
+    const response = await courseApi.getAll(filter);
+    setCourseData(response.data);
+  }, []);
   useEffect(() => {
     const fetchAllCourses = async () => {
       try {
@@ -43,7 +60,7 @@ const AllCourse = (props) => {
     };
 
     fetchAllCourses();
-  }, [filter]);
+  }, [filter, location]);
 
   const onPaginateHandleChange = (selectedPage) => {
     setFilter({
