@@ -32,7 +32,12 @@ const ProfileDescription = ({ user, ...props }) => {
         setLoading(true);
         try {
             const data = await userApi.update(values, userID);
-            message.success(data.data.msg);
+            message.success({
+                content: "Change user detail successfully!",
+                style: {
+                  marginTop: "15vh",
+                },
+              });
             setLoading(false);
         } catch (error) {
             throw error;

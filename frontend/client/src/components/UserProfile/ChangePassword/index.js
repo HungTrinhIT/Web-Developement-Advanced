@@ -18,11 +18,21 @@ const ChangePassword = ({ user, ...props }) => {
             const data = await userApi.updatePassword(userCredential, user.id);
             switch (data.status) {
                 case 202:
-                    message.error(data.data.msg);
+                    message.error({
+                        content: "Wrong password",
+                        style: {
+                          marginTop: "15vh",
+                        },
+                      });
                     break;
                 case 200:
                     form.resetFields();
-                    message.success(data.data.msg);
+                    message.success({
+                        content: "Change password successfully!",
+                        style: {
+                          marginTop: "15vh",
+                        },
+                      });
                     break;
                 default:
                     break;
